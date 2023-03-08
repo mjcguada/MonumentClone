@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 54325752}
   - component: {fileID: 54325751}
   - component: {fileID: 54325750}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Cube (23)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -481,7 +481,7 @@ GameObject:
   - component: {fileID: 88589925}
   - component: {fileID: 88589924}
   - component: {fileID: 88589923}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Cube (16)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -817,7 +817,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh28914
+  m_Name: pb_Mesh28912
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -981,7 +981,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh28658
+  m_Name: pb_Mesh28662
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1145,7 +1145,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh28600
+  m_Name: pb_Mesh28602
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3369,7 +3369,7 @@ GameObject:
   - component: {fileID: 369876737}
   - component: {fileID: 369876736}
   - component: {fileID: 369876735}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Cube (17)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4741,7 +4741,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh28644
+  m_Name: pb_Mesh28648
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -6197,7 +6197,8 @@ MonoBehaviour:
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
-  m_Cameras: []
+  m_Cameras:
+  - {fileID: 1464047725}
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
@@ -6392,7 +6393,7 @@ GameObject:
   - component: {fileID: 1067805101}
   - component: {fileID: 1067805100}
   - component: {fileID: 1067805099}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Cube (24)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10019,7 +10020,7 @@ MonoBehaviour:
   m_RenderShadows: 1
   m_RequiresDepthTextureOption: 1
   m_RequiresOpaqueTextureOption: 2
-  m_CameraType: 0
+  m_CameraType: 1
   m_Cameras: []
   m_RendererIndex: -1
   m_VolumeLayerMask:
@@ -10073,7 +10074,7 @@ Camera:
   field of view: 60
   orthographic: 1
   orthographic size: 10
-  m_Depth: -3.42
+  m_Depth: 2.37
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 64
@@ -13494,7 +13495,7 @@ GameObject:
   - component: {fileID: 1832015003}
   - component: {fileID: 1832015002}
   - component: {fileID: 1832015001}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Cube (25)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15706,7 +15707,7 @@ GameObject:
   - component: {fileID: 1994738417}
   - component: {fileID: 1994738416}
   - component: {fileID: 1994738415}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Cube (15)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17222,7 +17223,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh28688
+  m_Name: pb_Mesh28690
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -17730,7 +17731,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh28702
+  m_Name: pb_Mesh28704
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

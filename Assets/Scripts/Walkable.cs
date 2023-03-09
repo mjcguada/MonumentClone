@@ -8,6 +8,8 @@ public class Walkable : MonoBehaviour
     [SerializeField] private float offset = .5f;
     [SerializeField] private WalkableNeighbor[] neighbors;
 
+    public WalkableNeighbor[] Neighbors => neighbors;
+
     public Vector3 WalkPoint => transform.position + transform.up * offset;
 
     private void OnDrawGizmos()
@@ -19,10 +21,10 @@ public class Walkable : MonoBehaviour
 
         for (int i = 0; i < neighbors.Length; i++)
         {
-            if (neighbors[i] == null || neighbors[i].target == null) continue;
+            if (neighbors[i] == null || neighbors[i].walkable == null) continue;
 
             Gizmos.color = Color.green;
-            Gizmos.DrawLine(WalkPoint, neighbors[i].target.WalkPoint);
+            Gizmos.DrawLine(WalkPoint, neighbors[i].walkable.WalkPoint);
         }
     }
 }
@@ -30,6 +32,6 @@ public class Walkable : MonoBehaviour
 [System.Serializable]
 public class WalkableNeighbor
 {
-    public Walkable target;
+    public Walkable walkable;
     public bool active = true;
 }

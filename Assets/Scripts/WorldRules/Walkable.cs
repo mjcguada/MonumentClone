@@ -12,7 +12,10 @@ namespace Monument.World
 
         public WalkableNeighbor[] Neighbors => neighbors;
 
-        public Vector3 WalkPoint => transform.position + transform.up * offset;
+        //public Vector3 WalkPoint => transform.position + transform.up * offset;
+        public Vector3 WalkPoint => transform.position + Vector3.up * offset;
+
+        public RotativePlatform rotativePlatform { get; set; } = null;
 
         private void OnDrawGizmos()
         {
@@ -25,8 +28,11 @@ namespace Monument.World
             {
                 if (neighbors[i] == null || neighbors[i].walkable == null) continue;
 
-                Gizmos.color = Color.green;
-                Gizmos.DrawLine(WalkPoint, neighbors[i].walkable.WalkPoint);
+                if (neighbors[i].active)
+                {
+                    Gizmos.color = Color.green;
+                    Gizmos.DrawLine(WalkPoint, neighbors[i].walkable.WalkPoint);
+                }
             }
         }
     }

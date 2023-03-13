@@ -9,6 +9,8 @@ namespace Monument.Player
     {
         private MonumentInput inputActions;
 
+        private RotativePlatform currentPlatform = null; //to be able to enable/disable platforms on runtime
+
         void Start()
         {
             inputActions = new MonumentInput();
@@ -49,8 +51,8 @@ namespace Monument.Player
             {
                 Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
                 Collider[] colliders = Physics.OverlapSphere(spherePosition, 0.2f);
-
-                origin = colliders[0].gameObject.GetComponent<Walkable>();
+                
+                if(colliders != null && colliders.Length > 0) origin = colliders[0].gameObject.GetComponent<Walkable>();
             }
 
             if (origin != null)
@@ -110,6 +112,8 @@ namespace Monument.Player
         {
             if (path.Count > currentIndex)
             {
+                //TODO: suscribe rotatorHandle to rotativePlatform events
+                //if(path[currentIndex].rotativePlatform != null) path[currentIndex].rotativePlatform.
                 StartCoroutine(MoveToPosition(path[currentIndex].WalkPoint, currentIndex, path, timeToArrive, MoveTo));
             }
         }
@@ -130,15 +134,9 @@ namespace Monument.Player
             callback(path, currentIndex + 1, timeToArrive);
         }
 
-        void FollowPath(List<Walkable> path)
+        private void FollowPath(List<Walkable> path)
         {
             MoveTo(path, 1, 0.2f);
-
-            //We avoid the first one because it's the origin
-            //for (int i = 1; i < path.Count; i++)
-            //{
-            //    //MoveToPosition() //Use callbacks for this
-            //}
         }
 
     }

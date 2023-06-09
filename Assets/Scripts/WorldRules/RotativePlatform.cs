@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 namespace Monument.World
 {
@@ -11,27 +10,35 @@ namespace Monument.World
 
         [SerializeField] private RotateAxis rotateAxis = RotateAxis.X;
 
-        private List<Walkable> walkableChild = new List<Walkable>();
+        [SerializeField] private PlatformConfiguration[] configurations;
+
+        public bool CanRotate = true;
+
+        private Walkable[] walkableChild;
 
         private int currentRotation = 0;
 
         private void Start()
         {
             currentRotation = (int)transform.rotation.eulerAngles.x;
-            currentRotation = ((int)currentRotation / 90) * 90; //round to multiple of 90
+            currentRotation = (currentRotation / 90) * 90; //round to multiple of 90
 
-            Walkable[] walkables = GetComponentsInChildren<Walkable>();
-            walkableChild = walkables.ToList();
+            // Start my Walkable list
+            walkableChild = GetComponentsInChildren<Walkable>();
 
-            for (int i = 0; i < walkableChild.Count; i++)
+            for (int i = 0; i < walkableChild.Length; i++)
             {
-                walkableChild[i].rotativePlatform = this;
+                walkableChild[i].RotativePlatform = this;
             }
+
+            ApplyConfiguration(currentRotation);
         }
 
 
         public void Rotate()
         {
+            if (!CanRotate) return;
+
             StopAllCoroutines();
 
             if (rotateAxis == RotateAxis.X)
@@ -39,6 +46,8 @@ namespace Monument.World
                 currentRotation += 90;
 
                 if (currentRotation >= 360) currentRotation = 0;
+
+                ApplyConfiguration(currentRotation);
 
                 Quaternion targetRotation = Quaternion.Euler(currentRotation, 0, 0);
 
@@ -48,9 +57,29 @@ namespace Monument.World
             {
 
             }
-            else 
+            else
             {
-            
+
+            }
+        }
+
+        private void ApplyConfiguration(int targetRotation)
+        {
+            //We always activate every child, then we apply the current configuration
+            foreach (var walkableChild in walkableChild)
+            {
+                foreach (var neighbor in walkableChild.Neighbors)
+                {
+                    neighbor.isActive = true;
+                }
+            }
+
+            //Apply set of linkers given current rotation
+            int currentConfiguration = targetRotation / 90;
+
+            for (int i = 0; i < configurations[currentConfiguration].Linkers.Length; i++)
+            {
+                configurations[currentConfiguration].Linkers[i].ApplyConfiguration();
             }
         }
 
@@ -59,7 +88,7 @@ namespace Monument.World
             Quaternion startingRotation = transform.rotation;
             float elapsedTime = 0;
 
-            while (transform.rotation != targetRotation)
+            while (elapsedTime < timeToComplete)
             {
                 transform.rotation = Quaternion.Slerp(startingRotation, targetRotation, elapsedTime / timeToComplete);
                 yield return null;
@@ -68,15 +97,5 @@ namespace Monument.World
             }
             transform.rotation = targetRotation;
         }
-
-        private void FinishRotation()
-        {
-            for (int i = 0; i < walkableChild.Count; i++)
-            {
-
-            }
-        }
-
-
     }
 }

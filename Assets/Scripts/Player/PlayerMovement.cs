@@ -11,6 +11,9 @@ namespace Monument.Player
 
         private RotativePlatform currentPlatform = null; //to be able to enable/disable platforms on runtime
 
+        //The last rotative platform used by the player
+        private RotativePlatform lastRotativePlatform;
+
         void Start()
         {
             inputActions = new MonumentInput();
@@ -51,8 +54,8 @@ namespace Monument.Player
             {
                 Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
                 Collider[] colliders = Physics.OverlapSphere(spherePosition, 0.2f);
-                
-                if(colliders != null && colliders.Length > 0) origin = colliders[0].gameObject.GetComponent<Walkable>();
+
+                if (colliders != null && colliders.Length > 0) origin = colliders[0].gameObject.GetComponent<Walkable>();
             }
 
             if (origin != null)
@@ -60,11 +63,13 @@ namespace Monument.Player
                 //We create the same amount of possible paths as neighbors has the origin
                 List<List<Walkable>> possiblePaths = new List<List<Walkable>>();
 
-                for (int i = 0; i < origin.Neighbors.Length; i++)
+                for (int i = 0; i < origin.Neighbors.Count; i++)
                 {
+                    if (!origin.Neighbors[i].isActive) continue;
+
                     List<Walkable> neighborPath = new List<Walkable>();
                     neighborPath.Add(origin);
-                    AddNeighbors(ref neighborPath, origin.Neighbors[i].walkable, target);
+                    AddNeighbors(ref neighborPath, origin.Neighbors[i].Walkable, target);
 
                     possiblePaths.Add(neighborPath);
                 }
@@ -89,32 +94,41 @@ namespace Monument.Player
 
             if (currentWalkable.Neighbors == null) return;
 
-            for (int i = 0; i < currentWalkable.Neighbors.Length; i++)
+            for (int i = 0; i < currentWalkable.Neighbors.Count; i++)
             {
-                Walkable currentNeighbor = currentWalkable.Neighbors[i].walkable;
-                if (!path.Contains(currentNeighbor))
+                Neighbor currentNeighbor = currentWalkable.Neighbors[i];
+
+                if (!currentNeighbor.isActive) continue;
+
+                if (!path.Contains(currentNeighbor.Walkable))
                 {
-                    if (currentNeighbor == target)
+                    if (currentNeighbor.Walkable == target)
                     {
-                        path.Add(currentNeighbor);
+                        path.Add(currentNeighbor.Walkable); //Goal found
                         break; //or return path
                     }
                     else
                     {
-                        AddNeighbors(ref path, currentNeighbor, target);
+                        AddNeighbors(ref path, currentNeighbor.Walkable, target);
                     }
                 }
             }
 
         }
 
-        private void MoveTo(List<Walkable> path, int currentIndex, float timeToArrive)
+        private void MoveTo(List<Walkable> path, int targetIndex, float timeToArrive)
         {
-            if (path.Count > currentIndex)
+            if (path.Count > targetIndex)
             {
-                //TODO: suscribe rotatorHandle to rotativePlatform events
-                //if(path[currentIndex].rotativePlatform != null) path[currentIndex].rotativePlatform.
-                StartCoroutine(MoveToPosition(path[currentIndex].WalkPoint, currentIndex, path, timeToArrive, MoveTo));
+                if (lastRotativePlatform != null) lastRotativePlatform.CanRotate = true;
+
+                if (path[targetIndex].RotativePlatform != null)
+                {
+                    lastRotativePlatform = path[targetIndex].RotativePlatform;
+                    lastRotativePlatform.CanRotate = false;
+                }
+
+                StartCoroutine(MoveToPosition(path[targetIndex].WalkPoint, targetIndex, path, timeToArrive, MoveTo));
             }
         }
 
@@ -136,7 +150,7 @@ namespace Monument.Player
 
         private void FollowPath(List<Walkable> path)
         {
-            MoveTo(path, 1, 0.2f);
+            MoveTo(path, 1, 0.25f);
         }
 
     }

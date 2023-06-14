@@ -90,6 +90,18 @@ namespace Monument.World
 
             return false;
         }
+
+        public bool IsNeighborAndActive(Walkable walkable)
+        {
+            for (int i = 0; i < neighbors.Count; i++)
+            {
+                if (neighbors[i].Walkable == walkable)
+                {
+                    return neighbors[i].isActive;
+                }
+            }
+            return false;
+        }
     }
 
     [System.Serializable]

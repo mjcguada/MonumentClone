@@ -145,6 +145,11 @@ namespace Monument.Player
                 yield return null;
             }
 
+            if (currentIndex + 1 >= path.Count) yield break;
+
+            //Before moving to the next Walkable, we have to check if it's still a neighbor (something could have changed)
+            if (!path[currentIndex].IsNeighborAndActive(path[currentIndex + 1])) yield break;
+
             callback(path, currentIndex + 1, timeToArrive);
         }
 

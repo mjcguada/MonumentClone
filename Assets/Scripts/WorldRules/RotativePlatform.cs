@@ -12,7 +12,7 @@ namespace Monument.World
 
         [SerializeField] private PlatformConfiguration[] configurations;
 
-        public bool CanRotate = true;
+        [HideInInspector] public bool CanRotate = true;
 
         private Walkable[] walkableChild;
 
@@ -41,26 +41,27 @@ namespace Monument.World
 
             StopAllCoroutines();
 
+            currentRotation += 90;
+
+            if (currentRotation >= 360) currentRotation = 0;
+
+            ApplyConfiguration(currentRotation);
+            Quaternion targetRotation = Quaternion.identity;
+
             if (rotateAxis == RotateAxis.X)
             {
-                currentRotation += 90;
-
-                if (currentRotation >= 360) currentRotation = 0;
-
-                ApplyConfiguration(currentRotation);
-
-                Quaternion targetRotation = Quaternion.Euler(currentRotation, 0, 0);
-
-                StartCoroutine(RotateCoroutine(targetRotation, 0.5f));
+                targetRotation = Quaternion.Euler(currentRotation, 0, 0);
             }
             else if (rotateAxis == RotateAxis.Y)
             {
-
+                targetRotation = Quaternion.Euler(0, currentRotation, 0);
             }
             else
             {
-
+                targetRotation = Quaternion.Euler(0, 0, currentRotation);
             }
+
+            StartCoroutine(RotateCoroutine(targetRotation, 0.5f));
         }
 
         private void ApplyConfiguration(int targetRotation)
@@ -76,6 +77,8 @@ namespace Monument.World
 
             //Apply set of linkers given current rotation
             int currentConfiguration = targetRotation / 90;
+
+            if (currentConfiguration >= configurations.Length) return;
 
             for (int i = 0; i < configurations[currentConfiguration].Linkers.Length; i++)
             {

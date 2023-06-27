@@ -25,7 +25,7 @@ namespace Monument.World
 
             for (int i = 0; i < neighbors.Count; i++)
             {
-                if (neighbors[i] == null) continue;
+                if (neighbors[i] == null || neighbors[i].Walkable == null) continue;
 
                 if (neighbors[i].isActive)
                 {

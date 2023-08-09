@@ -1,5 +1,5 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Monument.World
@@ -8,21 +8,27 @@ namespace Monument.World
     {
         public enum RotateAxis { X, Y, Z }
 
-        [SerializeField] private RotateAxis rotateAxis = RotateAxis.X;
+        [SerializeField] private RotateAxis rotationAxis = RotateAxis.X;
 
         [SerializeField] private PlatformConfiguration[] configurations;
 
-        [HideInInspector] public bool CanRotate = true;
+        public bool AllowsRotation { get; set; } = true;
 
         private Walkable[] walkableChild;
 
-        private int currentRotation = 0;
+        private float rotationAngle = 0;
 
         private void Start()
         {
-            currentRotation = (int)transform.rotation.eulerAngles.x;
-            currentRotation = (currentRotation / 90) * 90; //round to multiple of 90
+            SetupWalkableChildren();
 
+            // TODO: round default rotation and apply conf
+
+            //ApplyConfiguration(currentRotation);
+        }
+
+        private void SetupWalkableChildren()
+        {
             // Start my Walkable list
             walkableChild = GetComponentsInChildren<Walkable>();
 
@@ -30,38 +36,6 @@ namespace Monument.World
             {
                 walkableChild[i].RotativePlatform = this;
             }
-
-            ApplyConfiguration(currentRotation);
-        }
-
-
-        public void Rotate()
-        {
-            if (!CanRotate) return;
-
-            StopAllCoroutines();
-
-            currentRotation += 90;
-
-            if (currentRotation >= 360) currentRotation = 0;
-
-            ApplyConfiguration(currentRotation);
-            Quaternion targetRotation = Quaternion.identity;
-
-            if (rotateAxis == RotateAxis.X)
-            {
-                targetRotation = Quaternion.Euler(currentRotation, 0, 0);
-            }
-            else if (rotateAxis == RotateAxis.Y)
-            {
-                targetRotation = Quaternion.Euler(0, currentRotation, 0);
-            }
-            else
-            {
-                targetRotation = Quaternion.Euler(0, 0, currentRotation);
-            }
-
-            StartCoroutine(RotateCoroutine(targetRotation, 0.5f));
         }
 
         private void ApplyConfiguration(int targetRotation)
@@ -75,10 +49,14 @@ namespace Monument.World
                 }
             }
 
+            if (targetRotation >= 360) targetRotation = targetRotation - 360;
+
             //Apply set of linkers given current rotation
             int currentConfiguration = targetRotation / 90;
 
-            if (currentConfiguration >= configurations.Length) return;
+            Debug.Log("Current conf: " + currentConfiguration);
+            
+            if (currentConfiguration >= configurations.Length || configurations[currentConfiguration] == null) return;
 
             for (int i = 0; i < configurations[currentConfiguration].Linkers.Length; i++)
             {
@@ -86,9 +64,55 @@ namespace Monument.World
             }
         }
 
-        IEnumerator RotateCoroutine(Quaternion targetRotation, float timeToComplete)
+        private Vector2 mouseOriginPosition = default;
+
+        void OnMouseDown()
+        {
+            if(!AllowsRotation) return;
+
+            StopAllCoroutines();
+            mouseOriginPosition = Input.mousePosition;
+        }
+
+        // Find closest rotation
+        private void OnMouseUp()
+        {
+            if(!AllowsRotation) return;
+
+            // Round angle to multiple of 90
+            int value = 360 - (int)rotationAngle;
+            int factor = 90;
+            int nearestMultiple = (int)Math.Round((value / (double)factor), MidpointRounding.AwayFromZero) * factor;
+
+            StartCoroutine(RotateCoroutine(nearestMultiple, 0.25f));
+        }
+
+        private void OnMouseDrag()
+        {
+            if(!AllowsRotation) return;
+
+            Vector2 delta = (Vector2)Input.mousePosition - mouseOriginPosition;
+            rotationAngle = Mathf.Atan2(delta.y, delta.x) * 180 / Mathf.PI;
+
+            if (rotationAxis == RotateAxis.X)
+            {
+                transform.rotation = Quaternion.Euler(-rotationAngle, 0, 0);
+            }
+            else if (rotationAxis == RotateAxis.Y)
+            {
+                transform.rotation = Quaternion.Euler(0, -rotationAngle, 0);
+            }
+            else
+            {
+                transform.rotation = Quaternion.Euler(0, 0, rotationAngle);
+            }
+        }
+
+        IEnumerator RotateCoroutine(int targetAngle, float timeToComplete)
         {
             Quaternion startingRotation = transform.rotation;
+            Quaternion targetRotation = GenerateQuaternion(targetAngle);
+
             float elapsedTime = 0;
 
             while (elapsedTime < timeToComplete)
@@ -99,6 +123,24 @@ namespace Monument.World
                 elapsedTime += Time.deltaTime;
             }
             transform.rotation = targetRotation;
+
+            ApplyConfiguration(targetAngle);
+        }
+
+        private Quaternion GenerateQuaternion(int targetAngle)
+        {
+            if (rotationAxis == RotateAxis.X)
+            {
+                return Quaternion.Euler(targetAngle, 0, 0);
+            }
+            else if (rotationAxis == RotateAxis.Y)
+            {
+                return Quaternion.Euler(0, targetAngle, 0);
+            }
+            else
+            {
+                return Quaternion.Euler(0, 0, targetAngle);
+            }
         }
     }
 }

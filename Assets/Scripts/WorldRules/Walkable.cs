@@ -37,6 +37,8 @@ namespace Monument.World
 
         public void AddAdjacentNeighbors()
         {
+            neighbors.Clear();
+
             RaycastHit hit;
             // Check 4 directions
             Vector3[] directions = new Vector3[] {

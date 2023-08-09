@@ -120,12 +120,12 @@ namespace Monument.Player
         {
             if (path.Count > targetIndex)
             {
-                if (lastRotativePlatform != null) lastRotativePlatform.CanRotate = true;
+                if (lastRotativePlatform != null) lastRotativePlatform.AllowsRotation = true;
 
                 if (path[targetIndex].RotativePlatform != null)
                 {
                     lastRotativePlatform = path[targetIndex].RotativePlatform;
-                    lastRotativePlatform.CanRotate = false;
+                    lastRotativePlatform.AllowsRotation = false;
                 }
 
                 StartCoroutine(MoveToPosition(path[targetIndex].WalkPoint, targetIndex, path, timeToArrive, MoveTo));

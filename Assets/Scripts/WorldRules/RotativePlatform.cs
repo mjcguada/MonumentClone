@@ -16,7 +16,7 @@ namespace Monument.World
 
         private Walkable[] walkableChild;
 
-        private float rotationAngle = 0;
+        private float savedRotation = 0;
 
         private void Start()
         {
@@ -54,7 +54,7 @@ namespace Monument.World
             //Apply set of linkers given current rotation
             int currentConfiguration = targetRotation / 90;
 
-            Debug.Log("Current conf: " + currentConfiguration);
+            //Debug.Log("Current conf: " + currentConfiguration);
             
             if (currentConfiguration >= configurations.Length || configurations[currentConfiguration] == null) return;
 
@@ -63,6 +63,7 @@ namespace Monument.World
                 configurations[currentConfiguration].Linkers[i].ApplyConfiguration();
             }
         }
+
 
         private Vector2 mouseOriginPosition = default;
 
@@ -79,12 +80,26 @@ namespace Monument.World
         {
             if(!AllowsRotation) return;
 
-            // Round angle to multiple of 90
-            int value = 360 - (int)rotationAngle;
-            int factor = 90;
-            int nearestMultiple = (int)Math.Round((value / (double)factor), MidpointRounding.AwayFromZero) * factor;
+            savedRotation = GetRotationAngle();
+            if (savedRotation > 180) savedRotation = savedRotation - 360;
 
-            StartCoroutine(RotateCoroutine(nearestMultiple, 0.25f));
+            Debug.Log($"Saved rotation: {savedRotation}");
+
+            // Round angle to multiple of 90
+            //int value = 360 - (int)GetRotationAngle();
+            //int value = (int)GetRotationAngle();
+            ////savedRotation = value;
+            //int factor = 90;
+            //int nearestMultiple = (int)Math.Round((value / (double)factor), MidpointRounding.AwayFromZero) * factor;
+            
+            //Debug.Log("Nearest: " + nearestMultiple);
+
+            //StartCoroutine(RotateCoroutine(nearestMultiple, 0.25f));
+        }
+
+        private float GetRotationAngle() 
+        {            
+            return transform.rotation.eulerAngles[(int)rotationAxis];
         }
 
         private void OnMouseDrag()
@@ -92,20 +107,25 @@ namespace Monument.World
             if(!AllowsRotation) return;
 
             Vector2 delta = (Vector2)Input.mousePosition - mouseOriginPosition;
-            rotationAngle = Mathf.Atan2(delta.y, delta.x) * 180 / Mathf.PI;
+            float rotationAngle = Mathf.Atan2(delta.y, delta.x) * 180f / Mathf.PI;
+
+            Debug.Log($"Rotation: {rotationAngle}");
+            rotationAngle = 360 - (rotationAngle - savedRotation);
+
+            //rotationAngle += savedRotation;
 
             if (rotationAxis == RotateAxis.X)
             {
-                transform.rotation = Quaternion.Euler(-rotationAngle, 0, 0);
+                transform.rotation = Quaternion.Euler(rotationAngle, 0, 0);
             }
             else if (rotationAxis == RotateAxis.Y)
             {
-                transform.rotation = Quaternion.Euler(0, -rotationAngle, 0);
+                transform.rotation = Quaternion.Euler(0, rotationAngle, 0);
             }
-            else
-            {
-                transform.rotation = Quaternion.Euler(0, 0, rotationAngle);
-            }
+            //else
+            //{
+            //    transform.rotation = Quaternion.Euler(0, 0, rotationAngle);
+            //}
         }
 
         IEnumerator RotateCoroutine(int targetAngle, float timeToComplete)
@@ -123,6 +143,10 @@ namespace Monument.World
                 elapsedTime += Time.deltaTime;
             }
             transform.rotation = targetRotation;
+
+            //savedRotation = GetRotationAngle() - 360;
+
+            //Debug.Log("Saved rotation: " + savedRotation);
 
             ApplyConfiguration(targetAngle);
         }

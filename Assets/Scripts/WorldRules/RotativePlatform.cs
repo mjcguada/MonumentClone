@@ -16,11 +16,15 @@ namespace Monument.World
 
         private Walkable[] walkableChild;
 
-        private float savedRotation = 0;
+        private Vector2 pivotPosition = default;
+
+        private Coroutine snapCoroutine = null;
 
         private void Start()
         {
             SetupWalkableChildren();
+
+            pivotPosition = Camera.main.WorldToScreenPoint(transform.position);
 
             // TODO: round default rotation and apply conf
 
@@ -53,7 +57,7 @@ namespace Monument.World
 
             //Apply set of linkers given current rotation
             int currentConfiguration = targetRotation / 90;
-            
+
             if (currentConfiguration >= configurations.Length || configurations[currentConfiguration] == null) return;
 
             for (int i = 0; i < configurations[currentConfiguration].Linkers.Length; i++)
@@ -62,58 +66,57 @@ namespace Monument.World
             }
         }
 
-
-        private Vector2 mouseOriginPosition = default;
-
         void OnMouseDown()
         {
-            if(!AllowsRotation) return;
+            if (!AllowsRotation) return;
 
-            StopAllCoroutines();
+            if (snapCoroutine != null) StopCoroutine(snapCoroutine);
 
-            mouseOriginPosition = Camera.main.WorldToScreenPoint(transform.position);
-            //mouseOriginPosition = Input.mousePosition;
+            Vector2 delta = (Vector2)Input.mousePosition - pivotPosition;
+            previousAngle = Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg;
         }
 
         // Find closest rotation
         private void OnMouseUp()
         {
-            if(!AllowsRotation) return;
+            if (!AllowsRotation) return;
 
             // Round rotation angle to multiple of 90
             int value = (int)GetRotationAngle();
             int factor = 90;
             int nearestMultiple = (int)Math.Round((value / (double)factor), MidpointRounding.AwayFromZero) * factor;
 
-            StartCoroutine(RotateCoroutine(nearestMultiple, 0.25f));
+            snapCoroutine = StartCoroutine(RotateCoroutine(nearestMultiple, 0.25f));
         }
 
-        private float GetRotationAngle() 
-        {            
+        private float GetRotationAngle()
+        {
             return transform.rotation.eulerAngles[(int)rotationAxis];
         }
 
+        private float previousAngle = 0;
+
         private void OnMouseDrag()
         {
-            if(!AllowsRotation) return;
+            if (!AllowsRotation) return;
 
-            Vector2 delta = (Vector2)Input.mousePosition - mouseOriginPosition;
-            float rotationAngle = Mathf.Atan2(delta.y, delta.x) * 180f / Mathf.PI;
-
-            rotationAngle = 360 - (rotationAngle - savedRotation);
+            Vector2 delta = (Vector2)Input.mousePosition - pivotPosition;
+            float rotationAngle = Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg;
 
             if (rotationAxis == RotateAxis.X)
             {
-                transform.rotation = Quaternion.Euler(rotationAngle, 0, 0);
+                transform.Rotate(previousAngle - rotationAngle, 0, 0);
             }
             else if (rotationAxis == RotateAxis.Y)
             {
-                transform.rotation = Quaternion.Euler(0, rotationAngle, 0);
+                transform.Rotate(0, previousAngle - rotationAngle, 0);
             }
-            //else
-            //{
-            //    transform.rotation = Quaternion.Euler(0, 0, rotationAngle);
-            //}
+            else
+            {
+                transform.Rotate(0, 0, rotationAngle - previousAngle);
+            }
+
+            previousAngle = rotationAngle;
         }
 
         IEnumerator RotateCoroutine(int targetAngle, float timeToComplete)
@@ -131,11 +134,6 @@ namespace Monument.World
                 elapsedTime += Time.deltaTime;
             }
             transform.rotation = targetRotation;
-
-            // Once the rotation is complete, we store the current rotation
-            // to start from that angle on next interaction
-            savedRotation = GetRotationAngle();
-            if (savedRotation > 180) savedRotation = savedRotation - 360;
 
             ApplyConfiguration(targetAngle);
         }

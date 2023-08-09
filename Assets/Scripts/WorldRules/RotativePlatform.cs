@@ -53,8 +53,6 @@ namespace Monument.World
 
             //Apply set of linkers given current rotation
             int currentConfiguration = targetRotation / 90;
-
-            //Debug.Log("Current conf: " + currentConfiguration);
             
             if (currentConfiguration >= configurations.Length || configurations[currentConfiguration] == null) return;
 
@@ -72,7 +70,9 @@ namespace Monument.World
             if(!AllowsRotation) return;
 
             StopAllCoroutines();
-            mouseOriginPosition = Input.mousePosition;
+
+            mouseOriginPosition = Camera.main.WorldToScreenPoint(transform.position);
+            //mouseOriginPosition = Input.mousePosition;
         }
 
         // Find closest rotation
@@ -80,21 +80,12 @@ namespace Monument.World
         {
             if(!AllowsRotation) return;
 
-            savedRotation = GetRotationAngle();
-            if (savedRotation > 180) savedRotation = savedRotation - 360;
+            // Round rotation angle to multiple of 90
+            int value = (int)GetRotationAngle();
+            int factor = 90;
+            int nearestMultiple = (int)Math.Round((value / (double)factor), MidpointRounding.AwayFromZero) * factor;
 
-            Debug.Log($"Saved rotation: {savedRotation}");
-
-            // Round angle to multiple of 90
-            //int value = 360 - (int)GetRotationAngle();
-            //int value = (int)GetRotationAngle();
-            ////savedRotation = value;
-            //int factor = 90;
-            //int nearestMultiple = (int)Math.Round((value / (double)factor), MidpointRounding.AwayFromZero) * factor;
-            
-            //Debug.Log("Nearest: " + nearestMultiple);
-
-            //StartCoroutine(RotateCoroutine(nearestMultiple, 0.25f));
+            StartCoroutine(RotateCoroutine(nearestMultiple, 0.25f));
         }
 
         private float GetRotationAngle() 
@@ -109,10 +100,7 @@ namespace Monument.World
             Vector2 delta = (Vector2)Input.mousePosition - mouseOriginPosition;
             float rotationAngle = Mathf.Atan2(delta.y, delta.x) * 180f / Mathf.PI;
 
-            Debug.Log($"Rotation: {rotationAngle}");
             rotationAngle = 360 - (rotationAngle - savedRotation);
-
-            //rotationAngle += savedRotation;
 
             if (rotationAxis == RotateAxis.X)
             {
@@ -144,9 +132,10 @@ namespace Monument.World
             }
             transform.rotation = targetRotation;
 
-            //savedRotation = GetRotationAngle() - 360;
-
-            //Debug.Log("Saved rotation: " + savedRotation);
+            // Once the rotation is complete, we store the current rotation
+            // to start from that angle on next interaction
+            savedRotation = GetRotationAngle();
+            if (savedRotation > 180) savedRotation = savedRotation - 360;
 
             ApplyConfiguration(targetAngle);
         }

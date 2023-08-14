@@ -5,9 +5,13 @@ public class RotationSnapper : MonoBehaviour
 {
     private Coroutine snapCoroutine = null;
 
-    public void InitSnapCoroutine(Quaternion targetRotation, float timeToComplete, System.Action OnSnapFinished)
+    public System.Action OnSnapFinished { get; set; }
+
+    public void InitSnapCoroutine(Quaternion targetRotation, float timeToComplete)
     {
-        snapCoroutine = StartCoroutine(RotateCoroutine(targetRotation, timeToComplete, OnSnapFinished));
+        if (snapCoroutine != null) StopCoroutine(snapCoroutine);
+
+        snapCoroutine = StartCoroutine(RotateCoroutine(targetRotation, timeToComplete));
     }
 
     public void StopSnapCoroutine()
@@ -15,7 +19,7 @@ public class RotationSnapper : MonoBehaviour
         if (snapCoroutine != null) StopCoroutine(snapCoroutine);
     }
 
-    private IEnumerator RotateCoroutine(Quaternion targetRotation, float timeToComplete, System.Action OnSnapFinished)
+    private IEnumerator RotateCoroutine(Quaternion targetRotation, float timeToComplete)
     {
         Quaternion startingRotation = transform.rotation;
 

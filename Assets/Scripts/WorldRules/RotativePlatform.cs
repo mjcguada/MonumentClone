@@ -5,34 +5,21 @@ using UnityEngine.EventSystems;
 namespace Monument.World
 {
     [RequireComponent(typeof(RotationSnapper))]
-    public class RotativePlatform : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+    public class RotativePlatform : RotatorInput
     {
-        public enum RotateAxis { X, Y, Z }
-
-        [SerializeField] private RotateAxis spinAxis = RotateAxis.X;
-
         [SerializeField] private PlatformConfiguration[] configurations;
 
         public bool AllowsRotation { get; set; } = true;
 
         private Walkable[] walkableChild;
 
-        private Vector2 pivotPosition = default;
-
-        private float previousAngle = 0;
-
-        private RotationSnapper snapper;
-
-        private void Awake() 
+        protected override void Start()
         {
-            snapper = GetComponent<RotationSnapper>();
-        }
+            base.Start();
 
-        private void Start()
-        {
+            snapper.OnSnapFinished = ApplyConfiguration;
+
             SetupWalkableChildren();
-
-            pivotPosition = Camera.main.WorldToScreenPoint(transform.position);
 
             ApplyConfiguration();
         }
@@ -74,53 +61,26 @@ namespace Monument.World
             }
         }        
 
-        public void OnBeginDrag(PointerEventData inputData)
+        public override void OnBeginDrag(PointerEventData inputData)
         {
             if (!AllowsRotation) return;
 
-            snapper.StopSnapCoroutine();
-
-            Vector2 delta = inputData.position - pivotPosition;
-            previousAngle = Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg;
+            base.OnBeginDrag(inputData);
         }
 
-        public void OnDrag(PointerEventData inputData)
+        public override void OnDrag(PointerEventData inputData)
         {
             if (!AllowsRotation) return;
 
-            Vector2 delta = inputData.position - pivotPosition;
-            float rotationAngle = Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg;
-
-            if (spinAxis == RotateAxis.X)
-            {
-                transform.Rotate(previousAngle - rotationAngle, 0, 0);
-            }
-            else if (spinAxis == RotateAxis.Y)
-            {
-                transform.Rotate(0, previousAngle - rotationAngle, 0);
-            }
-            else
-            {
-                transform.Rotate(0, 0, rotationAngle - previousAngle);
-            }
-
-            previousAngle = rotationAngle;
+            base.OnDrag(inputData);
         }
 
         // Snap to a 90 degree configuration
-        public void OnEndDrag(PointerEventData eventData)
+        public override void OnEndDrag(PointerEventData eventData)
         {
             if (!AllowsRotation) return;
 
-            float currentAngleRotation = transform.rotation.eulerAngles[(int)spinAxis];
-            float snappedAngleRotation = Mathf.Round(currentAngleRotation / 90.0f) * 90.0f;
-
-            Vector3 eulerRotation = transform.rotation.eulerAngles;
-            eulerRotation[(int)spinAxis] = snappedAngleRotation;
-
-            Quaternion snappedRotation = Quaternion.Euler(eulerRotation);
-
-            snapper.InitSnapCoroutine(snappedRotation, 0.25f, ApplyConfiguration);
+            base.OnEndDrag(eventData);
         }
     }
 }

@@ -6,9 +6,8 @@ using Monument.World;
 
 public class UtilsMenuItems
 {
-    // Add a menu item named "Do Something" to MyMenu in the menu bar.
     // Setup every adjacent neighbor automatically
-    [MenuItem("Walkables/Find Neighbors in the scene")]
+    [MenuItem("Walkables/Find Adjacent neighbors on scene")]
     public static void FindNeighbors()
     {
         Debug.Log("Finding neighbors in scene...");
@@ -20,5 +19,21 @@ public class UtilsMenuItems
             EditorUtility.SetDirty(sceneWalkables[i]);
         }
         Debug.Log("Neighbors setup successfully");
+    }
+
+    
+    // Remove every neighbor in scene
+    [MenuItem("Walkables/Clear neighbors on scene")]
+    public static void ClearNeighbors()
+    {
+        Debug.Log("Finding neighbors on scene...");
+        Walkable[] sceneWalkables = GameObject.FindObjectsOfType<Walkable>();
+
+        for (int i = 0; i < sceneWalkables.Length; i++)
+        {
+            sceneWalkables[i].ClearNeighbors();
+            EditorUtility.SetDirty(sceneWalkables[i]);
+        }
+        Debug.Log("Neighbors cleaned successfully");
     }
 }

@@ -9,8 +9,6 @@ namespace Monument.Player
     {
         private MonumentInput inputActions;
 
-        private RotativePlatform currentPlatform = null; //to be able to enable/disable platforms on runtime
-
         //The last rotative platform used by the player
         private RotativePlatform lastRotativePlatform;
 

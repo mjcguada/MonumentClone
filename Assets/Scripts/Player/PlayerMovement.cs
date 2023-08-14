@@ -10,7 +10,7 @@ namespace Monument.Player
         private MonumentInput inputActions;
 
         //The last rotative platform used by the player
-        private RotativePlatform lastRotativePlatform;
+        private Rotable lastRotativePlatform;
 
         void Start()
         {

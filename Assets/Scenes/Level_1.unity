@@ -129,7 +129,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh30274
+  m_Name: pb_Mesh41090
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -396,8 +396,8 @@ GameObject:
   - component: {fileID: 126612354}
   - component: {fileID: 126612353}
   - component: {fileID: 126612352}
-  - component: {fileID: 126612351}
   - component: {fileID: 126612356}
+  - component: {fileID: 126612357}
   m_Layer: 9
   m_Name: RotatorHandle
   m_TagString: Untagged
@@ -405,45 +405,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &126612351
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 126612350}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2223d5c6420cac04b94a99fede8a77a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spinAxis: 0
-  configurations:
-  - Linkers:
-    - NodeA: {fileID: 312440367}
-      NodeB: {fileID: 2055416929}
-      areLinked: 0
-    - NodeA: {fileID: 553124182}
-      NodeB: {fileID: 530880495}
-      areLinked: 1
-  - Linkers:
-    - NodeA: {fileID: 312440367}
-      NodeB: {fileID: 2055416929}
-      areLinked: 1
-    - NodeA: {fileID: 424510164}
-      NodeB: {fileID: 1910900059}
-      areLinked: 1
-  - Linkers:
-    - NodeA: {fileID: 312440367}
-      NodeB: {fileID: 2055416929}
-      areLinked: 0
-  - Linkers:
-    - NodeA: {fileID: 312440367}
-      NodeB: {fileID: 2055416929}
-      areLinked: 0
-    - NodeA: {fileID: 1910900059}
-      NodeB: {fileID: 301228215}
-      areLinked: 1
 --- !u!65 &126612352
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -534,6 +495,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6574476f9c545c144b00abcec690ce9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &126612357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 126612350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6911e4e24d28cf94299608e8e1b2913b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spinAxis: 0
+  platformToRotate: {fileID: 323000071}
 --- !u!1 &130724994
 GameObject:
   m_ObjectHideFlags: 0
@@ -842,6 +817,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 0.5
+  globalOffset: 0
   neighbors:
   - Walkable: {fileID: 301228215}
     isActive: 1
@@ -896,6 +872,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 0.5
+  globalOffset: 0
   neighbors:
   - Walkable: {fileID: 1124457294}
     isActive: 1
@@ -1440,6 +1417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 0.5
+  globalOffset: 0
   neighbors:
   - Walkable: {fileID: 1910900059}
     isActive: 1
@@ -1545,6 +1523,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 0.5
+  globalOffset: 0
   neighbors:
   - Walkable: {fileID: 1326597744}
     isActive: 1
@@ -1673,7 +1652,9 @@ GameObject:
   - component: {fileID: 323000070}
   - component: {fileID: 323000069}
   - component: {fileID: 323000067}
-  m_Layer: 9
+  - component: {fileID: 323000071}
+  - component: {fileID: 323000072}
+  m_Layer: 0
   m_Name: RotativePlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1765,6 +1746,57 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 323000065}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &323000071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 323000065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2223d5c6420cac04b94a99fede8a77a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spinAxis: 0
+  configurations:
+  - Linkers:
+    - NodeA: {fileID: 312440367}
+      NodeB: {fileID: 2055416929}
+      areLinked: 0
+    - NodeA: {fileID: 553124182}
+      NodeB: {fileID: 530880495}
+      areLinked: 1
+  - Linkers:
+    - NodeA: {fileID: 312440367}
+      NodeB: {fileID: 2055416929}
+      areLinked: 1
+    - NodeA: {fileID: 424510164}
+      NodeB: {fileID: 1910900059}
+      areLinked: 1
+  - Linkers:
+    - NodeA: {fileID: 312440367}
+      NodeB: {fileID: 2055416929}
+      areLinked: 0
+  - Linkers:
+    - NodeA: {fileID: 312440367}
+      NodeB: {fileID: 2055416929}
+      areLinked: 0
+    - NodeA: {fileID: 1910900059}
+      NodeB: {fileID: 301228215}
+      areLinked: 1
+--- !u!114 &323000072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 323000065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6574476f9c545c144b00abcec690ce9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &356977324
 GameObject:
   m_ObjectHideFlags: 0
@@ -1863,6 +1895,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 0.5
+  globalOffset: 0
   neighbors:
   - Walkable: {fileID: 1045293492}
     isActive: 1
@@ -1979,6 +2012,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 0.5
+  globalOffset: 0
   neighbors:
   - Walkable: {fileID: 941777016}
     isActive: 1
@@ -2086,7 +2120,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh30382
+  m_Name: pb_Mesh41196
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2355,6 +2389,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 0.5
+  globalOffset: 0
   neighbors:
   - Walkable: {fileID: 1296720318}
     isActive: 1
@@ -2366,7 +2401,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh30754
+  m_Name: pb_Mesh41558
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2530,7 +2565,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh30842
+  m_Name: pb_Mesh41646
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2969,7 +3004,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh30594
+  m_Name: pb_Mesh41408
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3175,6 +3210,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 0.5
+  globalOffset: 0
   neighbors:
   - Walkable: {fileID: 733511545}
     isActive: 1
@@ -3354,6 +3390,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 0.5
+  globalOffset: 0
   neighbors:
   - Walkable: {fileID: 530880495}
     isActive: 1
@@ -3457,6 +3494,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 0.5
+  globalOffset: 0
   neighbors:
   - Walkable: {fileID: 1547909638}
     isActive: 1
@@ -3481,7 +3519,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh30618
+  m_Name: pb_Mesh41432
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3645,7 +3683,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh30794
+  m_Name: pb_Mesh41598
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3809,7 +3847,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh30696
+  m_Name: pb_Mesh41510
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -4015,6 +4053,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 0.5
+  globalOffset: 0
   neighbors:
   - Walkable: {fileID: 270043496}
     isActive: 1
@@ -4181,6 +4220,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 0.5
+  globalOffset: 0
   neighbors:
   - Walkable: {fileID: 385607364}
     isActive: 1
@@ -4205,7 +4245,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh30870
+  m_Name: pb_Mesh41674
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -4369,7 +4409,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh30498
+  m_Name: pb_Mesh41312
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -4533,7 +4573,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh30486
+  m_Name: pb_Mesh41300
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -4834,6 +4874,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 0.5
+  globalOffset: 0
   neighbors:
   - Walkable: {fileID: 567942807}
     isActive: 1
@@ -7063,6 +7104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 0.5
+  globalOffset: 0
   neighbors: []
 --- !u!65 &963720211
 BoxCollider:
@@ -7387,7 +7429,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh30550
+  m_Name: pb_Mesh41364
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -7918,6 +7960,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 0.5
+  globalOffset: 0
   neighbors:
   - Walkable: {fileID: 1326597744}
     isActive: 1
@@ -8068,6 +8111,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 0.5
+  globalOffset: 0
   neighbors:
   - Walkable: {fileID: 1250441315}
     isActive: 1
@@ -10445,6 +10489,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 0.5
+  globalOffset: 0
   neighbors:
   - Walkable: {fileID: 1124457294}
     isActive: 1
@@ -10622,6 +10667,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 0.5
+  globalOffset: 0
   neighbors:
   - Walkable: {fileID: 553124182}
     isActive: 1
@@ -10725,6 +10771,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 0.5
+  globalOffset: 0
   neighbors:
   - Walkable: {fileID: 312440367}
     isActive: 1
@@ -10938,6 +10985,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 0.5
+  globalOffset: 0
   neighbors:
   - Walkable: {fileID: 795263231}
     isActive: 1
@@ -11344,7 +11392,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh30742
+  m_Name: pb_Mesh41546
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -11600,6 +11648,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 0.5
+  globalOffset: 0
   neighbors:
   - Walkable: {fileID: 1812950751}
     isActive: 1
@@ -12328,6 +12377,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 0.5
+  globalOffset: 0
   neighbors:
   - Walkable: {fileID: 356977328}
     isActive: 1
@@ -12501,6 +12551,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 0.5
+  globalOffset: 0
   neighbors:
   - Walkable: {fileID: 1734976065}
     isActive: 1
@@ -13106,6 +13157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 0.5
+  globalOffset: 0
   neighbors:
   - Walkable: {fileID: 301228215}
     isActive: 1
@@ -15884,6 +15936,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: 0.5
+  globalOffset: 0
   neighbors:
   - Walkable: {fileID: 263031969}
     isActive: 1
@@ -15895,7 +15948,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh30854
+  m_Name: pb_Mesh41658
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

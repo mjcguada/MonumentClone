@@ -1,20 +1,20 @@
 using System.Collections;
 using UnityEngine;
 
-public class RotationSnapper : MonoBehaviour
+public class RotationSnapper : MonoBehaviour, ISnappable
 {
     private Coroutine snapCoroutine = null;
 
-    public System.Action OnSnapFinished { get; set; }
+    public System.Action OnSnapFinished { get; set; }    
 
-    public void InitSnapCoroutine(Quaternion targetRotation, float timeToComplete)
+    public void StartSnap(Quaternion targetRotation, float timeToComplete)
     {
         if (snapCoroutine != null) StopCoroutine(snapCoroutine);
 
         snapCoroutine = StartCoroutine(RotateCoroutine(targetRotation, timeToComplete));
     }
 
-    public void StopSnapCoroutine()
+    public void StopSnap()
     {
         if (snapCoroutine != null) StopCoroutine(snapCoroutine);
     }

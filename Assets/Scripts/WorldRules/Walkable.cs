@@ -8,17 +8,13 @@ namespace Monument.World
     public class Walkable : MonoBehaviour
     {
         [SerializeField] private float offset = .5f;
-        [SerializeField] private bool globalOffset = false;
         [SerializeField] private List<Neighbor> neighbors = new List<Neighbor>();
 
         public List<Neighbor> Neighbors => neighbors;
 
-        public Vector3 WalkPoint { get => globalOffset? 
-                transform.position + Vector3.up* offset :
-                transform.position + transform.up * offset; 
-        }
+        public Vector3 WalkPoint => transform.position + Vector3.up* offset;
 
-        public RotativePlatform RotativePlatform { get; set; } = null;
+        public Rotable RotativePlatform { get; set; } = null;
 
         private void OnDrawGizmos()
         {

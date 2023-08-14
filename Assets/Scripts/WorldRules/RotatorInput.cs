@@ -6,12 +6,8 @@ using UnityEngine.EventSystems;
 namespace Monument.World
 {
     [RequireComponent(typeof(RotationSnapper))]
-    public class RotatorInput : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+    public class RotatorInput : Rotable, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
-        public enum RotateAxis { X, Y, Z }
-
-        [SerializeField] protected RotateAxis spinAxis = RotateAxis.X;
-
         protected Vector2 pivotPosition = default;
 
         protected float previousAngle = 0;
@@ -30,7 +26,7 @@ namespace Monument.World
 
         public virtual void OnBeginDrag(PointerEventData inputData)
         {
-            snapper.StopSnapCoroutine();
+            snapper.StopSnap();
 
             Vector2 delta = inputData.position - pivotPosition;
             previousAngle = Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg;
@@ -63,11 +59,11 @@ namespace Monument.World
             float snappedAngleRotation = Mathf.Round(currentAngleRotation / 90.0f) * 90.0f;
 
             Vector3 eulerRotation = transform.rotation.eulerAngles;
-            eulerRotation[(int)spinAxis] = snappedAngleRotation;
+            eulerRotation[(int)spinAxis] = snappedAngleRotation;            
 
             Quaternion snappedRotation = Quaternion.Euler(eulerRotation);
 
-            snapper.InitSnapCoroutine(snappedRotation, 0.25f);
+            snapper.StartSnap(snappedRotation, 0.25f);
         }
     }
 }

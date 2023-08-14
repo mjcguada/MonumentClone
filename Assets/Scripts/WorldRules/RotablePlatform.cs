@@ -1,20 +1,24 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Monument.World
 {
     [RequireComponent(typeof(RotationSnapper))]
-    public class RotativePlatform : RotatorInput
+    public class RotablePlatform : Rotable, ISnappable
     {
         [SerializeField] private PlatformConfiguration[] configurations;
 
         private Walkable[] walkableChild;
 
-        protected override void Start()
-        {
-            base.Start();
+        private RotationSnapper snapper;
 
+        private void Awake() 
+        {
+            snapper = GetComponent<RotationSnapper>();
+        }
+
+        private void Start()
+        {
             snapper.OnSnapFinished = ApplyConfiguration;
 
             SetupWalkableChildren();
@@ -29,11 +33,11 @@ namespace Monument.World
 
             for (int i = 0; i < walkableChild.Length; i++)
             {
-                walkableChild[i].RotativePlatform = this;
+                //walkableChild[i].RotativePlatform = this;
             }
         }
 
-        private void ApplyConfiguration()
+        public void ApplyConfiguration()
         {
             //We always activate every child, then we apply the current configuration
             foreach (var walkableChild in walkableChild)
@@ -59,26 +63,14 @@ namespace Monument.World
             }
         }
 
-        public override void OnBeginDrag(PointerEventData inputData)
+        public void StartSnap(Quaternion targetRotation, float timeToComplete)
         {
-            if (!AllowsRotation) return;
-
-            base.OnBeginDrag(inputData);
+            snapper.StartSnap(targetRotation, timeToComplete);
         }
 
-        public override void OnDrag(PointerEventData inputData)
+        public void StopSnap()
         {
-            if (!AllowsRotation) return;
-
-            base.OnDrag(inputData);
-        }
-
-        // Snap to a 90 degree configuration
-        public override void OnEndDrag(PointerEventData eventData)
-        {
-            if (!AllowsRotation) return;
-
-            base.OnEndDrag(eventData);
+            snapper.StopSnap();
         }
     }
 }

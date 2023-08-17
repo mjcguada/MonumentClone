@@ -4,8 +4,8 @@ namespace Monument.World
     [System.Serializable]
     public class Linker
     {
-        public Walkable NodeA;
-        public Walkable NodeB;
+        public NavNode NodeA;
+        public NavNode NodeB;
 
         public bool areLinked = true;
 

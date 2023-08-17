@@ -2028,7 +2028,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.5
+  _offset: 1
   neighbors: []
 --- !u!65 &158382930
 BoxCollider:
@@ -2322,7 +2322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.5
+  _offset: 1
   neighbors: []
 --- !u!65 &251726594
 BoxCollider:
@@ -2753,11 +2753,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.5
+  _offset: 1
   neighbors:
-  - Walkable: {fileID: 2109694870}
+  - Walkable: {fileID: 0}
     isActive: 1
-  - Walkable: {fileID: 1652284696}
+  - Walkable: {fileID: 0}
     isActive: 1
 --- !u!65 &302234497
 BoxCollider:
@@ -2967,11 +2967,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.5
+  _offset: 1
   neighbors:
-  - Walkable: {fileID: 841441710}
+  - Walkable: {fileID: 0}
     isActive: 1
-  - Walkable: {fileID: 2055416929}
+  - Walkable: {fileID: 0}
     isActive: 1
 --- !u!65 &359030223
 BoxCollider:
@@ -5498,7 +5498,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.15
+  _offset: 0
   neighbors: []
 --- !u!65 &563446826
 BoxCollider:
@@ -7564,7 +7564,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh54948
+  m_Name: pb_Mesh28814
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -7753,7 +7753,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: -0.09
+  _offset: 0
   neighbors: []
 --- !u!65 &658186254
 BoxCollider:
@@ -7907,11 +7907,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.5
+  _offset: 1
   neighbors:
-  - Walkable: {fileID: 2129983663}
+  - Walkable: {fileID: 0}
     isActive: 1
-  - Walkable: {fileID: 359030222}
+  - Walkable: {fileID: 0}
     isActive: 1
 --- !u!65 &841441711
 BoxCollider:
@@ -10153,8 +10153,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 924712063}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 5, z: 0}
-  m_LocalScale: {x: 0.2, y: 9, z: 0.2}
+  m_LocalPosition: {x: 0, y: 4.5, z: 0}
+  m_LocalScale: {x: 0.2, y: 8, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1457251353}
@@ -10255,7 +10255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.5
+  _offset: 1
   neighbors: []
 --- !u!65 &927275941
 BoxCollider:
@@ -10895,7 +10895,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh54840
+  m_Name: pb_Mesh28698
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -11113,11 +11113,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.5
+  _offset: 1
   neighbors:
-  - Walkable: {fileID: 1709921786}
+  - Walkable: {fileID: 0}
     isActive: 1
-  - Walkable: {fileID: 2129983663}
+  - Walkable: {fileID: 0}
     isActive: 1
 --- !u!23 &1016692343
 MeshRenderer:
@@ -11216,7 +11216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.5
+  _offset: 1
   neighbors: []
 --- !u!65 &1070609287
 BoxCollider:
@@ -11287,7 +11287,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh55246
+  m_Name: pb_Mesh29136
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -11445,6 +11445,118 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1134664147
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1134664148}
+  - component: {fileID: 1134664152}
+  - component: {fileID: 1134664151}
+  - component: {fileID: 1134664150}
+  - component: {fileID: 1134664149}
+  m_Layer: 0
+  m_Name: Cube (7)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1134664148
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134664147}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 9, z: 0}
+  m_LocalScale: {x: 0.2, y: 1, z: 0.2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1457251353}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1134664149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134664147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _offset: 1
+  neighbors: []
+--- !u!65 &1134664150
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134664147}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1134664151
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134664147}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 4082253890ec0c44ba07050ccb0ba9bc, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1134664152
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1134664147}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1208583063
 GameObject:
   m_ObjectHideFlags: 0
@@ -11525,7 +11637,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.5
+  _offset: 1
   neighbors: []
 --- !u!65 &1217883749
 BoxCollider:
@@ -11621,7 +11733,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: -0.09
+  _offset: 0
   neighbors: []
 --- !u!65 &1223333210
 BoxCollider:
@@ -11693,7 +11805,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.5
+  _offset: 1
   neighbors: []
 --- !u!65 &1244009117
 BoxCollider:
@@ -11805,7 +11917,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.5
+  _offset: 1
   neighbors: []
 --- !u!65 &1260994860
 BoxCollider:
@@ -11974,7 +12086,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh54984
+  m_Name: pb_Mesh28858
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -12164,7 +12276,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.5
+  _offset: 1
   neighbors: []
 --- !u!65 &1336673323
 BoxCollider:
@@ -12304,11 +12416,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.5
+  _offset: 1
   neighbors:
-  - Walkable: {fileID: 1734976065}
+  - Walkable: {fileID: 0}
     isActive: 1
-  - Walkable: {fileID: 1709921786}
+  - Walkable: {fileID: 0}
     isActive: 1
 --- !u!23 &1368513162
 MeshRenderer:
@@ -12721,7 +12833,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.15
+  _offset: 0
   neighbors: []
 --- !u!65 &1418225385
 BoxCollider:
@@ -14751,6 +14863,7 @@ Transform:
   - {fileID: 1824683762}
   - {fileID: 1835223655}
   - {fileID: 1927602075}
+  - {fileID: 1134664148}
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -14921,7 +15034,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.5
+  _offset: 1
   neighbors: []
 --- !u!65 &1478472584
 BoxCollider:
@@ -15007,7 +15120,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh54960
+  m_Name: pb_Mesh28826
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -15196,7 +15309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.15
+  _offset: 1
   neighbors: []
 --- !u!65 &1514622938
 BoxCollider:
@@ -15430,7 +15543,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.5
+  _offset: 1
   neighbors: []
 --- !u!65 &1543468684
 BoxCollider:
@@ -15584,7 +15697,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.5
+  _offset: 1
   neighbors: []
 --- !u!65 &1561542642
 BoxCollider:
@@ -17637,11 +17750,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.5
+  _offset: 1
   neighbors:
-  - Walkable: {fileID: 302234496}
+  - Walkable: {fileID: 0}
     isActive: 1
-  - Walkable: {fileID: 2055416929}
+  - Walkable: {fileID: 0}
     isActive: 1
 --- !u!65 &1652284697
 BoxCollider:
@@ -18041,11 +18154,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.5
+  _offset: 1
   neighbors:
-  - Walkable: {fileID: 1368513161}
+  - Walkable: {fileID: 0}
     isActive: 1
-  - Walkable: {fileID: 1016692342}
+  - Walkable: {fileID: 0}
     isActive: 1
 --- !u!23 &1709921787
 MeshRenderer:
@@ -18157,9 +18270,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.5
+  _offset: 1
   neighbors:
-  - Walkable: {fileID: 1368513161}
+  - Walkable: {fileID: 0}
     isActive: 1
 --- !u!23 &1734976066
 MeshRenderer:
@@ -18258,7 +18371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.5
+  _offset: 1
   neighbors: []
 --- !u!65 &1805400421
 BoxCollider:
@@ -18370,7 +18483,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.5
+  _offset: 1
   neighbors: []
 --- !u!65 &1824683764
 BoxCollider:
@@ -18467,7 +18580,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.5
+  _offset: 1
   neighbors: []
 --- !u!65 &1829151419
 BoxCollider:
@@ -18594,7 +18707,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.5
+  _offset: 1
   neighbors: []
 --- !u!65 &1835223657
 BoxCollider:
@@ -19130,7 +19243,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.5
+  _offset: 1
   neighbors: []
 --- !u!65 &1915876665
 BoxCollider:
@@ -19257,7 +19370,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.5
+  _offset: 1
   neighbors: []
 --- !u!65 &1927602077
 BoxCollider:
@@ -19436,7 +19549,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.15
+  _offset: 0
   neighbors: []
 --- !u!65 &1996303651
 BoxCollider:
@@ -21750,11 +21863,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.5
+  _offset: 1
   neighbors:
-  - Walkable: {fileID: 1652284696}
+  - Walkable: {fileID: 0}
     isActive: 1
-  - Walkable: {fileID: 359030222}
+  - Walkable: {fileID: 0}
     isActive: 1
 --- !u!1 &2082514267
 GameObject:
@@ -21968,9 +22081,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.5
+  _offset: 1
   neighbors:
-  - Walkable: {fileID: 302234496}
+  - Walkable: {fileID: 0}
     isActive: 1
 --- !u!65 &2109694871
 BoxCollider:
@@ -22082,11 +22195,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0.5
+  _offset: 1
   neighbors:
-  - Walkable: {fileID: 1016692342}
+  - Walkable: {fileID: 0}
     isActive: 1
-  - Walkable: {fileID: 841441710}
+  - Walkable: {fileID: 0}
     isActive: 1
 --- !u!65 &2129983664
 BoxCollider:

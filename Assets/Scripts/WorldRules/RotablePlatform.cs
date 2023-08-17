@@ -8,7 +8,8 @@ namespace Monument.World
     {
         [SerializeField] private PlatformConfiguration[] configurations;
 
-        private Walkable[] walkableChild;
+        // TODO: change name
+        private NavNode[] walkableChild; 
 
         private RotationSnapper snapper;
 
@@ -29,7 +30,7 @@ namespace Monument.World
         private void SetupWalkableChildren()
         {
             // Start my Walkable list
-            walkableChild = GetComponentsInChildren<Walkable>();
+            walkableChild = GetComponentsInChildren<NavNode>();
 
             for (int i = 0; i < walkableChild.Length; i++)
             {

@@ -9,7 +9,7 @@ namespace Monument.World
     {
         [SerializeField] private PlatformConfiguration[] configurations;
 
-        private Walkable[] walkableChild;
+        private NavNode[] walkableChild;
 
         protected override void Start()
         {
@@ -25,7 +25,7 @@ namespace Monument.World
         private void SetupWalkableChildren()
         {
             // Start my Walkable list
-            walkableChild = GetComponentsInChildren<Walkable>();
+            walkableChild = GetComponentsInChildren<NavNode>();
 
             for (int i = 0; i < walkableChild.Length; i++)
             {

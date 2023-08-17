@@ -36,85 +36,81 @@ namespace Monument.Player
 
             if (Physics.Raycast(ray, out hit))
             {
-                Walkable target = hit.transform.gameObject.GetComponent<Walkable>();
+                NavNode target = hit.transform.gameObject.GetComponent<NavNode>();
                 if (target != null)
                 {
-                    List<Walkable> path = FindPath(null, target);
+                    Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
+                    Collider[] colliders = Physics.OverlapSphere(spherePosition, 0.2f);
+
+                    if (colliders != null && colliders.Length > 0)
+                    {
+                        NavNode origin = colliders[0].gameObject.GetComponent<NavNode>();
+                        FindPath(origin, target);
+                    }
                 }
             }
         }
 
-        private List<Walkable> FindPath(Walkable origin, Walkable target)
+        private void FindPath(NavNode origin, NavNode target)
         {
-            List<Walkable> path = new List<Walkable>();
+            Queue<NavNode> queue = new Queue<NavNode>();
+            queue.Enqueue(origin);
 
-            if (origin == null)
+            Dictionary<NavNode, NavNode> parentMap = new Dictionary<NavNode, NavNode>();
+            parentMap[origin] = null;
+
+            bool pathFound = false;
+
+            while (queue.Count > 0)
             {
-                Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
-                Collider[] colliders = Physics.OverlapSphere(spherePosition, 0.2f);
+                NavNode current = queue.Dequeue();
 
-                if (colliders != null && colliders.Length > 0) origin = colliders[0].gameObject.GetComponent<Walkable>();
-            }
-
-            if (origin != null)
-            {
-                //We create the same amount of possible paths as neighbors has the origin
-                List<List<Walkable>> possiblePaths = new List<List<Walkable>>();
-
-                for (int i = 0; i < origin.Neighbors.Count; i++)
+                if (current.Equals(target))
                 {
-                    if (!origin.Neighbors[i].isActive) continue;
-
-                    List<Walkable> neighborPath = new List<Walkable>();
-                    neighborPath.Add(origin);
-                    AddNeighbors(ref neighborPath, origin.Neighbors[i].Walkable, target);
-
-                    possiblePaths.Add(neighborPath);
+                    pathFound = true;
+                    break;
                 }
 
-                for (int i = 0; i < possiblePaths.Count; i++)
+                foreach (Neighbor neighbor in current.Neighbors)
                 {
-                    if (possiblePaths[i].Contains(target))
+                    if (!neighbor.isActive) continue;
+
+                    if (!parentMap.ContainsKey(neighbor.Node))
                     {
-                        StopAllCoroutines();
-                        FollowPath(possiblePaths[i]);
-                        break;
+                        queue.Enqueue(neighbor.Node);
+                        parentMap[neighbor.Node] = current;
                     }
                 }
+            }
+
+            if (pathFound)
+            {
+                List<NavNode> path = BuildPathFromParentMap(parentMap, target);
+                StopAllCoroutines();
+                FollowPath(path);
+            }
+            else
+            {
+                Debug.Log("Path not found.");
+            }
+        }
+
+        private List<NavNode> BuildPathFromParentMap(Dictionary<NavNode, NavNode> parentMap, NavNode target)
+        {
+            List<NavNode> path = new List<NavNode>();
+            NavNode current = target;
+
+            while (current != null)
+            {
+                path.Insert(0, current);
+                current = parentMap[current];
             }
 
             return path;
         }
 
-        private void AddNeighbors(ref List<Walkable> path, Walkable currentWalkable, Walkable target)
-        {
-            path.Add(currentWalkable);
 
-            if (currentWalkable.Neighbors == null) return;
-
-            for (int i = 0; i < currentWalkable.Neighbors.Count; i++)
-            {
-                Neighbor currentNeighbor = currentWalkable.Neighbors[i];
-
-                if (!currentNeighbor.isActive) continue;
-
-                if (!path.Contains(currentNeighbor.Walkable))
-                {
-                    if (currentNeighbor.Walkable == target)
-                    {
-                        path.Add(currentNeighbor.Walkable); //Goal found
-                        break; //or return path
-                    }
-                    else
-                    {
-                        AddNeighbors(ref path, currentNeighbor.Walkable, target);
-                    }
-                }
-            }
-
-        }
-
-        private void MoveTo(List<Walkable> path, int targetIndex, float timeToArrive)
+        private void MoveTo(List<NavNode> path, int targetIndex, float timeToArrive)
         {
             if (path.Count > targetIndex)
             {
@@ -130,8 +126,8 @@ namespace Monument.Player
             }
         }
 
-        IEnumerator MoveToPosition(Vector3 targetPosition, int currentIndex, List<Walkable> path, float timeToArrive,
-            System.Action<List<Walkable>, int, float> callback)
+        IEnumerator MoveToPosition(Vector3 targetPosition, int currentIndex, List<NavNode> path, float timeToArrive,
+            System.Action<List<NavNode>, int, float> callback)
         {
             float elapsedTime = 0;
             Vector3 startingPos = transform.position;
@@ -151,7 +147,7 @@ namespace Monument.Player
             callback(path, currentIndex + 1, timeToArrive);
         }
 
-        private void FollowPath(List<Walkable> path)
+        private void FollowPath(List<NavNode> path)
         {
             MoveTo(path, 1, 0.25f);
         }

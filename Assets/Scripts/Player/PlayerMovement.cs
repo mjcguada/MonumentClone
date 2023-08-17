@@ -61,6 +61,7 @@ namespace Monument.Player
 
             bool pathFound = false;
 
+            // Inspect every neighbor and their children recursively
             while (queue.Count > 0)
             {
                 NavNode current = queue.Dequeue();
@@ -132,7 +133,7 @@ namespace Monument.Player
             float elapsedTime = 0;
             Vector3 startingPos = transform.position;
 
-            while (Vector3.Distance(transform.position, targetPosition) > 0.1f)
+            while (elapsedTime < timeToArrive)
             {
                 elapsedTime += Time.deltaTime;
                 transform.position = Vector3.Lerp(startingPos, targetPosition, elapsedTime / timeToArrive);

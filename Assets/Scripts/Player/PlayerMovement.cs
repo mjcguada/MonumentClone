@@ -9,8 +9,16 @@ namespace Monument.Player
     {
         private MonumentInput inputActions;
 
-        //The last rotative platform used by the player
+        // The last rotative platform used by the player
         private Rotable lastRotativePlatform;
+
+        // Pathfinding variables
+        private bool isMoving = false;
+        private Coroutine findPathCoroutine = null;
+        List<NavNode> pathToFollow = new List<NavNode>();
+
+        // Translation time between nodes
+        private const float timeToArrive = 0.25f;
 
         void Start()
         {
@@ -36,28 +44,50 @@ namespace Monument.Player
 
             if (Physics.Raycast(ray, out hit))
             {
+                // If the player has touch a navegable node
+                // We create a new path to follow
                 NavNode target = hit.transform.gameObject.GetComponent<NavNode>();
                 if (target != null)
                 {
-                    Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
-                    Collider[] colliders = Physics.OverlapSphere(spherePosition, 0.2f);
-
-                    if (colliders != null && colliders.Length > 0)
-                    {
-                        NavNode origin = colliders[0].gameObject.GetComponent<NavNode>();
-                        FindPath(origin, target);
-                    }
+                    if (findPathCoroutine != null) StopCoroutine(findPathCoroutine);
+                    findPathCoroutine = StartCoroutine(FindPathToTarget(target));
                 }
             }
         }
 
-        private void FindPath(NavNode origin, NavNode target)
+        private IEnumerator FindPathToTarget(NavNode target)
         {
+            // Clear existing path
+            pathToFollow.Clear();
+
+            // Wait until the player reaches the Node they were moving to
+            while (isMoving)
+            {
+                yield return null;
+            }
+
+            // Raycast to find origin Node
+            Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
+            Collider[] colliders = Physics.OverlapSphere(spherePosition, 0.2f);
+
+            NavNode originNode = colliders[0].gameObject.GetComponent<NavNode>();
+
+            if (originNode == null)
+            {
+                Debug.LogError("Couldn't find origin node");
+                yield break;
+            }
+            else if (originNode == target)
+            {
+                Debug.Log("Target and origin nodes are the same one");
+                yield break;
+            }
+
             Queue<NavNode> queue = new Queue<NavNode>();
-            queue.Enqueue(origin);
+            queue.Enqueue(originNode);
 
             Dictionary<NavNode, NavNode> parentMap = new Dictionary<NavNode, NavNode>();
-            parentMap[origin] = null;
+            parentMap[originNode] = null;
 
             bool pathFound = false;
 
@@ -66,7 +96,7 @@ namespace Monument.Player
             {
                 NavNode current = queue.Dequeue();
 
-                if (current.Equals(target))
+                if (current == target)
                 {
                     pathFound = true;
                     break;
@@ -87,7 +117,6 @@ namespace Monument.Player
             if (pathFound)
             {
                 List<NavNode> path = BuildPathFromParentMap(parentMap, target);
-                StopAllCoroutines();
                 FollowPath(path);
             }
             else
@@ -109,29 +138,42 @@ namespace Monument.Player
 
             return path;
         }
-
-
-        private void MoveTo(List<NavNode> path, int targetIndex, float timeToArrive)
+        private void FollowPath(List<NavNode> path)
         {
-            if (path.Count > targetIndex)
+
+            pathToFollow = path;
+            MoveTo(currentIndex: 1); // index 0 is the origin node
+        }
+
+        private void MoveTo(int currentIndex)
+        {
+            // if the given index is smaller than the length of the list
+            // we continue moving
+            if (currentIndex < pathToFollow.Count)
             {
+                isMoving = true;
+
                 if (lastRotativePlatform != null) lastRotativePlatform.AllowsRotation = true;
 
-                if (path[targetIndex].RotativePlatform != null)
+                if (pathToFollow[currentIndex].RotativePlatform != null)
                 {
-                    lastRotativePlatform = path[targetIndex].RotativePlatform;
+                    lastRotativePlatform = pathToFollow[currentIndex].RotativePlatform;
                     lastRotativePlatform.AllowsRotation = false;
                 }
 
-                StartCoroutine(MoveToPosition(path[targetIndex].WalkPoint, targetIndex, path, timeToArrive, MoveTo));
+                StartCoroutine(MoveToPosition(currentIndex));
+            }
+            else
+            {
+                isMoving = false;
             }
         }
 
-        IEnumerator MoveToPosition(Vector3 targetPosition, int currentIndex, List<NavNode> path, float timeToArrive,
-            System.Action<List<NavNode>, int, float> callback)
+        IEnumerator MoveToPosition(int currentIndex)
         {
             float elapsedTime = 0;
             Vector3 startingPos = transform.position;
+            Vector3 targetPosition = pathToFollow[currentIndex].WalkPoint;
 
             while (elapsedTime < timeToArrive)
             {
@@ -140,18 +182,20 @@ namespace Monument.Player
                 yield return null;
             }
 
-            if (currentIndex + 1 >= path.Count) yield break;
+            int nextIndex = currentIndex + 1;
 
-            //Before moving to the next Walkable, we have to check if it's still a neighbor (something could have changed)
-            if (!path[currentIndex].IsNeighborAndActive(path[currentIndex + 1])) yield break;
+            // if the players have changed the currentPath or if they have reached the end of it
+            if (nextIndex >= pathToFollow.Count)
+            {
+                isMoving = false;
+                yield break;
+            }
 
-            callback(path, currentIndex + 1, timeToArrive);
+            // Before moving to the next Node, we have to check if it's still an active neighbor (something could have changed)
+            if (!pathToFollow[currentIndex].IsNeighborAndActive(pathToFollow[nextIndex])) yield break;
+
+            // Move to next index of the path
+            MoveTo(nextIndex);
         }
-
-        private void FollowPath(List<NavNode> path)
-        {
-            MoveTo(path, 1, 0.25f);
-        }
-
     }
 }

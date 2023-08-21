@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Monument.World;
+using static UnityEngine.GraphicsBuffer;
 
 namespace Monument.Player
 {
     public class PlayerMovement : MonoBehaviour
     {
+        [SerializeField] private PlayerAnimator animator;
+        [SerializeField] private PlayerCursor cursor;
+
         private MonumentInput inputActions;
 
         // The last rotative platform used by the player
@@ -60,6 +64,9 @@ namespace Monument.Player
             // Clear existing path
             pathToFollow.Clear();
 
+            // Show cursor
+            cursor?.ShowCursor(Camera.main.WorldToScreenPoint(target.WalkPoint));
+
             // Wait until the player reaches the Node they were moving to
             while (isMoving)
             {
@@ -67,8 +74,7 @@ namespace Monument.Player
             }
 
             // Raycast to find origin Node
-            Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
-            Collider[] colliders = Physics.OverlapSphere(spherePosition, 0.2f);
+            Collider[] colliders = Physics.OverlapSphere(transform.position - transform.up * 0.5f, 0.2f);
 
             NavNode originNode = colliders[0].gameObject.GetComponent<NavNode>();
 
@@ -138,8 +144,10 @@ namespace Monument.Player
 
             return path;
         }
+
         private void FollowPath(List<NavNode> path)
         {
+            animator.Walking(true);
 
             pathToFollow = path;
             MoveTo(currentIndex: 1); // index 0 is the origin node
@@ -161,6 +169,10 @@ namespace Monument.Player
                     lastRotativePlatform.AllowsRotation = false;
                 }
 
+                // Look at next node
+                LookAtNode(pathToFollow[currentIndex]);
+
+                // Move to next node
                 StartCoroutine(MoveToPosition(currentIndex));
             }
             else
@@ -188,6 +200,7 @@ namespace Monument.Player
             if (nextIndex >= pathToFollow.Count)
             {
                 isMoving = false;
+                animator.Walking(false);
                 yield break;
             }
 
@@ -196,6 +209,31 @@ namespace Monument.Player
 
             // Move to next index of the path
             MoveTo(nextIndex);
+        }
+
+        private void LookAtNode(NavNode targetNode)
+        {
+            // Convert Node world coordinates to screen space
+            Vector3 nodeScreenPosition = Camera.main.WorldToScreenPoint(targetNode.WalkPoint);
+
+            // convert Node screen point to Ray
+            Ray rayToNextPosition = Camera.main.ScreenPointToRay(nodeScreenPosition);
+
+            //We create a plane at the player's feet to intersect the ray and calculate the angle between them
+            Plane plane = new Plane(Vector3.up, transform.position);
+
+            // Project the Node onto the plane and face towards projected point
+            if (plane.Raycast(rayToNextPosition, out float cameraDistance))
+            {
+                Vector3 nextPositionOnPlane = rayToNextPosition.GetPoint(cameraDistance);
+                Vector3 playerPosition = transform.position;
+
+                Vector3 directionToNextNode = nextPositionOnPlane - playerPosition;
+                if (directionToNextNode != Vector3.zero)
+                {
+                    transform.rotation = Quaternion.LookRotation(directionToNextNode);
+                }
+            }
         }
     }
 }

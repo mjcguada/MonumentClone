@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace Monument.World
 {
@@ -71,8 +70,6 @@ namespace Monument.World
 
         public void AddAdjacentNeighbors()
         {
-            //neighbors.Clear();
-
             RaycastHit hit;
             // Check 4 directions
             Vector3[] directions = new Vector3[] {

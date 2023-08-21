@@ -2029,6 +2029,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
+  globalWalkpoint: 1
   neighbors:
   - Node: {fileID: 1244009116}
     isActive: 1
@@ -2399,6 +2400,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
+  globalWalkpoint: 0
   neighbors:
   - Node: {fileID: 1927602076}
     isActive: 1
@@ -2696,8 +2698,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2223d5c6420cac04b94a99fede8a77a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spinAxis: 0
-  configurations: []
 --- !u!114 &283665633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2832,6 +2832,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
+  globalWalkpoint: 0
   neighbors:
   - Node: {fileID: 0}
     isActive: 1
@@ -3046,6 +3047,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
+  globalWalkpoint: 0
   neighbors:
   - Node: {fileID: 0}
     isActive: 1
@@ -5304,7 +5306,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh47796
+  m_Name: pb_Mesh68894
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -5494,6 +5496,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 0
+  globalWalkpoint: 0
   neighbors:
   - Node: {fileID: 1829151418}
     isActive: 1
@@ -5543,7 +5546,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 575294846}
-  - component: {fileID: 575294844}
+  - component: {fileID: 575294847}
   - component: {fileID: 575294845}
   m_Layer: 0
   m_Name: StairsPiramid
@@ -5552,20 +5555,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &575294844
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 575294843}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2223d5c6420cac04b94a99fede8a77a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spinAxis: 2
-  configurations: []
 --- !u!114 &575294845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5599,6 +5588,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &575294847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 575294843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9b4603480b9d0140a11e955b507c7c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SpinAxis: 2
+  configurations:
+  - Linkers: []
+  - Linkers: []
+  - Linkers: []
+  - Linkers: []
+  inputEnabled: 1
 --- !u!1 &632952505
 GameObject:
   m_ObjectHideFlags: 0
@@ -7561,7 +7569,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh47366
+  m_Name: pb_Mesh68466
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -7751,7 +7759,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 0
+  globalWalkpoint: 0
   neighbors:
+  - Node: {fileID: 1336673322}
+    isActive: 1
   - Node: {fileID: 1244009116}
     isActive: 1
 --- !u!65 &658186254
@@ -7907,6 +7918,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
+  globalWalkpoint: 0
   neighbors:
   - Node: {fileID: 0}
     isActive: 1
@@ -10391,6 +10403,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
+  globalWalkpoint: 0
   neighbors:
   - Node: {fileID: 1260994859}
     isActive: 1
@@ -10989,7 +11002,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh47250
+  m_Name: pb_Mesh68356
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -11208,6 +11221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
+  globalWalkpoint: 0
   neighbors:
   - Node: {fileID: 0}
     isActive: 1
@@ -11311,6 +11325,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
+  globalWalkpoint: 0
   neighbors:
   - Node: {fileID: 1217883748}
     isActive: 1
@@ -11385,7 +11400,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh47700
+  m_Name: pb_Mesh68798
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -11591,6 +11606,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
+  globalWalkpoint: 0
   neighbors:
   - Node: {fileID: 1824683763}
     isActive: 1
@@ -11738,6 +11754,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
+  globalWalkpoint: 0
   neighbors:
   - Node: {fileID: 1070609286}
     isActive: 1
@@ -11835,7 +11852,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _offset: 0
+  _offset: 1
+  globalWalkpoint: 1
   neighbors:
   - Node: {fileID: 1336673322}
     isActive: 1
@@ -11910,10 +11928,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
+  globalWalkpoint: 0
   neighbors:
-  - Node: {fileID: 1543468683}
-    isActive: 1
   - Node: {fileID: 158382929}
+    isActive: 1
+  - Node: {fileID: 1543468683}
     isActive: 1
 --- !u!65 &1244009117
 BoxCollider:
@@ -12026,6 +12045,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
+  globalWalkpoint: 0
   neighbors:
   - Node: {fileID: 927275940}
     isActive: 1
@@ -12196,7 +12216,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh47410
+  m_Name: pb_Mesh68510
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -12387,6 +12407,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
+  globalWalkpoint: 1
   neighbors:
   - Node: {fileID: 658186253}
     isActive: 1
@@ -12529,6 +12550,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
+  globalWalkpoint: 0
   neighbors:
   - Node: {fileID: 0}
     isActive: 1
@@ -12756,7 +12778,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh47464
+  m_Name: pb_Mesh68568
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -12946,6 +12968,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 0
+  globalWalkpoint: 0
   neighbors:
   - Node: {fileID: 1478472583}
     isActive: 1
@@ -15005,8 +15028,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9b4603480b9d0140a11e955b507c7c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spinAxis: 1
+  SpinAxis: 0
   configurations: []
+  inputEnabled: 1
 --- !u!1 &1464047721
 GameObject:
   m_ObjectHideFlags: 0
@@ -15149,7 +15173,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
-  neighbors: []
+  globalWalkpoint: 0
+  neighbors:
+  - Node: {fileID: 1418225384}
+    isActive: 1
 --- !u!65 &1478472584
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -15234,7 +15261,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh47378
+  m_Name: pb_Mesh68478
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -15424,6 +15451,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
+  globalWalkpoint: 0
   neighbors: []
 --- !u!65 &1514622938
 BoxCollider:
@@ -15657,7 +15685,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _offset: 0
+  _offset: 1
+  globalWalkpoint: 1
   neighbors: []
 --- !u!65 &1543468684
 BoxCollider:
@@ -15812,6 +15841,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
+  globalWalkpoint: 0
   neighbors:
   - Node: {fileID: 1915876664}
     isActive: 1
@@ -17867,6 +17897,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
+  globalWalkpoint: 0
   neighbors:
   - Node: {fileID: 0}
     isActive: 1
@@ -18271,6 +18302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
+  globalWalkpoint: 0
   neighbors:
   - Node: {fileID: 0}
     isActive: 1
@@ -18387,6 +18419,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
+  globalWalkpoint: 0
   neighbors:
   - Node: {fileID: 0}
     isActive: 1
@@ -18488,6 +18521,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
+  globalWalkpoint: 0
   neighbors:
   - Node: {fileID: 1070609286}
     isActive: 1
@@ -18602,10 +18636,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
+  globalWalkpoint: 0
   neighbors:
-  - Node: {fileID: 1835223656}
-    isActive: 1
   - Node: {fileID: 1134664149}
+    isActive: 1
+  - Node: {fileID: 1835223656}
     isActive: 1
 --- !u!65 &1824683764
 BoxCollider:
@@ -18703,6 +18738,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
+  globalWalkpoint: 0
   neighbors:
   - Node: {fileID: 563446825}
     isActive: 1
@@ -18832,10 +18868,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
+  globalWalkpoint: 0
   neighbors:
-  - Node: {fileID: 1927602076}
-    isActive: 1
   - Node: {fileID: 1824683763}
+    isActive: 1
+  - Node: {fileID: 1927602076}
     isActive: 1
 --- !u!65 &1835223657
 BoxCollider:
@@ -19372,10 +19409,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
+  globalWalkpoint: 0
   neighbors:
-  - Node: {fileID: 1561542641}
-    isActive: 1
   - Node: {fileID: 927275940}
+    isActive: 1
+  - Node: {fileID: 1561542641}
     isActive: 1
 --- !u!65 &1915876665
 BoxCollider:
@@ -19503,6 +19541,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
+  globalWalkpoint: 0
   neighbors:
   - Node: {fileID: 251726593}
     isActive: 1
@@ -19686,6 +19725,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 0
+  globalWalkpoint: 0
   neighbors: []
 --- !u!65 &1996303651
 BoxCollider:
@@ -22000,6 +22040,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
+  globalWalkpoint: 0
   neighbors:
   - Node: {fileID: 0}
     isActive: 1
@@ -22218,6 +22259,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
+  globalWalkpoint: 0
   neighbors:
   - Node: {fileID: 0}
     isActive: 1
@@ -22332,6 +22374,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
+  globalWalkpoint: 0
   neighbors:
   - Node: {fileID: 0}
     isActive: 1
@@ -22425,7 +22468,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2138163692}
   - component: {fileID: 2138163691}
-  - component: {fileID: 2138163690}
   - component: {fileID: 2138163689}
   - component: {fileID: 2138163688}
   - component: {fileID: 2138163687}
@@ -22460,8 +22502,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6911e4e24d28cf94299608e8e1b2913b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spinAxis: 2
-  platformToRotate: {fileID: 575294844}
+  SpinAxis: 2
+  platformToRotate: {fileID: 575294847}
 --- !u!65 &2138163689
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -22475,48 +22517,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &2138163690
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2138163686}
-  m_Enabled: 0
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &2138163691
 MeshFilter:
   m_ObjectHideFlags: 0

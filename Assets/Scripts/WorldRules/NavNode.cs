@@ -8,11 +8,15 @@ namespace Monument.World
     public class NavNode : MonoBehaviour
     {
         [SerializeField] private float _offset = 1f;
+        [SerializeField] private bool globalWalkpoint = false;
         [SerializeField] private List<Neighbor> neighbors = new List<Neighbor>();
 
         public List<Neighbor> Neighbors => neighbors;
 
-        public Vector3 WalkPoint => transform.position + (transform.up * 0.5f * _offset);
+        public Vector3 WalkPoint { get => globalWalkpoint?
+                transform.position + (Vector3.up * 0.5f * _offset):
+                transform.position + (transform.up * 0.5f * _offset);
+        }
 
         public Rotable RotativePlatform { get; set; } = null;
 

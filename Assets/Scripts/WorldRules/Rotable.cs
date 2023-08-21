@@ -6,7 +6,7 @@ public class Rotable : MonoBehaviour
 {
     public enum RotateAxis { X, Y, Z }
 
-    [SerializeField] protected RotateAxis spinAxis = RotateAxis.X;
+    public RotateAxis SpinAxis = RotateAxis.X;
 
     public bool AllowsRotation { get; set; } = true;
 }

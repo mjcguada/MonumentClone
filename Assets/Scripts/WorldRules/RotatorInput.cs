@@ -36,12 +36,16 @@ namespace Monument.World
         {
             Vector2 delta = inputData.position - pivotPosition;
             float rotationAngle = Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg;
+            Rotate(rotationAngle);
+        }
 
-            if (spinAxis == RotateAxis.X)
+        public void Rotate(float rotationAngle)
+        {
+            if (SpinAxis == RotateAxis.X)
             {
                 transform.Rotate(previousAngle - rotationAngle, 0, 0);
             }
-            else if (spinAxis == RotateAxis.Y)
+            else if (SpinAxis == RotateAxis.Y)
             {
                 transform.Rotate(0, previousAngle - rotationAngle, 0);
             }
@@ -49,17 +53,16 @@ namespace Monument.World
             {
                 transform.Rotate(0, 0, rotationAngle - previousAngle);
             }
-
             previousAngle = rotationAngle;
         }
 
         public virtual void OnEndDrag(PointerEventData inputData)
         {
-            float currentAngleRotation = transform.rotation.eulerAngles[(int)spinAxis];
+            float currentAngleRotation = transform.rotation.eulerAngles[(int)SpinAxis];
             float snappedAngleRotation = Mathf.Round(currentAngleRotation / 90.0f) * 90.0f;
 
             Vector3 eulerRotation = transform.rotation.eulerAngles;
-            eulerRotation[(int)spinAxis] = snappedAngleRotation;            
+            eulerRotation[(int)SpinAxis] = snappedAngleRotation;
 
             Quaternion snappedRotation = Quaternion.Euler(eulerRotation);
 

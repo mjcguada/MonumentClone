@@ -8,9 +8,7 @@ namespace Monument.World
     [RequireComponent(typeof(RotationSnapper))]
     public class RotatorHandle : RotatorInput
     {
-        [SerializeField] private RotablePlatform platformToRotate;
-
-        private bool isSnapping = false;
+        [SerializeField] private RotativePlatform platformToRotate;
 
         protected override void Start()
         {
@@ -25,35 +23,25 @@ namespace Monument.World
 
             base.Start();
 
-            snapper.OnSnapFinished = () =>
-            {
-                isSnapping = false;
-
-                platformToRotate.transform.localRotation = transform.rotation;
-                platformToRotate.ApplyConfiguration();
-            };
+            // If the platform is linked to a handle, that's the only way to rotate it
+            platformToRotate.inputEnabled = false;
         }
 
-        public override void OnDrag(PointerEventData eventData)
+        public override void OnDrag(PointerEventData inputData)
         {
-            base.OnDrag(eventData);
+            base.OnDrag(inputData);
 
-            platformToRotate.transform.localRotation = transform.rotation;
+            Vector2 delta = inputData.position - pivotPosition;
+            float rotationAngle = Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg;
+
+            platformToRotate.Rotate(rotationAngle);
         }
 
-        public override void OnEndDrag(PointerEventData eventData)
+        public override void OnEndDrag(PointerEventData inputData)
         {
-            base.OnEndDrag(eventData);
+            base.OnEndDrag(inputData);
 
-            isSnapping = true;
-        }
-
-        private void Update()
-        {
-            if (isSnapping)
-            {
-                platformToRotate.transform.localRotation = transform.rotation;
-            }
+            platformToRotate.OnEndDrag(inputData);
         }
     }
 }

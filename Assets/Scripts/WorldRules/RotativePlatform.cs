@@ -7,9 +7,12 @@ namespace Monument.World
     [RequireComponent(typeof(RotationSnapper))]
     public class RotativePlatform : RotatorInput
     {
-        [SerializeField] private PlatformConfiguration[] configurations;
+        [SerializeField]
+        private PlatformConfiguration[] configurations = new PlatformConfiguration[4];
 
-        private NavNode[] walkableChild;
+        private NavNode[] childrenNodes;
+
+        public bool inputEnabled = true;
 
         protected override void Start()
         {
@@ -25,18 +28,18 @@ namespace Monument.World
         private void SetupWalkableChildren()
         {
             // Start my Walkable list
-            walkableChild = GetComponentsInChildren<NavNode>();
+            childrenNodes = GetComponentsInChildren<NavNode>();
 
-            for (int i = 0; i < walkableChild.Length; i++)
+            for (int i = 0; i < childrenNodes.Length; i++)
             {
-                walkableChild[i].RotativePlatform = this;
+                childrenNodes[i].RotativePlatform = this;
             }
         }
 
-        private void ApplyConfiguration()
+        public void ApplyConfiguration()
         {
             //We always activate every child, then we apply the current configuration
-            foreach (var walkableChild in walkableChild)
+            foreach (var walkableChild in childrenNodes)
             {
                 foreach (var neighbor in walkableChild.Neighbors)
                 {
@@ -45,7 +48,7 @@ namespace Monument.World
             }
 
             // Establish desired configuration based on current rotation
-            float currentAngleRotation = transform.rotation.eulerAngles[(int)spinAxis];
+            float currentAngleRotation = transform.rotation.eulerAngles[(int)SpinAxis];
             float snappedAngleRotation = Mathf.Round(currentAngleRotation / 90.0f) * 90.0f;
 
             int currentConfiguration = (int)snappedAngleRotation / 90;
@@ -61,7 +64,7 @@ namespace Monument.World
 
         public override void OnBeginDrag(PointerEventData inputData)
         {
-            if (!AllowsRotation) return;
+            if (!AllowsRotation || !inputEnabled) return;
 
             base.OnBeginDrag(inputData);
         }
@@ -74,11 +77,11 @@ namespace Monument.World
         }
 
         // Snap to a 90 degree configuration
-        public override void OnEndDrag(PointerEventData eventData)
+        public override void OnEndDrag(PointerEventData inputData)
         {
             if (!AllowsRotation) return;
 
-            base.OnEndDrag(eventData);
+            base.OnEndDrag(inputData);
         }
     }
 }

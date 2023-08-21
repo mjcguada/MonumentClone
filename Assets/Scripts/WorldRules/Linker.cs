@@ -11,6 +11,8 @@ namespace Monument.World
 
         public void ApplyConfiguration()
         {
+            if(NodeA == null || NodeB == null) return;
+
             NodeA.SetNeighborActive(NodeB, areLinked);
             NodeB.SetNeighborActive(NodeA, areLinked);
         }

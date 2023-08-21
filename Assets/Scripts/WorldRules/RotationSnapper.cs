@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class RotationSnapper : MonoBehaviour, ISnappable
+public class RotationSnapper : MonoBehaviour
 {
     private Coroutine snapCoroutine = null;
 
@@ -34,6 +34,6 @@ public class RotationSnapper : MonoBehaviour, ISnappable
         }
         transform.rotation = targetRotation;
 
-        OnSnapFinished?.Invoke(); // ApplyConfiguration(targetAngle);
+        OnSnapFinished?.Invoke(); // ApplyConfiguration();
     }
 }

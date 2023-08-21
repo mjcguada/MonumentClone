@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+/**
+ * This script defines a handle that controls
+ * the rotation value of a RotativePlatform externally,
+ * maintaining spin axes independent
+ */
+
 namespace Monument.World
 {
     [RequireComponent(typeof(RotationSnapper))]
@@ -22,9 +28,12 @@ namespace Monument.World
 #endif
 
             base.Start();
+        }
 
-            // If the platform is linked to a handle, we disable its collider to avoid input from 2 different scripts
-            platformToRotate.GetComponent<Collider>().enabled = false;
+        public override void OnBeginDrag(PointerEventData inputData)
+        {
+            base.OnBeginDrag(inputData);
+            platformToRotate.PreviousAngle = this.previousAngle; // Important to start rotation with the same value
         }
 
         public override void OnDrag(PointerEventData inputData)
@@ -33,14 +42,14 @@ namespace Monument.World
 
             Vector2 delta = inputData.position - pivotPosition;
             float rotationAngle = Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg;
-
+            
+            // We use Rotate function to maintain handle and platform spin axes independent
             platformToRotate.Rotate(rotationAngle);
         }
 
         public override void OnEndDrag(PointerEventData inputData)
         {
             base.OnEndDrag(inputData);
-
             platformToRotate.OnEndDrag(inputData);
         }
     }

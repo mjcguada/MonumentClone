@@ -5606,7 +5606,6 @@ MonoBehaviour:
   - Linkers: []
   - Linkers: []
   - Linkers: []
-  inputEnabled: 1
 --- !u!1 &632952505
 GameObject:
   m_ObjectHideFlags: 0
@@ -15028,9 +15027,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9b4603480b9d0140a11e955b507c7c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpinAxis: 0
-  configurations: []
-  inputEnabled: 1
+  SpinAxis: 1
+  configurations:
+  - Linkers: []
+  - Linkers: []
+  - Linkers: []
+  - Linkers: []
 --- !u!1 &1464047721
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,6 +2,11 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+/**
+ * This script defines an interactive platform, that is
+ * capable of rotating by adjusting to multiples of 90 degrees
+ */
+
 namespace Monument.World
 {
     [RequireComponent(typeof(RotationSnapper))]
@@ -10,7 +15,9 @@ namespace Monument.World
         [SerializeField]
         private PlatformConfiguration[] configurations = new PlatformConfiguration[4];
 
-        private NavNode[] childrenNodes;
+        private NavNode[] childrenNodes = null;
+
+        public float PreviousAngle { set => previousAngle = value; }
 
         protected override void Start()
         {
@@ -18,14 +25,14 @@ namespace Monument.World
 
             snapper.OnSnapFinished = ApplyConfiguration;
 
-            SetupWalkableChildren();
+            AssignPlatformToChildrenNodes();
 
             ApplyConfiguration();
         }
 
-        private void SetupWalkableChildren()
+        private void AssignPlatformToChildrenNodes()
         {
-            // Start my Walkable list
+            // Find Node children inside the gameObject
             childrenNodes = GetComponentsInChildren<NavNode>();
 
             for (int i = 0; i < childrenNodes.Length; i++)

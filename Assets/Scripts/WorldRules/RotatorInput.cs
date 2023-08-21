@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+/**
+ * This script defines a main class that implements abasic 
+ * rotating input interaction and uses a RotationSnapper to 
+ * always snap to a rotation angle that is a multiple of 90 degrees.
+ */
+
 namespace Monument.World
 {
     [RequireComponent(typeof(RotationSnapper))]

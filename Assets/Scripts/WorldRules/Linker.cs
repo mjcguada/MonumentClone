@@ -9,12 +9,21 @@ namespace Monument.World
 
         public bool areLinked = true;
 
-        public void ApplyConfiguration()
+        public void ApplyConfiguration(bool linkEnabled)
         {
-            if(NodeA == null || NodeB == null) return;
+            if (NodeA == null || NodeB == null) return;
 
-            NodeA.SetNeighborActive(NodeB, areLinked);
-            NodeB.SetNeighborActive(NodeA, areLinked);
+            if (linkEnabled)
+            {
+                NodeA.AddNeighbor(NodeB);
+                NodeB.AddNeighbor(NodeA);
+            }
+            else
+            {
+                NodeA.RemoveNeighbor(NodeB);
+                NodeB.RemoveNeighbor(NodeA);
+            }
+
         }
     }
 }

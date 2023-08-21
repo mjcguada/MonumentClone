@@ -26,7 +26,6 @@ namespace Monument.World
 
             GUILayout.Space(10);
 
-            platform.inputEnabled = EditorGUILayout.Toggle("Input Enabled", platform.inputEnabled);
             platform.SpinAxis = (RotateAxis) EditorGUILayout.EnumPopup("Spin Axis", platform.SpinAxis);
 
             GUILayout.Space(10);
@@ -47,7 +46,7 @@ namespace Monument.World
                     //EditorGUILayout.LabelField("Configuration " + i + ":", EditorStyles.boldLabel);
 
                     //if (GUILayout.Button("Establish", GUILayout.Width(100)))
-                    if (GUILayout.Button("Configuration " + i.ToString()))
+                    if (GUILayout.Button("Apply Configuration " + i.ToString()))
                     {
                         // Button logic
                         Vector3 rotationVector = Vector3.zero;
@@ -62,7 +61,7 @@ namespace Monument.World
 
                     //SerializedProperty linkers = configurationsArray.GetArrayElementAtIndex(i)
 
-                    EditorGUILayout.PropertyField(configurationsArray.GetArrayElementAtIndex(i)); // Default drawing
+                    EditorGUILayout.PropertyField(configurationsArray.GetArrayElementAtIndex(i).FindPropertyRelative("Linkers"));
 
                     EditorGUILayout.EndVertical(); // - Vertical
 

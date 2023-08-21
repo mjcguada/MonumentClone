@@ -12,8 +12,6 @@ namespace Monument.World
 
         private NavNode[] childrenNodes;
 
-        public bool inputEnabled = true;
-
         protected override void Start()
         {
             base.Start();
@@ -38,33 +36,26 @@ namespace Monument.World
 
         public void ApplyConfiguration()
         {
-            //We always activate every child, then we apply the current configuration
-            foreach (var walkableChild in childrenNodes)
-            {
-                foreach (var neighbor in walkableChild.Neighbors)
-                {
-                    neighbor.isActive = true;
-                }
-            }
-
             // Establish desired configuration based on current rotation
             float currentAngleRotation = transform.rotation.eulerAngles[(int)SpinAxis];
             float snappedAngleRotation = Mathf.Round(currentAngleRotation / 90.0f) * 90.0f;
 
-            int currentConfiguration = (int)snappedAngleRotation / 90;
+            int currentConfiguration = (int)snappedAngleRotation / 90;            
 
             if (currentConfiguration >= configurations.Length || configurations[currentConfiguration] == null) return;
 
-            //Apply set of linkers given current rotation
-            for (int i = 0; i < configurations[currentConfiguration].Linkers.Length; i++)
+            // Apply linkers given the current rotation
+            Linker[] configurationLinkers = configurations[currentConfiguration].Linkers;
+
+            for (int i = 0; i < configurationLinkers.Length; i++)
             {
-                configurations[currentConfiguration].Linkers[i].ApplyConfiguration();
+                configurationLinkers[i].ApplyConfiguration(configurationLinkers[i].areLinked);
             }
         }
 
         public override void OnBeginDrag(PointerEventData inputData)
         {
-            if (!AllowsRotation || !inputEnabled) return;
+            if (!AllowsRotation) return;
 
             base.OnBeginDrag(inputData);
         }

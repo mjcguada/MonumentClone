@@ -23,8 +23,8 @@ namespace Monument.World
 
             base.Start();
 
-            // If the platform is linked to a handle, that's the only way to rotate it
-            platformToRotate.inputEnabled = false;
+            // If the platform is linked to a handle, we disable its collider to avoid input from 2 different scripts
+            platformToRotate.GetComponent<Collider>().enabled = false;
         }
 
         public override void OnDrag(PointerEventData inputData)

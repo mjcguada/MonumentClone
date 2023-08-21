@@ -13,8 +13,10 @@ namespace Monument.World
 
         public List<Neighbor> Neighbors => neighbors;
 
-        public Vector3 WalkPoint { get => globalWalkpoint?
-                transform.position + (Vector3.up * 0.5f * _offset):
+        public Vector3 WalkPoint
+        {
+            get => globalWalkpoint ?
+                transform.position + (Vector3.up * 0.5f * _offset) :
                 transform.position + (transform.up * 0.5f * _offset);
         }
 
@@ -103,9 +105,25 @@ namespace Monument.World
 
         public void AddNeighbor(NavNode neighbor)
         {
+            // TODO: add to RotativePlatform configuration if is a special case
             if (!neighbor.Equals(this) && !IsNeighbor(neighbor))
             {
                 neighbors.Add(new Neighbor(neighbor, true));
+            }
+        }
+
+        public void RemoveNeighbor(NavNode neighbor)
+        {
+            if (neighbor.Equals(this)) return;
+
+            // Look for the neighbor
+            for (int i = 0; i < neighbors.Count; i++)
+            {
+                if (neighbors[i].Node == neighbor)
+                {
+                    neighbors.RemoveAt(i);
+                    break;
+                }
             }
         }
 

@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Monument.World;
-using static UnityEngine.GraphicsBuffer;
 
 namespace Monument.Player
 {
@@ -21,6 +20,9 @@ namespace Monument.Player
         private Coroutine findPathCoroutine = null;
         List<NavNode> pathToFollow = new List<NavNode>();
 
+        // Reachable nodes (possible paths)
+        List<NavNode> reachableNodes = new List<NavNode>();
+
         // Translation time between nodes
         private const float timeToArrive = 0.25f;
 
@@ -29,6 +31,8 @@ namespace Monument.Player
             inputActions = new MonumentInput();
             inputActions.Player.Click.performed += ctx => OnClick();
             inputActions.Enable();
+
+            FindReachableNodes(FindNodeUnderPlayer());
         }
 
         private void OnDisable()
@@ -59,6 +63,14 @@ namespace Monument.Player
             }
         }
 
+        private NavNode FindNodeUnderPlayer()
+        {
+            // Raycast to find origin Node
+            Collider[] colliders = Physics.OverlapSphere(transform.position - transform.up * 0.5f, 0.2f);
+
+            return colliders[0].gameObject.GetComponent<NavNode>();
+        }
+
         private IEnumerator FindPathToTarget(NavNode target)
         {
             // Clear existing path
@@ -73,10 +85,7 @@ namespace Monument.Player
                 yield return null;
             }
 
-            // Raycast to find origin Node
-            Collider[] colliders = Physics.OverlapSphere(transform.position - transform.up * 0.5f, 0.2f);
-
-            NavNode originNode = colliders[0].gameObject.GetComponent<NavNode>();
+            NavNode originNode = FindNodeUnderPlayer();
 
             if (originNode == null)
             {
@@ -89,60 +98,15 @@ namespace Monument.Player
                 yield break;
             }
 
-            Queue<NavNode> queue = new Queue<NavNode>();
-            queue.Enqueue(originNode);
-
-            Dictionary<NavNode, NavNode> parentMap = new Dictionary<NavNode, NavNode>();
-            parentMap[originNode] = null;
-
-            bool pathFound = false;
-
-            // Inspect every neighbor and their children recursively
-            while (queue.Count > 0)
+            List<NavNode> path = NavNodePathFinder.FindPathFrom(originNode, target);
+            if (path != null)
             {
-                NavNode current = queue.Dequeue();
-
-                if (current == target)
-                {
-                    pathFound = true;
-                    break;
-                }
-
-                foreach (Neighbor neighbor in current.Neighbors)
-                {
-                    if (!neighbor.isActive) continue;
-
-                    if (!parentMap.ContainsKey(neighbor.Node))
-                    {
-                        queue.Enqueue(neighbor.Node);
-                        parentMap[neighbor.Node] = current;
-                    }
-                }
-            }
-
-            if (pathFound)
-            {
-                List<NavNode> path = BuildPathFromParentMap(parentMap, target);
                 FollowPath(path);
             }
             else
             {
                 Debug.Log("Path not found.");
             }
-        }
-
-        private List<NavNode> BuildPathFromParentMap(Dictionary<NavNode, NavNode> parentMap, NavNode target)
-        {
-            List<NavNode> path = new List<NavNode>();
-            NavNode current = target;
-
-            while (current != null)
-            {
-                path.Insert(0, current);
-                current = parentMap[current];
-            }
-
-            return path;
         }
 
         private void FollowPath(List<NavNode> path)
@@ -187,6 +151,9 @@ namespace Monument.Player
             Vector3 startingPos = transform.position;
             Vector3 targetPosition = pathToFollow[currentIndex].WalkPoint;
 
+            // Show in editor reachable nodes
+            FindReachableNodes(pathToFollow[currentIndex]);
+
             while (elapsedTime < timeToArrive)
             {
                 elapsedTime += Time.deltaTime;
@@ -205,10 +172,27 @@ namespace Monument.Player
             }
 
             // Before moving to the next Node, we have to check if it's still an active neighbor (something could have changed)
-            if (!pathToFollow[currentIndex].IsNeighborAndActive(pathToFollow[nextIndex])) yield break;
+            if (!pathToFollow[currentIndex].IsNeighbor(pathToFollow[nextIndex])) yield break;            
 
             // Move to next index of the path
             MoveTo(nextIndex);
+        }
+
+        private void FindReachableNodes(NavNode originNode)
+        {
+            // Clear previous list of nodes
+            for (int i = 0; i < reachableNodes.Count; i++)
+            {
+                reachableNodes[i].IsReachable = false;
+            }
+            reachableNodes.Clear();
+
+            // Find new nodes
+            reachableNodes = NavNodePathFinder.FindReachableNodesFrom(originNode);
+            for (int i = 0; i < reachableNodes.Count; i++)
+            {
+                reachableNodes[i].IsReachable = true;
+            }
         }
 
         private void LookAtNode(NavNode targetNode)

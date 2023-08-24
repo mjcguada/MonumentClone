@@ -19,6 +19,8 @@ namespace Monument.World
 
         public float PreviousAngle { set => previousAngle = value; }
 
+        int previousConfiguration = -1;
+
         protected override void Start()
         {
             base.Start();
@@ -47,9 +49,26 @@ namespace Monument.World
             float currentAngleRotation = transform.rotation.eulerAngles[(int)SpinAxis];
             float snappedAngleRotation = Mathf.Round(currentAngleRotation / 90.0f) * 90.0f;
 
-            int currentConfiguration = (int)snappedAngleRotation / 90;            
+            int currentConfiguration = (int)snappedAngleRotation / 90;
+
+            if (currentConfiguration == previousConfiguration) return;
 
             if (currentConfiguration >= configurations.Length || configurations[currentConfiguration] == null) return;
+
+            if (previousConfiguration >= 0)
+            {
+                // Undo previous configuration
+                Linker[] previousConfigurationLinkers = configurations[previousConfiguration].Linkers;
+
+                for (int i = 0; i < previousConfigurationLinkers.Length; i++)
+                {
+                    previousConfigurationLinkers[i].ApplyConfiguration(!previousConfigurationLinkers[i].areLinked);
+                }
+            }
+
+            // New configuration
+
+            previousConfiguration = currentConfiguration;
 
             // Apply linkers given the current rotation
             Linker[] configurationLinkers = configurations[currentConfiguration].Linkers;

@@ -4,7 +4,6 @@ using Monument.World;
 
 namespace Monument.EditorUtils
 {
-
     public class UtilsMenuItems
     {
         // Setup every adjacent neighbor automatically
@@ -61,6 +60,21 @@ namespace Monument.EditorUtils
             for (int i = 0; i < sceneWalkables.Length; i++)
             {
                 sceneWalkables[i].ClearNeighbors();
+                EditorUtility.SetDirty(sceneWalkables[i]);
+            }
+            Debug.Log("Neighbors cleaned successfully");
+        }
+
+        // Remove every neighbor in scene
+        [MenuItem("Walkables/Clear NULL neighbors on scene")]
+        public static void ClearNullNeighbors()
+        {
+            Debug.Log("Finding neighbors on scene...");
+            NavNode[] sceneWalkables = GameObject.FindObjectsOfType<NavNode>();
+
+            for (int i = 0; i < sceneWalkables.Length; i++)
+            {
+                sceneWalkables[i].ClearNullNeighbors();
                 EditorUtility.SetDirty(sceneWalkables[i]);
             }
             Debug.Log("Neighbors cleaned successfully");

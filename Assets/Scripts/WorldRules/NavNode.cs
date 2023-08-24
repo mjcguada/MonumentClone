@@ -9,9 +9,11 @@ namespace Monument.World
     {
         [SerializeField] private float _offset = 1f;
         [SerializeField] private bool globalWalkpoint = false;
-        [SerializeField] private List<Neighbor> neighbors = new List<Neighbor>();
+        [SerializeField] private List<NavNode> neighbors = new List<NavNode>();
 
-        public List<Neighbor> Neighbors => neighbors;
+        public bool IsReachable { get; set; } = false;
+
+        public List<NavNode> Neighbors => neighbors;
 
         public Vector3 WalkPoint
         {
@@ -48,17 +50,20 @@ namespace Monument.World
             Gizmos.DrawCube(WalkPoint + transform.right * 0.5f, Vector3.one * cubeJointsSize);
             Gizmos.DrawCube(WalkPoint - transform.right * 0.5f, Vector3.one * cubeJointsSize);
 
+            if (IsReachable)
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawSphere(WalkPoint, sphereSize * 0.5f);
+            }
+
             if (neighbors == null) return;
 
             for (int i = 0; i < neighbors.Count; i++)
             {
-                if (neighbors[i] == null || neighbors[i].Node == null) continue;
+                if (neighbors[i] == null) continue;
 
-                if (neighbors[i].isActive)
-                {
-                    Gizmos.color = Color.green;
-                    Gizmos.DrawLine(WalkPoint, neighbors[i].Node.WalkPoint);
-                }
+                Gizmos.color = Color.green;
+                Gizmos.DrawLine(WalkPoint, neighbors[i].WalkPoint);
             }
         }
 
@@ -96,7 +101,7 @@ namespace Monument.World
                     {
                         if (!IsNeighbor(target))
                         {
-                            neighbors.Add(new Neighbor(target, true));
+                            neighbors.Add(target);
                         }
                     }
                 }
@@ -108,7 +113,7 @@ namespace Monument.World
             // TODO: add to RotativePlatform configuration if is a special case
             if (!neighbor.Equals(this) && !IsNeighbor(neighbor))
             {
-                neighbors.Add(new Neighbor(neighbor, true));
+                neighbors.Add(neighbor);
             }
         }
 
@@ -119,7 +124,7 @@ namespace Monument.World
             // Look for the neighbor
             for (int i = 0; i < neighbors.Count; i++)
             {
-                if (neighbors[i].Node == neighbor)
+                if (neighbors[i] == neighbor)
                 {
                     neighbors.RemoveAt(i);
                     break;
@@ -132,40 +137,24 @@ namespace Monument.World
             neighbors.Clear();
         }
 
-        public void SetNeighborActive(NavNode neighbor, bool active)
-        {
-            if (!IsNeighbor(neighbor)) return;
-
-            for (int i = 0; i < neighbors.Count; i++)
+        public void ClearNullNeighbors()
+        {            
+            for (int i = neighbors.Count -1 ; i >= 0; i--) 
             {
-                if (neighbors[i].Node == neighbor)
+                if (neighbors[i] == null) 
                 {
-                    neighbors[i].isActive = active;
-                    break;
+                    neighbors.RemoveAt(i);
                 }
             }
-
         }
 
-        private bool IsNeighbor(NavNode walkable)
+        public bool IsNeighbor(NavNode walkable)
         {
             for (int i = 0; i < neighbors.Count; i++)
             {
-                if (neighbors[i].Node == walkable) return true;
+                if (neighbors[i] == walkable) return true;
             }
 
-            return false;
-        }
-
-        public bool IsNeighborAndActive(NavNode walkable)
-        {
-            for (int i = 0; i < neighbors.Count; i++)
-            {
-                if (neighbors[i].Node == walkable)
-                {
-                    return neighbors[i].isActive;
-                }
-            }
             return false;
         }
 
@@ -196,18 +185,4 @@ namespace Monument.World
             return false;
         }
     }
-
-    [System.Serializable]
-    public class Neighbor
-    {
-        public NavNode Node;
-        public bool isActive = true;
-
-        public Neighbor(NavNode walkable, bool isActive)
-        {
-            Node = walkable;
-            this.isActive = isActive;
-        }
-    }
-
 }

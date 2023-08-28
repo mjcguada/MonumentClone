@@ -113,7 +113,7 @@ namespace Monument.World
                 }
                 else // Print number of configurations
                 {
-                    EditorGUILayout.LabelField("Number of linkers: " + linkersArray.arraySize.ToString());
+                    EditorGUILayout.LabelField($"Number of linkers: {linkersArray.arraySize}");
                 }
 
                 EditorGUILayout.EndVertical(); // - Vertical

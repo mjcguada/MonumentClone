@@ -9,7 +9,7 @@ public class NavNodeConfiguratorEditor : EditorWindow
 {
     private List<NavNode> selectedNodes = new List<NavNode>();
     private Vector2 scrollPosition;
-    private Color[] rowColors = new Color[] { Color.white, Color.red }; // Alternating colors
+    private Color[] rowColors = new Color[] { Color.white, Color.black }; // Alternating colors
 
     [MenuItem("Window/Nodes Configurator")]
     public static void ShowWindow()
@@ -70,21 +70,8 @@ public class NavNodeConfiguratorEditor : EditorWindow
 
         if (selectedNodes.Count == 0)
         {
-            // Custom text area style with white background
-            GUIStyle textAreaStyle = new GUIStyle(EditorStyles.textArea);
-            textAreaStyle.normal.background = Texture2D.whiteTexture;
-
-            NavNode[] nodesInScene = FindObjectsOfType<NavNode>();
-
-            // Window Content
-            EditorGUILayout.BeginVertical(EditorStyles.helpBox); // - Vertical
-            GUILayout.TextArea("Select GameObjects in the Hierarchy that have a NavNode component attached to visualize them here", textAreaStyle);
-            GUILayout.TextArea($"There are {nodesInScene.Length} NavNodes on scene", textAreaStyle);
-            EditorGUILayout.EndVertical();
-            
-            GUILayout.Space(5f);
-
-            ShowGeneralButtons();
+            DisplayNoSelectedNodesMessage();
+            DisplayGeneralButtons();
             return;
         }
 
@@ -107,6 +94,9 @@ public class NavNodeConfiguratorEditor : EditorWindow
             // Flexible label for the GameObject's name
             GUIStyle selectedNodeStyle = new GUIStyle(EditorStyles.whiteLabel) { fontStyle = FontStyle.Bold };
             GUILayout.Label(selectedNode.name, selectedNodeStyle, GUILayout.ExpandWidth(true));
+
+            // Reset color for buttons
+            GUI.backgroundColor = Color.white;
 
             // Fixed-size button
             if (GUILayout.Button("Rename", GUILayout.Width(80)))
@@ -144,11 +134,28 @@ public class NavNodeConfiguratorEditor : EditorWindow
         }
         EditorGUILayout.EndScrollView();
 
-        ShowGeneralButtons();
+        DisplayGeneralButtons();
+    }
+
+    private void DisplayNoSelectedNodesMessage() 
+    {
+        // Custom text area style with white background
+        GUIStyle textAreaStyle = new GUIStyle(EditorStyles.textArea);
+        textAreaStyle.normal.background = Texture2D.whiteTexture;
+
+        NavNode[] nodesInScene = FindObjectsOfType<NavNode>();
+
+        // Window Content
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox); // - Vertical
+        GUILayout.TextArea("Select GameObjects in the Hierarchy that have a NavNode component attached to visualize them here", textAreaStyle);
+        GUILayout.TextArea($"There are {nodesInScene.Length} NavNodes on scene", textAreaStyle);
+        EditorGUILayout.EndVertical();
+
+        GUILayout.Space(5f);
     }
 
     // Display primary buttons with functions that impact every node in the scene
-    private void ShowGeneralButtons()
+    private void DisplayGeneralButtons()
     {
         // Panel color
         GUI.backgroundColor = new Color(0.4f, 0.9f, 0.6f);

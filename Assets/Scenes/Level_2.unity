@@ -2446,8 +2446,7 @@ MonoBehaviour:
   _offset: 1
   globalWalkpoint: 1
   neighbors:
-  - {fileID: 563446825}
-  - {fileID: 1336673322}
+  - {fileID: 1244009116}
 --- !u!65 &158382930
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3443,76 +3442,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 316740445}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &325427866
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 325427869}
-  - component: {fileID: 325427868}
-  - component: {fileID: 325427867}
-  m_Layer: 0
-  m_Name: TEST
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &325427867
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 325427866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9b4603480b9d0140a11e955b507c7c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SpinAxis: 0
-  configurations:
-  - Linkers:
-    - NodeA: {fileID: 0}
-      NodeB: {fileID: 0}
-      areLinked: 0
-    - NodeA: {fileID: 0}
-      NodeB: {fileID: 0}
-      areLinked: 0
-  - Linkers: []
-  - Linkers: []
-  - Linkers: []
-  RotatorHandle: {fileID: 0}
---- !u!114 &325427868
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 325427866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6574476f9c545c144b00abcec690ce9c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &325427869
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 325427866}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1, y: -3, z: -3}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 33
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &342953302
 GameObject:
   m_ObjectHideFlags: 0
@@ -6139,7 +6068,7 @@ MonoBehaviour:
   globalWalkpoint: 0
   neighbors:
   - {fileID: 1829151418}
-  - {fileID: 158382929}
+  - {fileID: 1543468683}
 --- !u!65 &563446826
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6214,7 +6143,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 575294843}
-  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1, y: -3, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -12805,8 +12734,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _offset: 1
   globalWalkpoint: 1
-  neighbors:
-  - {fileID: 1336673322}
+  neighbors: []
 --- !u!65 &1223333210
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12879,7 +12807,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _offset: 1
   globalWalkpoint: 0
-  neighbors: []
+  neighbors:
+  - {fileID: 1543468683}
+  - {fileID: 158382929}
 --- !u!65 &1244009117
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13436,9 +13366,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _offset: 1
   globalWalkpoint: 1
-  neighbors:
-  - {fileID: 158382929}
-  - {fileID: 1223333209}
+  neighbors: []
 --- !u!65 &1336673323
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -16545,7 +16473,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _offset: 1
   globalWalkpoint: 1
-  neighbors: []
+  neighbors:
+  - {fileID: 563446825}
+  - {fileID: 1244009116}
 --- !u!65 &1543468684
 BoxCollider:
   m_ObjectHideFlags: 0

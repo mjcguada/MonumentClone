@@ -16,6 +16,11 @@ namespace Monument.World
     {
         [SerializeField] private RotativePlatform platformToRotate;
 
+        // Scale animation parameters
+        private Vector3 originalScale = default;
+        private const float scaleAnimationTime = 0.3f;
+        private Coroutine scaleCoroutine = null;
+
         protected override void Start()
         {
 #if UNITY_EDITOR
@@ -28,29 +33,60 @@ namespace Monument.World
 #endif
 
             base.Start();
+            originalScale = transform.localScale;
         }
 
+        // TODO: disable RotativePlatform connections when player is dragging the handle
         public override void OnBeginDrag(PointerEventData inputData)
         {
+            if (!AllowsRotation) return;
+
             base.OnBeginDrag(inputData);
             platformToRotate.PreviousAngle = this.previousAngle; // Important to start rotation with the same value
         }
 
         public override void OnDrag(PointerEventData inputData)
         {
+            if (!AllowsRotation) return;
+
             base.OnDrag(inputData);
 
             Vector2 delta = inputData.position - pivotPosition;
             float rotationAngle = Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg;
-            
+
             // We use Rotate function to maintain handle and platform spin axes independent
             platformToRotate.Rotate(rotationAngle);
         }
 
         public override void OnEndDrag(PointerEventData inputData)
         {
+            if (!AllowsRotation) return;
+
             base.OnEndDrag(inputData);
             platformToRotate.OnEndDrag(inputData);
+        }
+
+        public void EnableRotation(bool enabled)
+        {
+            AllowsRotation = enabled;
+
+            if (scaleCoroutine != null) StopCoroutine(scaleCoroutine);
+            
+            // Lerp Scale Coroutine (targetScale depends on enabled value)
+            StartCoroutine(LerpScaleCoroutine(enabled ? originalScale : originalScale * 0.5f, scaleAnimationTime));
+        }
+
+        private IEnumerator LerpScaleCoroutine(Vector3 targetScale, float timeToComplete)
+        {
+            Vector3 startingScale = transform.localScale;
+            float elapsedTime = 0;
+
+            while (elapsedTime < timeToComplete)
+            {
+                elapsedTime += Time.deltaTime;
+                transform.localScale = Vector3.Lerp(startingScale, targetScale, elapsedTime / timeToComplete);
+                yield return null;
+            }
         }
     }
 }

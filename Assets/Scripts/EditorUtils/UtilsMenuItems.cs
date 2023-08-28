@@ -69,15 +69,16 @@ namespace Monument.EditorUtils
         [MenuItem("Walkables/Clear NULL neighbors on scene")]
         public static void ClearNullNeighbors()
         {
+            int neighborsCleared = 0;
             Debug.Log("Finding neighbors on scene...");
             NavNode[] sceneWalkables = GameObject.FindObjectsOfType<NavNode>();
 
             for (int i = 0; i < sceneWalkables.Length; i++)
             {
-                sceneWalkables[i].ClearNullNeighbors();
+                neighborsCleared += sceneWalkables[i].ClearNullNeighbors();
                 EditorUtility.SetDirty(sceneWalkables[i]);
             }
-            Debug.Log("Neighbors cleaned successfully");
+            Debug.Log($"Neighbors cleaned successfully. Total null elements found: {neighborsCleared}");
         }
     }
 }

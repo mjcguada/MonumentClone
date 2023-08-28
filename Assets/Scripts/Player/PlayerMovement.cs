@@ -13,7 +13,7 @@ namespace Monument.Player
         private MonumentInput inputActions;
 
         // The last rotative platform used by the player
-        private Rotable lastRotativePlatform;
+        private RotativePlatform lastRotativePlatform;
 
         // Pathfinding variables
         private bool isMoving = false;
@@ -125,13 +125,34 @@ namespace Monument.Player
             {
                 isMoving = true;
 
-                if (lastRotativePlatform != null) lastRotativePlatform.AllowsRotation = true;
+                // Enable again rotative platform that we leave
+                if (lastRotativePlatform != null)
+                {
+                    // Handle rotation
+                    if (lastRotativePlatform.RotatorHandle != null) lastRotativePlatform.RotatorHandle.EnableRotation(true);
+                    
+                    // Platform rotation
+                    lastRotativePlatform.AllowsRotation = true;
+                    
+                    transform.SetParent(null);
+                }
 
+                // Assign current rotative platform and disable rotation
                 if (pathToFollow[currentIndex].RotativePlatform != null)
                 {
                     lastRotativePlatform = pathToFollow[currentIndex].RotativePlatform;
+                    
+                    // Disable Handle rotation
+                    if (lastRotativePlatform.RotatorHandle != null) lastRotativePlatform.RotatorHandle.EnableRotation(false);
+                    
+                    // Disable Platform rotation (while the player is moving)
                     lastRotativePlatform.AllowsRotation = false;
+
+                    // Make player child of rotative platform to rotate with it
+                    transform.SetParent(lastRotativePlatform.transform, true);
                 }
+
+                // Make the player child of the platform to be affected by its rotation
 
                 // Look at next node
                 LookAtNode(pathToFollow[currentIndex]);
@@ -139,10 +160,10 @@ namespace Monument.Player
                 // Move to next node
                 StartCoroutine(MoveToPosition(currentIndex));
             }
-            else
-            {
-                isMoving = false;
-            }
+            //else
+            //{
+            //    OnPlayerStopped();
+            //}
         }
 
         IEnumerator MoveToPosition(int currentIndex)
@@ -166,16 +187,32 @@ namespace Monument.Player
             // if the players have changed the currentPath or if they have reached the end of it
             if (nextIndex >= pathToFollow.Count)
             {
-                isMoving = false;
-                animator.Walking(false);
+                OnPlayerStopped();
                 yield break;
             }
 
             // Before moving to the next Node, we have to check if it's still an active neighbor (something could have changed)
-            if (!pathToFollow[currentIndex].IsNeighbor(pathToFollow[nextIndex])) yield break;            
+            if (!pathToFollow[currentIndex].IsNeighbor(pathToFollow[nextIndex]))
+            {
+                OnPlayerStopped();
+                yield break;
+            }
 
             // Move to next index of the path
             MoveTo(nextIndex);
+        }
+
+        private void OnPlayerStopped()
+        {
+            isMoving = false;
+            animator.Walking(false);
+
+            // Enable rotative platform
+            if (lastRotativePlatform != null)
+            {
+                // Platform rotation
+                lastRotativePlatform.AllowsRotation = true;
+            }
         }
 
         private void FindReachableNodes(NavNode originNode)

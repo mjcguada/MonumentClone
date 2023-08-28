@@ -13,6 +13,10 @@ namespace Monument.World
     {
         private RotativePlatform platform;
 
+        // Highlight selected configuration
+        private int selectedConfiguration = -1;
+        private Color selectedColor = new Color(0.4f, 0.9f, 0.6f);
+
         private void OnEnable()
         {
             platform = target as RotativePlatform;
@@ -20,59 +24,105 @@ namespace Monument.World
 
         public override void OnInspectorGUI()
         {
-            //base.OnInspectorGUI();
-            //Color originalBackgroundColor = GUI.backgroundColor;
-            //EditorGUILayout.LabelField("Custom Editor", EditorStyles.boldLabel);
+            GUILayout.Space(10);
+
+            platform.SpinAxis = (RotateAxis)EditorGUILayout.EnumPopup("Spin Axis", platform.SpinAxis);
 
             GUILayout.Space(10);
 
-            platform.SpinAxis = (RotateAxis) EditorGUILayout.EnumPopup("Spin Axis", platform.SpinAxis);
+            EditorGUILayout.LabelField("Optional", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("RotatorHandle"));
 
             GUILayout.Space(10);
 
+            // Configuration buttons
             SerializedProperty configurationsArray = serializedObject.FindProperty("configurations");
 
-            if (configurationsArray != null && configurationsArray.isArray)
+            // if is empty we create a 4 element array (4 possible rotation positions 360/90 = 4)
+            if (configurationsArray.arraySize == 0) configurationsArray.arraySize = 4;
+
+            for (int i = 0; i < configurationsArray.arraySize; i++)
             {
-                // if is empty we create a 4 element array
-                if (configurationsArray.arraySize == 0) configurationsArray.arraySize = 4;
+                EditorGUILayout.BeginVertical(EditorStyles.helpBox); // - Vertical
 
-                for (int i = 0; i < configurationsArray.arraySize; i++)
+                EditorGUILayout.BeginHorizontal(); // - Button Space
+
+                // Element color (white default, green for selected one)
+                GUI.backgroundColor = selectedConfiguration == i ? selectedColor : Color.white;
+
+                // Create button
+                if (GUILayout.Button("Show Configuration " + i.ToString()))
                 {
-                    EditorGUILayout.BeginVertical(EditorStyles.helpBox); // - Vertical
+                    // Focus on platform gameObject
+                    Bounds bounds = new Bounds(platform.transform.position, platform.transform.localScale * 3f);
+                    SceneView.lastActiveSceneView.Frame(bounds, false);
 
-                    EditorGUILayout.BeginHorizontal(); //                    
+                    // Rotate the platform to the current configuration index
+                    Vector3 rotationVector = Vector3.zero;
+                    rotationVector[(int)platform.SpinAxis] = i * 90;
+                    platform.transform.rotation = Quaternion.Euler(rotationVector);
 
-                    //EditorGUILayout.LabelField("Configuration " + i + ":", EditorStyles.boldLabel);
+                    // Apply linkers of the configuration
+                    platform.ApplyConfiguration();
 
-                    //if (GUILayout.Button("Establish", GUILayout.Width(100)))
-                    if (GUILayout.Button("Apply Configuration " + i.ToString()))
+                    // Set selected configuration
+                    selectedConfiguration = i;
+                }
+                EditorGUILayout.EndHorizontal(); // - Button Space
+
+                // Get linkers array
+                SerializedProperty linkersArray = configurationsArray.GetArrayElementAtIndex(i).FindPropertyRelative("Linkers");
+
+                // We only show the linkers content of the selected configuration
+                if (selectedConfiguration == i)
+                {
+                    // Show every linker from the selected configuration
+                    for (int j = 0; j < linkersArray.arraySize; j++)
                     {
-                        // Button logic
-                        Vector3 rotationVector = Vector3.zero;
-                        rotationVector[(int)platform.SpinAxis] = i * 90;
+                        GUILayout.Space(2); // Spacing between linkers
 
-                        platform.transform.rotation = Quaternion.Euler(rotationVector);
+                        SerializedProperty linkerProperty = linkersArray.GetArrayElementAtIndex(j);
 
-                        platform.ApplyConfiguration();
+                        EditorGUILayout.BeginVertical(EditorStyles.helpBox); // - Vertical
 
+                        EditorGUILayout.ObjectField(linkerProperty.FindPropertyRelative("NodeA"));
+                        EditorGUILayout.ObjectField(linkerProperty.FindPropertyRelative("NodeB"));
+
+                        EditorGUILayout.BeginHorizontal();  //--------------------------------
+                        EditorGUILayout.PropertyField(linkerProperty.FindPropertyRelative("areLinked"));
+
+                        GUI.backgroundColor = Color.red;
+
+                        if (GUILayout.Button("Remove Linker", GUILayout.Width(120)))
+                        {
+                            linkersArray.DeleteArrayElementAtIndex(j);
+                            break; // Exit the loop to prevent issues with indexing
+                        }
+
+                        EditorGUILayout.EndHorizontal();    //--------------------------------
+
+                        GUI.backgroundColor = selectedColor;
+                        EditorGUILayout.EndVertical(); // - Vertical
                     }
-                    EditorGUILayout.EndHorizontal(); //
 
-                    //SerializedProperty linkers = configurationsArray.GetArrayElementAtIndex(i)
-
-                    EditorGUILayout.PropertyField(configurationsArray.GetArrayElementAtIndex(i).FindPropertyRelative("Linkers"));
-
-                    EditorGUILayout.EndVertical(); // - Vertical
-
-                    GUILayout.Space(10);
+                    // Show Add Linker button
+                    if (GUILayout.Button("Add Linker"))
+                    {
+                        linkersArray.arraySize++;
+                    }
+                }
+                else // Print number of configurations
+                {
+                    EditorGUILayout.LabelField("Number of linkers: " + linkersArray.arraySize.ToString());
                 }
 
+                EditorGUILayout.EndVertical(); // - Vertical
+
+                GUILayout.Space(10); // Space between configurations
             }
 
             serializedObject.ApplyModifiedProperties();
         }
-
     }
 }
 

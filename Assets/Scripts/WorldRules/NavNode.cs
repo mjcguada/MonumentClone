@@ -14,6 +14,8 @@ namespace Monument.World
         public bool IsReachable { get; set; } = false;
 
         public List<NavNode> Neighbors => neighbors;
+        
+        public RotativePlatform RotativePlatform { get; set; } = null;
 
         public Vector3 WalkPoint
         {
@@ -22,9 +24,7 @@ namespace Monument.World
                 transform.position + (transform.up * 0.5f * _offset);
         }
 
-        public Rotable RotativePlatform { get; set; } = null;
-
-        //
+        // Private attributes
         private Vector2[] perspectiveJoints;
 
         // Gizmos parameters
@@ -137,15 +137,18 @@ namespace Monument.World
             neighbors.Clear();
         }
 
-        public void ClearNullNeighbors()
-        {            
+        public int ClearNullNeighbors()
+        {
+            int nullNeighbors = 0;
             for (int i = neighbors.Count -1 ; i >= 0; i--) 
             {
                 if (neighbors[i] == null) 
                 {
                     neighbors.RemoveAt(i);
+                    nullNeighbors++;
                 }
             }
+            return nullNeighbors;
         }
 
         public bool IsNeighbor(NavNode walkable)

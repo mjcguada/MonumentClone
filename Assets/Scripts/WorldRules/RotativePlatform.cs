@@ -15,11 +15,13 @@ namespace Monument.World
         [SerializeField]
         private PlatformConfiguration[] configurations = new PlatformConfiguration[4];
 
-        private NavNode[] childrenNodes = null;
+        [SerializeField]
+        public RotatorHandle RotatorHandle;
 
         public float PreviousAngle { set => previousAngle = value; }
 
-        int previousConfiguration = -1;
+        private int previousConfiguration = -1;
+        private NavNode[] childrenNodes = null;
 
         protected override void Start()
         {
@@ -53,7 +55,12 @@ namespace Monument.World
 
             if (currentConfiguration == previousConfiguration) return;
 
-            if (currentConfiguration >= configurations.Length || configurations[currentConfiguration] == null) return;
+            if (configurations[currentConfiguration] == null)
+            {
+                // New configuration
+                previousConfiguration = currentConfiguration;
+                return;
+            }
 
             if (previousConfiguration >= 0)
             {
@@ -67,11 +74,11 @@ namespace Monument.World
             }
 
             // New configuration
-
             previousConfiguration = currentConfiguration;
 
             // Apply linkers given the current rotation
             Linker[] configurationLinkers = configurations[currentConfiguration].Linkers;
+            if (configurationLinkers == null) return;
 
             for (int i = 0; i < configurationLinkers.Length; i++)
             {

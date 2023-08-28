@@ -98,6 +98,9 @@ public class NavNodeConfiguratorEditor : EditorWindow
             // Reset color for buttons
             GUI.backgroundColor = Color.white;
 
+            // TODO: show adjacent nodes that are not neighbors to add them (create a button for every adjacent node)
+
+
             // Fixed-size button
             if (GUILayout.Button("Rename", GUILayout.Width(80)))
             {
@@ -112,43 +115,61 @@ public class NavNodeConfiguratorEditor : EditorWindow
                 Debug.Log("Setup neighbors button clicked for Node: " + selectedNode.name);
             }
 
-            // Fixed-size button
-            if (GUILayout.Button("Clear", GUILayout.Width(60)))
+            // Button with size adjusted to fit the text
+            if (GUILayout.Button("Clear", GUILayout.Width(EditorStyles.miniButton.CalcSize(new GUIContent("Clear")).x)))
             {
-                // TODO: SetDirty()
-                Debug.Log("Clear neighbors button clicked for Node: " + selectedNode.name);
+                Undo.RecordObject(selectedNode, "Clear Neighbors"); // Record the object for undo
+                selectedNode.ClearNeighbors();
+                EditorUtility.SetDirty(selectedNode);
+                Debug.Log("Cleared neighbors for Node: " + selectedNode.name);
             }
 
             EditorGUILayout.EndHorizontal();
 
             // Neighbors info
-            EditorGUILayout.BeginHorizontal();
+            if (selectedNode.Neighbors.Count > 0)
+            {
+                selectedNode.ShowNeighborsFoldout = EditorGUILayout.Foldout(selectedNode.ShowNeighborsFoldout, $"{selectedNode.Neighbors.Count} Neighbors:");
 
-            // Special GUIStyle with smaller font size
-            GUIStyle neighborsInfoSizeStyle = new GUIStyle(EditorStyles.whiteLabel) { fontSize = 10 };
-
-            GUILayout.Label("Number of neighbors: " + selectedNode.Neighbors.Count.ToString(), neighborsInfoSizeStyle, GUILayout.ExpandWidth(true));
-            EditorGUILayout.EndHorizontal();
-
+                if (selectedNode.ShowNeighborsFoldout)
+                {
+                    for (int j = 0; j < selectedNode.Neighbors.Count; j++)
+                    {
+                        EditorGUILayout.BeginHorizontal();
+                        selectedNode.Neighbors[j] = (NavNode)EditorGUILayout.ObjectField(selectedNode.Neighbors[j], typeof(NavNode), allowSceneObjects: true, GUILayout.ExpandWidth(true));
+                        EditorGUILayout.EndHorizontal();
+                    }
+                }
+            }
+            else
+            {
+                EditorGUILayout.LabelField($"{selectedNode.Neighbors.Count} Neighbors:");
+            }
             EditorGUILayout.EndVertical();
         }
         EditorGUILayout.EndScrollView();
 
         DisplayGeneralButtons();
+        ConfigEditorTool();
     }
 
-    private void DisplayNoSelectedNodesMessage() 
+    private void DisplayNoSelectedNodesMessage()
     {
         // Custom text area style with white background
         GUIStyle textAreaStyle = new GUIStyle(EditorStyles.textArea);
         textAreaStyle.normal.background = Texture2D.whiteTexture;
 
-        NavNode[] nodesInScene = FindObjectsOfType<NavNode>();
-
         // Window Content
         EditorGUILayout.BeginVertical(EditorStyles.helpBox); // - Vertical
         GUILayout.TextArea("Select GameObjects in the Hierarchy that have a NavNode component attached to visualize them here", textAreaStyle);
-        GUILayout.TextArea($"There are {nodesInScene.Length} NavNodes on scene", textAreaStyle);
+        GUILayout.TextArea($"There are {FindObjectsOfType<NavNode>().Length} NavNodes on scene", textAreaStyle);
+
+        if (GUILayout.Button("Select every node in the scene"))
+        {
+            GameObject[] nodes = FindObjectsOfType<NavNode>().Select(navNode => navNode.gameObject).ToArray();
+            Selection.objects = nodes;
+        }
+
         EditorGUILayout.EndVertical();
 
         GUILayout.Space(5f);
@@ -173,18 +194,47 @@ public class NavNodeConfiguratorEditor : EditorWindow
         GUILayout.Label("The following actions affect every NavNode on scene");
 
         // Primary buttons
-        if (GUILayout.Button("Setup every node in the scene"))
+        if (GUILayout.Button("Setup every neighbor in the scene"))
         {
 
         }
-        if (GUILayout.Button("Clear Neighbors for all nodes in scene"))
+        if (GUILayout.Button("Rename every node in the scene"))
         {
 
         }
-        if (GUILayout.Button("Setup every node on scene"))
+        if (GUILayout.Button("Clear neighbors for all nodes in the scene"))
         {
 
         }
+        EditorGUILayout.EndVertical();
+    }
+
+    private void ConfigEditorTool() 
+    {
+        GUILayout.Space(5f);
+
+        // Panel color
+        GUI.backgroundColor = Color.white;
+
+        // Custom text area style with white background
+        GUIStyle textAreaStyle = new GUIStyle(EditorStyles.textArea);
+        textAreaStyle.normal.background = Texture2D.whiteTexture;
+
+        // Title
+        GUILayout.Label("Tool appearance", new GUIStyle(EditorStyles.boldLabel) { fontSize = 14 });
+
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox); // - Vertical        
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Primary color");
+        rowColors[0] = EditorGUILayout.ColorField(rowColors[0]);
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Secondary color");
+        rowColors[1] = EditorGUILayout.ColorField(rowColors[1]);
+        EditorGUILayout.EndHorizontal();
+
         EditorGUILayout.EndVertical();
     }
 }

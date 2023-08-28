@@ -7,7 +7,7 @@ namespace Monument.EditorUtils
     public class UtilsMenuItems
     {
         // Setup every adjacent neighbor automatically
-        [MenuItem("Walkables/Find Adjacent neighbors on scene")]
+        //[MenuItem("Walkables/Find Adjacent neighbors on scene")]
         public static void FindNeighbors()
         {
             Debug.Log("Finding neighbors in scene...");
@@ -22,7 +22,7 @@ namespace Monument.EditorUtils
         }
 
         // Setup every adjacent neighbor automatically
-        [MenuItem("Walkables/Find neighbors with perspective")]
+        //[MenuItem("Walkables/Find neighbors with perspective")]
         public static void FindNeighborsWithPerspective()
         {
             Debug.Log("Finding neighbors in scene...");
@@ -51,7 +51,7 @@ namespace Monument.EditorUtils
         }
 
         // Remove every neighbor in scene
-        [MenuItem("Walkables/Clear neighbors on scene")]
+        //[MenuItem("Walkables/Clear neighbors on scene")]
         public static void ClearNeighbors()
         {
             Debug.Log("Finding neighbors on scene...");
@@ -66,7 +66,7 @@ namespace Monument.EditorUtils
         }
 
         // Remove every neighbor in scene
-        [MenuItem("Walkables/Clear NULL neighbors on scene")]
+        //[MenuItem("Walkables/Clear NULL neighbors on scene")]
         public static void ClearNullNeighbors()
         {
             int neighborsCleared = 0;

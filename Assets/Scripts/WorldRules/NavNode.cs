@@ -11,6 +11,10 @@ namespace Monument.World
         [SerializeField] private bool globalWalkpoint = false;
         [SerializeField] private List<NavNode> neighbors = new List<NavNode>();
 
+#if UNITY_EDITOR
+        public bool ShowNeighborsFoldout { get; set; } = false;
+#endif
+
         public bool IsReachable { get; set; } = false;
 
         public List<NavNode> Neighbors => neighbors;

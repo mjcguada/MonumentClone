@@ -11,6 +11,8 @@ namespace Monument.World
         [SerializeField] private bool globalWalkpoint = false;
         [SerializeField] private List<NavNode> neighbors = new List<NavNode>();
 
+        private Vector3[] directions = new Vector3[4] { Vector3.forward, Vector3.back, Vector3.left, Vector3.right };
+
 #if UNITY_EDITOR
         public bool ShowNeighborsFoldout { get; set; } = false;
 #endif
@@ -18,7 +20,7 @@ namespace Monument.World
         public bool IsReachable { get; set; } = false;
 
         public List<NavNode> Neighbors => neighbors;
-        
+
         public RotativePlatform RotativePlatform { get; set; } = null;
 
         public Vector3 WalkPoint
@@ -42,18 +44,19 @@ namespace Monument.World
             Gizmos.DrawSphere(WalkPoint, sphereSize);
 
             // Draw 4 line directions
-            Gizmos.DrawLine(WalkPoint, WalkPoint + transform.forward * 0.5f);
-            Gizmos.DrawLine(WalkPoint, WalkPoint - transform.forward * 0.5f);
-            Gizmos.DrawLine(WalkPoint, WalkPoint + transform.right * 0.5f);
-            Gizmos.DrawLine(WalkPoint, WalkPoint - transform.right * 0.5f);
+            for (int i = 0; i < directions.Length; i++)
+            {
+                Gizmos.DrawLine(WalkPoint, WalkPoint + directions[i] * 0.5f);
+            }
 
-            // Draw 4 cube joints
             Gizmos.color = Color.blue;
-            Gizmos.DrawCube(WalkPoint + transform.forward * 0.5f, Vector3.one * cubeJointsSize);
-            Gizmos.DrawCube(WalkPoint - transform.forward * 0.5f, Vector3.one * cubeJointsSize);
-            Gizmos.DrawCube(WalkPoint + transform.right * 0.5f, Vector3.one * cubeJointsSize);
-            Gizmos.DrawCube(WalkPoint - transform.right * 0.5f, Vector3.one * cubeJointsSize);
+            // Draw 4 cube joints
+            for (int i = 0; i < directions.Length; i++)
+            {
+                Gizmos.DrawCube(WalkPoint + directions[i] * 0.5f, Vector3.one * cubeJointsSize);
+            }
 
+            // Reachable from player's position
             if (IsReachable)
             {
                 Gizmos.color = Color.green;
@@ -62,11 +65,12 @@ namespace Monument.World
 
             if (neighbors == null) return;
 
+            // Draws join lines between nodes
+            Gizmos.color = Color.green;
             for (int i = 0; i < neighbors.Count; i++)
             {
                 if (neighbors[i] == null) continue;
 
-                Gizmos.color = Color.green;
                 Gizmos.DrawLine(WalkPoint, neighbors[i].WalkPoint);
             }
         }
@@ -76,24 +80,19 @@ namespace Monument.World
             if (perspectiveJoints == null || perspectiveJoints.Length == 0)
             {
                 perspectiveJoints = new Vector2[4];
-                perspectiveJoints[0] = Camera.main.WorldToScreenPoint(WalkPoint + transform.forward * 0.5f);
-                perspectiveJoints[1] = Camera.main.WorldToScreenPoint(WalkPoint - transform.forward * 0.5f);
-                perspectiveJoints[2] = Camera.main.WorldToScreenPoint(WalkPoint + transform.right * 0.5f);
-                perspectiveJoints[3] = Camera.main.WorldToScreenPoint(WalkPoint - transform.right * 0.5f);
+                for (int i = 0; i < directions.Length; i++)
+                {
+                    perspectiveJoints[i] = Camera.main.WorldToScreenPoint(WalkPoint + directions[i] * 0.5f);
+                }
             }
         }
 
-        public void AddAdjacentNeighbors()
+        public List<NavNode> GetAdjacentNodes()
         {
+            List<NavNode> adjacentNodes = new List<NavNode>();
             RaycastHit hit;
-            // Check 4 directions
-            Vector3[] directions = new Vector3[] {
-                transform.TransformDirection(Vector3.forward),
-                transform.TransformDirection(Vector3.back),
-                transform.TransformDirection(Vector3.left),
-                transform.TransformDirection(Vector3.right),
-            };
 
+            // Check 4 directions
             for (int i = 0; i < directions.Length; i++)
             {
                 if (Physics.Raycast(transform.position, directions[i], out hit))
@@ -101,23 +100,22 @@ namespace Monument.World
                     if (hit.distance > 1) continue;
 
                     NavNode target = hit.transform.gameObject.GetComponent<NavNode>();
-                    if (target != null)
+
+                    if (target != null && target != this)
                     {
-                        if (!IsNeighbor(target))
-                        {
-                            neighbors.Add(target);
-                        }
+                        adjacentNodes.Add(target);
                     }
                 }
-            } // for            
+            } // for
+            return adjacentNodes;
         }
 
-        public void AddNeighbor(NavNode neighbor)
+        public void AddNeighbor(NavNode node)
         {
             // TODO: add to RotativePlatform configuration if is a special case
-            if (!neighbor.Equals(this) && !IsNeighbor(neighbor))
+            if (node != this && !neighbors.Contains(node))
             {
-                neighbors.Add(neighbor);
+                neighbors.Add(node);
             }
         }
 
@@ -144,25 +142,15 @@ namespace Monument.World
         public int ClearNullNeighbors()
         {
             int nullNeighbors = 0;
-            for (int i = neighbors.Count -1 ; i >= 0; i--) 
+            for (int i = neighbors.Count - 1; i >= 0; i--)
             {
-                if (neighbors[i] == null) 
+                if (neighbors[i] == null)
                 {
                     neighbors.RemoveAt(i);
                     nullNeighbors++;
                 }
             }
             return nullNeighbors;
-        }
-
-        public bool IsNeighbor(NavNode walkable)
-        {
-            for (int i = 0; i < neighbors.Count; i++)
-            {
-                if (neighbors[i] == walkable) return true;
-            }
-
-            return false;
         }
 
         /// <summary>

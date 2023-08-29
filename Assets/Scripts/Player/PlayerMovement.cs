@@ -192,7 +192,7 @@ namespace Monument.Player
             }
 
             // Before moving to the next Node, we have to check if it's still an active neighbor (something could have changed)
-            if (!pathToFollow[currentIndex].IsNeighbor(pathToFollow[nextIndex]))
+            if (!pathToFollow[currentIndex].Neighbors.Contains(pathToFollow[nextIndex]))
             {
                 OnPlayerStopped();
                 yield break;

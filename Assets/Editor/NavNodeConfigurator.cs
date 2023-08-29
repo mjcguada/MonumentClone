@@ -4,19 +4,40 @@ using UnityEngine;
 using UnityEditor;
 using Monument.World;
 using System.Linq;
+using Monument.EditorUtils;
 
-public class NavNodeConfiguratorEditor : EditorWindow
+public class NavNodeConfigurator : EditorWindow
 {
+    // Node selection scroll view
     private List<NavNode> selectedNodes = new List<NavNode>();
     private Vector2 scrollPosition;
     private Color[] rowColors = new Color[] { Color.white, Color.black }; // Alternating colors
 
+    // Focused node features
     private NavNode focusedNode = null;
+    private List<NavNode> possibleNeighbors = new List<NavNode>();
+
+    // Parameters for configuring Scene View
+    // TODO:
+    private bool showNodeLabels = false;
+
+    // GUIStyles
+    private GUIStyle labelGUIStyle = new GUIStyle();
+    private Color neighborsColor = Color.yellow;
+    private Color possibleNeighborsColor = Color.cyan;
 
     [MenuItem("Window/Nodes Configurator")]
     public static void ShowWindow()
     {
-        GetWindow<NavNodeConfiguratorEditor>("Nodes Configurator");
+        GetWindow<NavNodeConfigurator>("Nodes Configurator");
+    }
+
+    private void Awake()
+    {
+        labelGUIStyle.fontSize = 10;
+        labelGUIStyle.normal = new GUIStyleState();
+        labelGUIStyle.normal.textColor = Color.black;
+        labelGUIStyle.normal.background = Texture2D.whiteTexture;
     }
 
     private void OnEnable()
@@ -24,12 +45,18 @@ public class NavNodeConfiguratorEditor : EditorWindow
         // Register the selection changed event
         Selection.selectionChanged += UpdateSelectedGameObjects;
         UpdateSelectedGameObjects();
+
+        // Subscribe to the duringSceneGui event to handle drawing in the SceneView
+        SceneView.duringSceneGui += OnSceneGUI;
     }
 
     private void OnDisable()
     {
         // Deregister the selection changed event when closing the window
         Selection.selectionChanged -= UpdateSelectedGameObjects;
+
+        // Unsubscribe from the duringSceneGui event when disabling the window
+        SceneView.duringSceneGui -= OnSceneGUI;
     }
 
     private void UpdateSelectedGameObjects()
@@ -63,9 +90,53 @@ public class NavNodeConfiguratorEditor : EditorWindow
             }
         }
 
+        // If the focused node is no longer selected, we set it to null
+        if (!selectedNodes.Contains(focusedNode))
+        {
+            focusedNode = null;
+            possibleNeighbors.Clear();
+        }
+
         Repaint(); // Force window to repaint
     }
 
+    // This is what we're showing on the Scene View
+    private void OnSceneGUI(SceneView sceneView)
+    {
+        if (focusedNode != null)
+        {
+            // Possible Neighbors drawing
+            Handles.color = possibleNeighborsColor;
+            for (int i = 0; i < possibleNeighbors.Count; i++)
+            {
+                Handles.DrawWireCube(possibleNeighbors[i].transform.position, possibleNeighbors[i].transform.localScale);
+            }
+
+            // TODO: Neighbors drawing
+
+            // Focused Node drawing
+            Handles.color = Color.white;
+            Handles.DrawWireCube(focusedNode.transform.position, focusedNode.transform.localScale);
+            Handles.Label(focusedNode.transform.position, "Focused Node", labelGUIStyle);
+
+            // Labels drawing at the end
+            for (int i = 0; i < possibleNeighbors.Count; i++)
+            {
+                Handles.Label(possibleNeighbors[i].transform.position, possibleNeighbors[i].name, labelGUIStyle);
+            }            
+        }
+
+        // Selected nodes names drawing
+        if (showNodeLabels)
+        {
+            for (int i = 0; i < selectedNodes.Count; i++)
+            {
+                Handles.Label(selectedNodes[i].transform.position, selectedNodes[i].name, labelGUIStyle);
+            }
+        }
+    }
+
+    // This is what we're showing on the Window tool
     private void OnGUI()
     {
         GUILayout.Space(5f);
@@ -210,15 +281,15 @@ public class NavNodeConfiguratorEditor : EditorWindow
         // Primary buttons
         if (GUILayout.Button("Setup every neighbor in the scene"))
         {
-
+            NavNodeConfiguratorUtils.FindNeighborsWithPerspective();
         }
         if (GUILayout.Button("Rename every node in the scene"))
         {
 
         }
-        if (GUILayout.Button("Clear neighbors for all nodes in the scene"))
+        if (GUILayout.Button("Clear every neighbor in the scene"))
         {
-
+            NavNodeConfiguratorUtils.ClearNeighborsForEveryNode();
         }
         EditorGUILayout.EndVertical();
     }
@@ -226,7 +297,8 @@ public class NavNodeConfiguratorEditor : EditorWindow
     private void FocusOnNode(NavNode nodeToFocus)
     {
         // Assign focusedNode value
-        focusedNode = nodeToFocus; //selectedNodes.FindIndex(0, selectedNodes.Count, node => node == nodeToFocus);        
+        focusedNode = nodeToFocus; //selectedNodes.FindIndex(0, selectedNodes.Count, node => node == nodeToFocus);
+        possibleNeighbors = focusedNode.GetAdjacentNodes();
 
         // Create bounds around object to focus
         Bounds bounds = new Bounds(nodeToFocus.transform.position, nodeToFocus.transform.localScale * 3f);
@@ -246,20 +318,30 @@ public class NavNodeConfiguratorEditor : EditorWindow
         textAreaStyle.normal.background = Texture2D.whiteTexture;
 
         // Title
-        GUILayout.Label("Tool appearance", new GUIStyle(EditorStyles.boldLabel) { fontSize = 14 });
+        GUILayout.Label("Tool config", new GUIStyle(EditorStyles.boldLabel) { fontSize = 14 });
 
-        EditorGUILayout.BeginVertical(EditorStyles.helpBox); // - Vertical        
-
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("Primary color");
-        rowColors[0] = EditorGUILayout.ColorField(rowColors[0]);
-        EditorGUILayout.EndHorizontal();
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox); // - Vertical
 
         EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("Secondary color");
-        rowColors[1] = EditorGUILayout.ColorField(rowColors[1]);
+        EditorGUILayout.LabelField("Show Nodes names");
+        showNodeLabels = EditorGUILayout.Toggle(showNodeLabels);
         EditorGUILayout.EndHorizontal();
+
+        CreateColorField("Primary color", ref rowColors[0]);
+        CreateColorField("Secondary color", ref rowColors[1]);
+
+        // GUI Colors
+        CreateColorField("Neighbors color", ref neighborsColor);
+        CreateColorField("Possible Neighbors color", ref possibleNeighborsColor);
 
         EditorGUILayout.EndVertical();
+
+        void CreateColorField(string fieldLabel, ref Color colorToModify)
+        {
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField(fieldLabel);
+            colorToModify = EditorGUILayout.ColorField(colorToModify);
+            EditorGUILayout.EndHorizontal();
+        }
     }
 }

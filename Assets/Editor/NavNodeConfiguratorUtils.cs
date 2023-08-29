@@ -7,15 +7,20 @@ namespace Monument.EditorUtils
     public class NavNodeConfiguratorUtils
     {
         // Setup every adjacent neighbor automatically
-        public static void FindNeighbors()
+        public static void FindAdjacentNeighbors()
         {
             Debug.Log("Finding neighbors in scene...");
-            NavNode[] sceneWalkables = GameObject.FindObjectsOfType<NavNode>();
+            NavNode[] sceneNodes = GameObject.FindObjectsOfType<NavNode>();
 
-            for (int i = 0; i < sceneWalkables.Length; i++)
+            for (int i = 0; i < sceneNodes.Length; i++)
             {
-                sceneWalkables[i].AddAdjacentNeighbors();
-                EditorUtility.SetDirty(sceneWalkables[i]);
+                var adjacentNodes = sceneNodes[i].GetAdjacentNodes();
+                EditorUtility.SetDirty(sceneNodes[i]);
+
+                for (int j = 0; j < adjacentNodes.Count; j++)
+                {
+                    sceneNodes[i].AddNeighbor(adjacentNodes[j]);
+                }
             }
             Debug.Log("Neighbors setup successfully");
         }
@@ -28,14 +33,14 @@ namespace Monument.EditorUtils
 
             for (int i = 0; i < sceneNodes.Length; i++)
             {
-                NavNode referenceNode = sceneNodes[i];
-                referenceNode.InitializePerspectiveNodes();
+                //NavNode referenceNode = sceneNodes[i];
+                sceneNodes[i].InitializePerspectiveNodes();
 
                 for (int j = 0; j < sceneNodes.Length; j++)
                 {
-                    if (sceneNodes[j].Equals(sceneNodes[i])) continue;
+                    if (sceneNodes[j] == sceneNodes[i]) continue;
 
-                    if (sceneNodes[j].AreJointsConnected(referenceNode))
+                    if (sceneNodes[j].AreJointsConnected(sceneNodes[i]))
                     {
                         sceneNodes[i].AddNeighbor(sceneNodes[j]);
                         sceneNodes[j].AddNeighbor(sceneNodes[i]);
@@ -62,7 +67,7 @@ namespace Monument.EditorUtils
             Debug.Log("Neighbors cleaned successfully");
         }
 
-        // Remove every neighbor in scene
+        // Remove null neighbors in scene
         public static void ClearNullNeighbors()
         {
             int neighborsCleared = 0;

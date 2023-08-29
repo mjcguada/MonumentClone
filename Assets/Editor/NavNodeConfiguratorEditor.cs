@@ -11,6 +11,8 @@ public class NavNodeConfiguratorEditor : EditorWindow
     private Vector2 scrollPosition;
     private Color[] rowColors = new Color[] { Color.white, Color.black }; // Alternating colors
 
+    private NavNode focusedNode = null;
+
     [MenuItem("Window/Nodes Configurator")]
     public static void ShowWindow()
     {
@@ -75,80 +77,7 @@ public class NavNodeConfiguratorEditor : EditorWindow
             return;
         }
 
-        GUILayout.Label($"Selected {selectedNodes.Count} Nodes:", EditorStyles.boldLabel);
-
-        scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
-
-        // TODO: Explore selected RotativePlatforms Nodes
-
-        // Display a row for each selected Node
-        for (int i = 0; i < selectedNodes.Count; i++)
-        {
-            Color rowColor = rowColors[i % rowColors.Length];
-            GUI.backgroundColor = rowColor;
-
-            EditorGUILayout.BeginVertical(EditorStyles.helpBox); // - Vertical
-            EditorGUILayout.BeginHorizontal();
-            NavNode selectedNode = selectedNodes[i];
-
-            // Flexible label for the GameObject's name
-            GUIStyle selectedNodeStyle = new GUIStyle(EditorStyles.whiteLabel) { fontStyle = FontStyle.Bold };
-            GUILayout.Label(selectedNode.name, selectedNodeStyle, GUILayout.ExpandWidth(true));
-
-            // Reset color for buttons
-            GUI.backgroundColor = Color.white;
-
-            // TODO: show adjacent nodes that are not neighbors to add them (create a button for every adjacent node)
-
-
-            // Fixed-size button
-            if (GUILayout.Button("Rename", GUILayout.Width(80)))
-            {
-                // TODO: SetDirty()
-                Debug.Log("Rename button clicked for Node: " + selectedNode.name);
-            }
-
-            // Fixed-size button
-            if (GUILayout.Button("Setup neighbors", GUILayout.Width(120)))
-            {
-                // TODO: SetDirty()
-                Debug.Log("Setup neighbors button clicked for Node: " + selectedNode.name);
-            }
-
-            // Button with size adjusted to fit the text
-            if (GUILayout.Button("Clear", GUILayout.Width(EditorStyles.miniButton.CalcSize(new GUIContent("Clear")).x)))
-            {
-                Undo.RecordObject(selectedNode, "Clear Neighbors"); // Record the object for undo
-                selectedNode.ClearNeighbors();
-                EditorUtility.SetDirty(selectedNode);
-                Debug.Log("Cleared neighbors for Node: " + selectedNode.name);
-            }
-
-            EditorGUILayout.EndHorizontal();
-
-            // Neighbors info
-            if (selectedNode.Neighbors.Count > 0)
-            {
-                selectedNode.ShowNeighborsFoldout = EditorGUILayout.Foldout(selectedNode.ShowNeighborsFoldout, $"{selectedNode.Neighbors.Count} Neighbors:");
-
-                if (selectedNode.ShowNeighborsFoldout)
-                {
-                    for (int j = 0; j < selectedNode.Neighbors.Count; j++)
-                    {
-                        EditorGUILayout.BeginHorizontal();
-                        selectedNode.Neighbors[j] = (NavNode)EditorGUILayout.ObjectField(selectedNode.Neighbors[j], typeof(NavNode), allowSceneObjects: true, GUILayout.ExpandWidth(true));
-                        EditorGUILayout.EndHorizontal();
-                    }
-                }
-            }
-            else
-            {
-                EditorGUILayout.LabelField($"{selectedNode.Neighbors.Count} Neighbors:");
-            }
-            EditorGUILayout.EndVertical();
-        }
-        EditorGUILayout.EndScrollView();
-
+        DisplaySelectedNodes();
         DisplayGeneralButtons();
         ConfigEditorTool();
     }
@@ -173,6 +102,91 @@ public class NavNodeConfiguratorEditor : EditorWindow
         EditorGUILayout.EndVertical();
 
         GUILayout.Space(5f);
+    }
+
+    private void DisplaySelectedNodes()
+    {
+        GUILayout.Label($"Selected {selectedNodes.Count} Nodes:", EditorStyles.boldLabel);
+
+        scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
+
+        // TODO: Explore selected RotativePlatforms Nodes
+
+        // Display a row for each selected Node
+        for (int i = 0; i < selectedNodes.Count; i++)
+        {
+            Color rowColor = rowColors[i % rowColors.Length];
+            GUI.backgroundColor = rowColor;
+
+            DisplayNode(selectedNodes[i]);
+        }
+        EditorGUILayout.EndScrollView();
+    }
+
+    private void DisplayNode(NavNode selectedNode)
+    {
+        // TODO: show adjacent nodes that are not neighbors to add them (create a button for every adjacent node)
+        if (focusedNode == selectedNode)
+        {
+            GUI.backgroundColor = Color.green;
+        }
+
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox); // - Vertical
+        EditorGUILayout.BeginHorizontal(); // Node name and buttons on the same horizontal line
+
+        // Flexible label for the GameObject's name
+        GUIStyle nodeTitleStyle = new GUIStyle(EditorStyles.whiteLabel) { fontStyle = FontStyle.Bold };
+        GUILayout.Label(selectedNode.name, nodeTitleStyle, GUILayout.ExpandWidth(true));
+
+        // Reset color for buttons
+        GUI.backgroundColor = Color.white;
+
+        // Node buttons creation        
+        CreateNodeButton("Focus", ref selectedNode, () => FocusOnNode(selectedNode));
+        CreateNodeButton("Rename", ref selectedNode, null);
+        CreateNodeButton("Setup neighbors", ref selectedNode, null);
+        CreateNodeButton("Clear", ref selectedNode, selectedNode.ClearNeighbors);
+
+        EditorGUILayout.EndHorizontal();
+
+        // Neighbors info
+        DisplayNeighborsInfo(ref selectedNode);
+        EditorGUILayout.EndVertical();
+    }
+
+    private void CreateNodeButton(string buttonString, ref NavNode selectedNode, System.Action buttonAction)
+    {
+        // Button with size adjusted to fit the text
+        if (GUILayout.Button(buttonString, GUILayout.Width(EditorStyles.miniButton.CalcSize(new GUIContent(buttonString)).x)))
+        {
+            if (buttonAction == null) return;
+
+            Undo.RecordObject(selectedNode, buttonAction.Method.Name); // Record the object for undo
+            buttonAction();
+            EditorUtility.SetDirty(selectedNode);
+            Debug.Log($"Clicked {buttonAction.Method.Name} on {selectedNode.name}");
+        }
+    }
+
+    private void DisplayNeighborsInfo(ref NavNode selectedNode)
+    {
+        if (selectedNode.Neighbors.Count == 0)
+        {
+            EditorGUILayout.LabelField($"{selectedNode.Neighbors.Count} Neighbors:");
+            return;
+        }
+
+        selectedNode.ShowNeighborsFoldout = EditorGUILayout.Foldout(selectedNode.ShowNeighborsFoldout, $"{selectedNode.Neighbors.Count} Neighbors:");
+
+        if (selectedNode.ShowNeighborsFoldout)
+        {
+            for (int j = 0; j < selectedNode.Neighbors.Count; j++)
+            {
+                EditorGUILayout.BeginHorizontal();
+                selectedNode.Neighbors[j] = (NavNode)EditorGUILayout.ObjectField(selectedNode.Neighbors[j], typeof(NavNode), allowSceneObjects: true, GUILayout.ExpandWidth(true));
+                EditorGUILayout.EndHorizontal();
+            }
+        }
     }
 
     // Display primary buttons with functions that impact every node in the scene
@@ -209,7 +223,18 @@ public class NavNodeConfiguratorEditor : EditorWindow
         EditorGUILayout.EndVertical();
     }
 
-    private void ConfigEditorTool() 
+    private void FocusOnNode(NavNode nodeToFocus)
+    {
+        // Assign focusedNode value
+        focusedNode = nodeToFocus; //selectedNodes.FindIndex(0, selectedNodes.Count, node => node == nodeToFocus);        
+
+        // Create bounds around object to focus
+        Bounds bounds = new Bounds(nodeToFocus.transform.position, nodeToFocus.transform.localScale * 3f);
+        SceneView.lastActiveSceneView.Frame(bounds, false);
+    }
+
+    // TODO: serialize configuration and save it locally
+    private void ConfigEditorTool()
     {
         GUILayout.Space(5f);
 

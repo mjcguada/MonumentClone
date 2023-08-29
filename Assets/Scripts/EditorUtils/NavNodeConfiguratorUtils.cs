@@ -4,10 +4,9 @@ using Monument.World;
 
 namespace Monument.EditorUtils
 {
-    public class UtilsMenuItems
+    public class NavNodeConfiguratorUtils
     {
         // Setup every adjacent neighbor automatically
-        //[MenuItem("Walkables/Find Adjacent neighbors on scene")]
         public static void FindNeighbors()
         {
             Debug.Log("Finding neighbors in scene...");
@@ -22,7 +21,6 @@ namespace Monument.EditorUtils
         }
 
         // Setup every adjacent neighbor automatically
-        //[MenuItem("Walkables/Find neighbors with perspective")]
         public static void FindNeighborsWithPerspective()
         {
             Debug.Log("Finding neighbors in scene...");
@@ -51,8 +49,7 @@ namespace Monument.EditorUtils
         }
 
         // Remove every neighbor in scene
-        //[MenuItem("Walkables/Clear neighbors on scene")]
-        public static void ClearNeighbors()
+        public static void ClearNeighborsForEveryNode()
         {
             Debug.Log("Finding neighbors on scene...");
             NavNode[] sceneWalkables = GameObject.FindObjectsOfType<NavNode>();
@@ -66,7 +63,6 @@ namespace Monument.EditorUtils
         }
 
         // Remove every neighbor in scene
-        //[MenuItem("Walkables/Clear NULL neighbors on scene")]
         public static void ClearNullNeighbors()
         {
             int neighborsCleared = 0;

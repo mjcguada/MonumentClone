@@ -6,6 +6,7 @@ using Monument.World;
 using System.Linq;
 using Monument.EditorUtils;
 using System;
+using static Unity.VisualScripting.Member;
 
 public class NavNodeConfigurator : EditorWindow
 {
@@ -176,9 +177,15 @@ public class NavNodeConfigurator : EditorWindow
         DisplayEditorModeSelectionToolbar();
 
         EditorGUILayout.BeginHorizontal();
+
+        // Neighbors panel
         DisplayNeighborsActions();
+
+        // Possible Neighbors panel
         DisplayPossibleNeighborsActions();
+
         EditorGUILayout.EndHorizontal();
+
         DisplayGeneralButtons();
 
         DisplayNodes();
@@ -220,7 +227,6 @@ public class NavNodeConfigurator : EditorWindow
         GUILayout.Label("Node Visualization", new GUIStyle(EditorStyles.boldLabel) { fontSize = titleFontSize });
 
         // Description
-        //GUILayout.TextArea("Choose between visualizing nodes selected in the hierarchy or showing every node in scene", textAreaStyle);
         GUILayout.Label("Choose between visualizing nodes selected in the hierarchy or showing every node in the scene", textAreaStyle);
 
         GUILayout.BeginVertical();
@@ -244,14 +250,7 @@ public class NavNodeConfigurator : EditorWindow
         // Title
         GUILayout.Label("Neighbors Visualization", new GUIStyle(EditorStyles.boldLabel) { fontSize = titleFontSize });
 
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("Show Neighbors", EditorStyles.boldLabel);
-        showNeighbors = EditorGUILayout.Toggle(showNeighbors);
-        GUILayout.EndHorizontal();
-
-        // Description
-        //GUILayout.TextArea("The following actions affect the neighbor visualization in the inspector", textAreaStyle);
-        //GUILayout.Label("Expand or collapse the neighbor inspector visualization");
+        showNeighbors = EditorGUILayout.Toggle("Show Neighbors", showNeighbors);
 
         if (GUILayout.Button("Expand all"))
         {
@@ -285,15 +284,7 @@ public class NavNodeConfigurator : EditorWindow
         // Title
         GUILayout.Label("Possible Neighbors", new GUIStyle(EditorStyles.boldLabel) { fontSize = titleFontSize });
 
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("Show Possible Neighbors", EditorStyles.boldLabel);
-        showPossibleNeighbors = EditorGUILayout.Toggle(showPossibleNeighbors);
-        GUILayout.EndHorizontal();
-
-
-        // Description
-        //GUILayout.TextArea("The following actions affect the neighbor visualization in the inspector", textAreaStyle);
-        //GUILayout.Label("Expand or collapse the neighbor inspector visualization");
+        showPossibleNeighbors = EditorGUILayout.Toggle("Show Possible Neighbors", showPossibleNeighbors);
 
         if (GUILayout.Button("Expand all"))
         {
@@ -358,7 +349,7 @@ public class NavNodeConfigurator : EditorWindow
         textAreaStyle.normal.background = Texture2D.whiteTexture;
 
         // Window Content
-        GUILayout.TextArea($"Select GameObjects in the Hierarchy that have a NavNode component attached to visualize them here\n" +
+        GUILayout.Label($"Select GameObjects in the Hierarchy that have a NavNode component attached to visualize them here\n" +
             $"There are {FindObjectsOfType<NavNode>().Length} Navigation Nodes in the scene", textAreaStyle);
 
         GUILayout.Space(5f);
@@ -414,7 +405,7 @@ public class NavNodeConfigurator : EditorWindow
         GUI.backgroundColor = Color.white;
 
         // Node buttons creation        
-        CreateNodeButton("Focus", ref nodeToShow, () => FocusOnNode(nodeToShow));
+        CreateNodeButton("Focus", ref nodeToShow, () => FocusOnNode(nodeToShow), setDirty: false);
         //CreateNodeButton("Rename", ref selectedNode, null);
         //CreateNodeButton("Setup neighbors", ref selectedNode, null);
         CreateNodeButton("Clear neighbors", ref nodeToShow, nodeToShow.ClearNeighbors);
@@ -430,7 +421,7 @@ public class NavNodeConfigurator : EditorWindow
         EditorGUILayout.EndVertical();
     }
 
-    private void CreateNodeButton(string buttonString, ref NavNode selectedNode, System.Action buttonAction)
+    private void CreateNodeButton(string buttonString, ref NavNode selectedNode, System.Action buttonAction, bool setDirty = true)
     {
         // Button with size adjusted to fit the text
         if (GUILayout.Button(buttonString, GUILayout.Width(EditorStyles.miniButton.CalcSize(new GUIContent(buttonString)).x)))
@@ -439,7 +430,7 @@ public class NavNodeConfigurator : EditorWindow
 
             Undo.RecordObject(selectedNode, buttonAction.Method.Name); // Record the object for undo
             buttonAction();
-            EditorUtility.SetDirty(selectedNode);
+            if(setDirty) EditorUtility.SetDirty(selectedNode);
             Debug.Log($"Clicked {buttonAction.Method.Name} on {selectedNode.name}");
         }
     }
@@ -462,10 +453,10 @@ public class NavNodeConfigurator : EditorWindow
             for (int i = 0; i < selectedNode.Neighbors.Count; i++)
             {
                 EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.ObjectField(selectedNode.Neighbors[i], typeof(NavNode), allowSceneObjects: true, GUILayout.ExpandWidth(true));
+                EditorGUILayout.ObjectField(selectedNode.Neighbors[i], typeof(NavNode), allowSceneObjects: true);
 
                 // Remove neighbor button
-                if (GUILayout.Button("Remove node"))
+                if (GUILayout.Button("Remove node", GUILayout.Width(150)))
                 {
 
                 }
@@ -499,10 +490,10 @@ public class NavNodeConfigurator : EditorWindow
             for (int i = 0; i < possibleNeighbors.Count; i++)
             {
                 EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.ObjectField(possibleNeighbors[i], typeof(NavNode), allowSceneObjects: true, GUILayout.ExpandWidth(true));
+                EditorGUILayout.ObjectField(possibleNeighbors[i], typeof(NavNode), allowSceneObjects: true);
 
                 // Add neighbor button
-                if (GUILayout.Button("Add node"))
+                if (GUILayout.Button("Add node", GUILayout.Width(150)))
                 {
 
                 }

@@ -9,7 +9,7 @@ using Monument.EditorUtils;
 public class NavNodeConfigurator : EditorWindow
 {
     // Node selection scroll view
-    private List<NavNode> selectedNodes = new List<NavNode>();
+    private List<NavNode> selectedNodes = new List<NavNode>(); // Nodes selected in hierarchy
     private Vector2 scrollPosition;
     private Color[] rowColors = new Color[] { Color.white, Color.black }; // Alternating colors
 
@@ -21,12 +21,20 @@ public class NavNodeConfigurator : EditorWindow
     // TODO:
     private bool showNodeLabels = false;
 
+    private int selectedMode = 0; // 0 = selection mode, 1 = scene mode
+
+    private string[] editorModes = new string[] { "Show Selection", "Show All" };
+    private List<NavNode> nodesToShow = new List<NavNode>();
+    private List<NavNode> everyNode = new List<NavNode>();
+
     // GUIStyles
+    private const int titleFontSize = 12;
     private GUIStyle labelGUIStyle = new GUIStyle();
-    private Color neighborsColor = Color.yellow;
+    private Color selectedNodeColor = Color.red;
+    private Color neighborsColor = Color.green;
     private Color possibleNeighborsColor = Color.cyan;
 
-    [MenuItem("Window/Nodes Configurator")]
+    [MenuItem("Tools/Nodes Configurator")]
     public static void ShowWindow()
     {
         GetWindow<NavNodeConfigurator>("Nodes Configurator");
@@ -38,6 +46,8 @@ public class NavNodeConfigurator : EditorWindow
         labelGUIStyle.normal = new GUIStyleState();
         labelGUIStyle.normal.textColor = Color.black;
         labelGUIStyle.normal.background = Texture2D.whiteTexture;
+
+        everyNode = FindObjectsOfType<NavNode>().ToList();
     }
 
     private void OnEnable()
@@ -46,14 +56,20 @@ public class NavNodeConfigurator : EditorWindow
         Selection.selectionChanged += UpdateSelectedGameObjects;
         UpdateSelectedGameObjects();
 
+        // Update everyNode list collection everytime a gameObject is created/destroyed
+        EditorApplication.hierarchyChanged += OnHierarchyChanged;
+
         // Subscribe to the duringSceneGui event to handle drawing in the SceneView
         SceneView.duringSceneGui += OnSceneGUI;
     }
 
     private void OnDisable()
     {
-        // Deregister the selection changed event when closing the window
+        // Unsubscribe the selection changed event when closing the window
         Selection.selectionChanged -= UpdateSelectedGameObjects;
+
+        // Unsubscribe from the hierarchyChanged event when disabling the window
+        EditorApplication.hierarchyChanged -= OnHierarchyChanged;
 
         // Unsubscribe from the duringSceneGui event when disabling the window
         SceneView.duringSceneGui -= OnSceneGUI;
@@ -71,7 +87,7 @@ public class NavNodeConfigurator : EditorWindow
         {
             NavNode selectedNode = selectedNodes[i];
 
-            if (!selectedGameObjects.Contains(selectedNode.gameObject))
+            if (selectedNode == null || !selectedGameObjects.Contains(selectedNode.gameObject))
             {
                 selectedNodes.RemoveAt(i);
             }
@@ -115,15 +131,28 @@ public class NavNodeConfigurator : EditorWindow
             // TODO: Neighbors drawing
 
             // Focused Node drawing
-            Handles.color = Color.white;
+            Handles.color = selectedNodeColor;
             Handles.DrawWireCube(focusedNode.transform.position, focusedNode.transform.localScale);
-            Handles.Label(focusedNode.transform.position, "Focused Node", labelGUIStyle);
+
+            // Draw arrows of position handle
+            EditorGUI.BeginChangeCheck(); // Begin change check
+
+            // Use PositionHandle to draw and manipulate the object's position
+            Vector3 newPosition = Handles.PositionHandle(focusedNode.transform.position, focusedNode.transform.rotation);
+
+            if (EditorGUI.EndChangeCheck()) // Check if a change has been made
+            {
+                Undo.RecordObject(focusedNode.transform, "Move Node"); // Allow for undoing the movement
+                focusedNode.transform.position = newPosition; // Update the object's position
+            }
+
+            Handles.Label(focusedNode.transform.position, $"Focused Node ({focusedNode.name})", labelGUIStyle);
 
             // Labels drawing at the end
             for (int i = 0; i < possibleNeighbors.Count; i++)
             {
                 Handles.Label(possibleNeighbors[i].transform.position, possibleNeighbors[i].name, labelGUIStyle);
-            }            
+            }
         }
 
         // Selected nodes names drawing
@@ -141,63 +170,175 @@ public class NavNodeConfigurator : EditorWindow
     {
         GUILayout.Space(5f);
 
-        if (selectedNodes.Count == 0)
-        {
-            DisplayNoSelectedNodesMessage();
-            DisplayGeneralButtons();
-            return;
-        }
+        DisplayEditorModeSelectionToolbar();
 
-        DisplaySelectedNodes();
+        EditorGUILayout.BeginHorizontal();
+        DisplayNeighborsGeneralActions();
         DisplayGeneralButtons();
-        ConfigEditorTool();
+        EditorGUILayout.EndHorizontal();
+
+        DisplayNodes();
+    }
+
+    // This function is called every time the project changes (destroying/creating/renaming an object)
+    private void OnHierarchyChanged()
+    {
+        everyNode = FindObjectsOfType<NavNode>().ToList();
+    }
+
+    private void UpdateNodeCollection()
+    {
+        switch (selectedMode)
+        {
+            case 0:
+                nodesToShow = selectedNodes;
+                break;
+            case 1:
+                // TODO: Order by name
+                nodesToShow = everyNode;
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void DisplayEditorModeSelectionToolbar()
+    {
+        // Panel color
+        GUI.backgroundColor = Color.white;
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox); // - Vertical
+
+        // Custom text area style with white background
+        GUIStyle textAreaStyle = new GUIStyle(EditorStyles.textArea);
+        textAreaStyle.normal.background = Texture2D.whiteTexture;
+
+        // Title
+        GUILayout.Label("Node Visualization", new GUIStyle(EditorStyles.boldLabel) { fontSize = titleFontSize });
+
+        // Description
+        //GUILayout.TextArea("Choose between visualizing nodes selected on the hierarchy or showing every node on scene", textAreaStyle);
+        GUILayout.Label("Choose between visualizing nodes selected on the hierarchy or showing every node on scene", textAreaStyle);
+
+        GUILayout.BeginVertical();
+        selectedMode = GUILayout.Toolbar(selectedMode, editorModes);
+        GUILayout.EndVertical();
+        UpdateNodeCollection();
+
+        EditorGUILayout.EndVertical();
+    }
+
+    private void DisplayNeighborsGeneralActions()
+    {
+        // Panel color
+        GUI.backgroundColor = Color.cyan;
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox); // - Vertical
+
+        // Custom text area style with white background
+        GUIStyle textAreaStyle = new GUIStyle(EditorStyles.textArea);
+        textAreaStyle.normal.background = Texture2D.whiteTexture;
+
+        // Title
+        GUILayout.Label("Neighbors Visualization", new GUIStyle(EditorStyles.boldLabel) { fontSize = titleFontSize });
+
+        // Description
+        //GUILayout.TextArea("The following actions affect the neighbor visualization on the inspector", textAreaStyle);
+        //GUILayout.Label("Expand or collapse the neighbor inspector visualization");
+
+        if (GUILayout.Button("Expand all"))
+        {
+
+        }
+        if (GUILayout.Button("Collapse all"))
+        {
+
+        }
+        EditorGUILayout.EndVertical(); // - Vertical
+    }
+
+    // Display primary buttons with functions that impact every node in the scene
+    private void DisplayGeneralButtons()
+    {
+        // Panel color
+        GUI.backgroundColor = new Color(0.4f, 0.9f, 0.6f);
+
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox); // - Vertical
+
+        // Custom text area style with white background
+        GUIStyle textAreaStyle = new GUIStyle(EditorStyles.textArea);
+        textAreaStyle.normal.background = Texture2D.whiteTexture;
+
+        // Title
+        GUILayout.Label("Scene Actions", new GUIStyle(EditorStyles.boldLabel) { fontSize = titleFontSize });
+
+        // Description
+        //GUILayout.Label("Actions that affect every Node in the scene");
+
+        // Primary buttons
+        if (GUILayout.Button("Setup every neighbor"))
+        {
+            NavNodeConfiguratorUtils.FindNeighborsWithPerspective();
+        }
+        if (GUILayout.Button("Rename every node"))
+        {
+
+        }
+        if (GUILayout.Button("Clear every neighbor"))
+        {
+            NavNodeConfiguratorUtils.ClearNeighborsForEveryNode();
+        }
+        EditorGUILayout.EndVertical();
     }
 
     private void DisplayNoSelectedNodesMessage()
     {
+        GUI.backgroundColor = Color.white;
+
         // Custom text area style with white background
         GUIStyle textAreaStyle = new GUIStyle(EditorStyles.textArea);
         textAreaStyle.normal.background = Texture2D.whiteTexture;
 
         // Window Content
-        EditorGUILayout.BeginVertical(EditorStyles.helpBox); // - Vertical
-        GUILayout.TextArea("Select GameObjects in the Hierarchy that have a NavNode component attached to visualize them here", textAreaStyle);
-        GUILayout.TextArea($"There are {FindObjectsOfType<NavNode>().Length} NavNodes on scene", textAreaStyle);
-
-        if (GUILayout.Button("Select every node in the scene"))
-        {
-            GameObject[] nodes = FindObjectsOfType<NavNode>().Select(navNode => navNode.gameObject).ToArray();
-            Selection.objects = nodes;
-        }
-
-        EditorGUILayout.EndVertical();
+        GUILayout.TextArea($"Select GameObjects in the Hierarchy that have a NavNode component attached to visualize them here\n" +
+            $"There are {FindObjectsOfType<NavNode>().Length} Navigation Nodes on scene", textAreaStyle);
 
         GUILayout.Space(5f);
     }
 
-    private void DisplaySelectedNodes()
+    private void DisplayNodes()
     {
-        GUILayout.Label($"Selected {selectedNodes.Count} Nodes:", EditorStyles.boldLabel);
+        if (nodesToShow.Count == 0)
+        {
+            DisplayNoSelectedNodesMessage();
+            return;
+        }
+
+        GUI.backgroundColor = Color.white;
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+
+        GUILayout.Label($"Selected {nodesToShow.Count} Nodes:", EditorStyles.boldLabel);
 
         scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
         // TODO: Explore selected RotativePlatforms Nodes
 
         // Display a row for each selected Node
-        for (int i = 0; i < selectedNodes.Count; i++)
+        for (int i = 0; i < nodesToShow.Count; i++)
         {
             Color rowColor = rowColors[i % rowColors.Length];
             GUI.backgroundColor = rowColor;
 
-            DisplayNode(selectedNodes[i]);
+            DisplayNode(nodesToShow[i]);
         }
         EditorGUILayout.EndScrollView();
+        EditorGUILayout.EndVertical();
     }
 
-    private void DisplayNode(NavNode selectedNode)
+    private void DisplayNode(NavNode nodeToShow)
     {
+        if (nodeToShow == null) { return; }
+
         // TODO: show adjacent nodes that are not neighbors to add them (create a button for every adjacent node)
-        if (focusedNode == selectedNode)
+        if (focusedNode == nodeToShow)
         {
             GUI.backgroundColor = Color.green;
         }
@@ -207,21 +348,24 @@ public class NavNodeConfigurator : EditorWindow
 
         // Flexible label for the GameObject's name
         GUIStyle nodeTitleStyle = new GUIStyle(EditorStyles.whiteLabel) { fontStyle = FontStyle.Bold };
-        GUILayout.Label(selectedNode.name, nodeTitleStyle, GUILayout.ExpandWidth(true));
+        GUILayout.Label(nodeToShow.name, nodeTitleStyle, GUILayout.ExpandWidth(true));
 
         // Reset color for buttons
         GUI.backgroundColor = Color.white;
 
         // Node buttons creation        
-        CreateNodeButton("Focus", ref selectedNode, () => FocusOnNode(selectedNode));
-        CreateNodeButton("Rename", ref selectedNode, null);
-        CreateNodeButton("Setup neighbors", ref selectedNode, null);
-        CreateNodeButton("Clear", ref selectedNode, selectedNode.ClearNeighbors);
+        CreateNodeButton("Focus", ref nodeToShow, () => FocusOnNode(nodeToShow));
+        //CreateNodeButton("Rename", ref selectedNode, null);
+        //CreateNodeButton("Setup neighbors", ref selectedNode, null);
+        CreateNodeButton("Clear neighbors", ref nodeToShow, nodeToShow.ClearNeighbors);
 
         EditorGUILayout.EndHorizontal();
 
         // Neighbors info
-        DisplayNeighborsInfo(ref selectedNode);
+        DisplayNeighborsInfo(ref nodeToShow);
+
+        // Possible neighborsInfo
+        DisplayPossibleNeighbors(ref nodeToShow);
         EditorGUILayout.EndVertical();
     }
 
@@ -247,101 +391,75 @@ public class NavNodeConfigurator : EditorWindow
             return;
         }
 
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox); // - Vertical
+
         selectedNode.ShowNeighborsFoldout = EditorGUILayout.Foldout(selectedNode.ShowNeighborsFoldout, $"{selectedNode.Neighbors.Count} Neighbors:");
 
+        EditorGUI.indentLevel++;
         if (selectedNode.ShowNeighborsFoldout)
         {
-            for (int j = 0; j < selectedNode.Neighbors.Count; j++)
+            for (int i = 0; i < selectedNode.Neighbors.Count; i++)
             {
                 EditorGUILayout.BeginHorizontal();
-                selectedNode.Neighbors[j] = (NavNode)EditorGUILayout.ObjectField(selectedNode.Neighbors[j], typeof(NavNode), allowSceneObjects: true, GUILayout.ExpandWidth(true));
+                selectedNode.Neighbors[i] = (NavNode)EditorGUILayout.ObjectField(selectedNode.Neighbors[i], typeof(NavNode), allowSceneObjects: true, GUILayout.ExpandWidth(true));
                 EditorGUILayout.EndHorizontal();
             }
         }
+        EditorGUI.indentLevel--;
+        EditorGUILayout.EndVertical();
     }
 
-    // Display primary buttons with functions that impact every node in the scene
-    private void DisplayGeneralButtons()
+    private void DisplayPossibleNeighbors(ref NavNode selectedNode)
     {
-        // Panel color
-        GUI.backgroundColor = new Color(0.4f, 0.9f, 0.6f);
+        GUI.backgroundColor = new Color(0.9f, 0.4f, 0); // Orange color
+
+        List<NavNode> possibleNeighbors = selectedNode.GetAdjacentNodes();
+        // TODO: remove nodes that are already neighbors
+
+        if (possibleNeighbors.Count == 0)
+        {
+            //EditorGUILayout.LabelField($"{possibleNeighbors.Count} Possible Neighbors:");
+            return;
+        }
 
         EditorGUILayout.BeginVertical(EditorStyles.helpBox); // - Vertical
 
-        // Custom text area style with white background
-        GUIStyle textAreaStyle = new GUIStyle(EditorStyles.textArea);
-        textAreaStyle.normal.background = Texture2D.whiteTexture;
+        selectedNode.ShowPossibleNeighborsFoldout = EditorGUILayout.Foldout(selectedNode.ShowPossibleNeighborsFoldout, $"{possibleNeighbors.Count} Possible Neighbors:");
 
-        // Title
-        GUILayout.Label("Primary Actions", new GUIStyle(EditorStyles.boldLabel) { fontSize = 14 });
-
-        // Description
-        GUILayout.Label("The following actions affect every NavNode on scene");
-
-        // Primary buttons
-        if (GUILayout.Button("Setup every neighbor in the scene"))
+        EditorGUI.indentLevel++;
+        if (selectedNode.ShowPossibleNeighborsFoldout)
         {
-            NavNodeConfiguratorUtils.FindNeighborsWithPerspective();
-        }
-        if (GUILayout.Button("Rename every node in the scene"))
-        {
+            for (int i = 0; i < possibleNeighbors.Count; i++)
+            {
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.ObjectField(possibleNeighbors[i], typeof(NavNode), allowSceneObjects: true, GUILayout.ExpandWidth(true));
 
+                // Add neighbor button
+                if (GUILayout.Button("Add node"))
+                {
+
+                }
+                EditorGUILayout.EndHorizontal();
+            }
         }
-        if (GUILayout.Button("Clear every neighbor in the scene"))
-        {
-            NavNodeConfiguratorUtils.ClearNeighborsForEveryNode();
-        }
+        EditorGUI.indentLevel--;
         EditorGUILayout.EndVertical();
     }
+
+
+
+    
 
     private void FocusOnNode(NavNode nodeToFocus)
     {
         // Assign focusedNode value
         focusedNode = nodeToFocus; //selectedNodes.FindIndex(0, selectedNodes.Count, node => node == nodeToFocus);
+
+        // TODO: change function
         possibleNeighbors = focusedNode.GetAdjacentNodes();
 
         // Create bounds around object to focus
         Bounds bounds = new Bounds(nodeToFocus.transform.position, nodeToFocus.transform.localScale * 3f);
         SceneView.lastActiveSceneView.Frame(bounds, false);
-    }
-
-    // TODO: serialize configuration and save it locally
-    private void ConfigEditorTool()
-    {
-        GUILayout.Space(5f);
-
-        // Panel color
-        GUI.backgroundColor = Color.white;
-
-        // Custom text area style with white background
-        GUIStyle textAreaStyle = new GUIStyle(EditorStyles.textArea);
-        textAreaStyle.normal.background = Texture2D.whiteTexture;
-
-        // Title
-        GUILayout.Label("Tool config", new GUIStyle(EditorStyles.boldLabel) { fontSize = 14 });
-
-        EditorGUILayout.BeginVertical(EditorStyles.helpBox); // - Vertical
-
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("Show Nodes names");
-        showNodeLabels = EditorGUILayout.Toggle(showNodeLabels);
-        EditorGUILayout.EndHorizontal();
-
-        CreateColorField("Primary color", ref rowColors[0]);
-        CreateColorField("Secondary color", ref rowColors[1]);
-
-        // GUI Colors
-        CreateColorField("Neighbors color", ref neighborsColor);
-        CreateColorField("Possible Neighbors color", ref possibleNeighborsColor);
-
-        EditorGUILayout.EndVertical();
-
-        void CreateColorField(string fieldLabel, ref Color colorToModify)
-        {
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.LabelField(fieldLabel);
-            colorToModify = EditorGUILayout.ColorField(colorToModify);
-            EditorGUILayout.EndHorizontal();
-        }
     }
 }

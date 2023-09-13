@@ -15,6 +15,7 @@ namespace Monument.World
 
 #if UNITY_EDITOR
         public bool ShowNeighborsFoldout { get; set; } = false;
+        public bool ShowPossibleNeighborsFoldout { get; set; } = false;
 #endif
 
         public bool IsReachable { get; set; } = false;

@@ -6,7 +6,6 @@ using Monument.World;
 using System.Linq;
 using Monument.EditorUtils;
 using System;
-using static Unity.VisualScripting.Member;
 
 public class NavNodeConfigurator : EditorWindow
 {
@@ -20,8 +19,7 @@ public class NavNodeConfigurator : EditorWindow
     private List<NavNode> possibleNeighbors = new List<NavNode>();
 
     // Parameters for configuring Scene View
-    // TODO:
-    private bool showNodeLabels = false;
+    //private bool showNodeLabels = false;
     private bool showNeighbors = true;
     private bool showPossibleNeighbors = true;
 
@@ -31,8 +29,10 @@ public class NavNodeConfigurator : EditorWindow
     private List<NavNode> nodesToShow = new List<NavNode>();
     private List<NavNode> everyNode = new List<NavNode>();
 
-    // GUIStyles
+    // GUI Styles
     private const int titleFontSize = 12;
+    
+    // OnSceneGUI Styles
     private GUIStyle labelGUIStyle = new GUIStyle();
     private Color selectedNodeColor = Color.red;
     private Color neighborsColor = Color.green;
@@ -58,6 +58,7 @@ public class NavNodeConfigurator : EditorWindow
     {
         // Register the selection changed event
         Selection.selectionChanged += UpdateSelectedGameObjects;
+
         UpdateSelectedGameObjects();
 
         // Update everyNode list collection everytime a gameObject is created/destroyed
@@ -89,9 +90,7 @@ public class NavNodeConfigurator : EditorWindow
         // We iterate over the list backwards to avoid index errors
         for (int i = selectedNodes.Count - 1; i >= 0; i--)
         {
-            NavNode selectedNode = selectedNodes[i];
-
-            if (selectedNode == null || !selectedGameObjects.Contains(selectedNode.gameObject))
+            if (selectedNodes[i] == null || !selectedGameObjects.Contains(selectedNodes[i].gameObject))
             {
                 selectedNodes.RemoveAt(i);
             }
@@ -156,15 +155,6 @@ public class NavNodeConfigurator : EditorWindow
             for (int i = 0; i < possibleNeighbors.Count; i++)
             {
                 Handles.Label(possibleNeighbors[i].transform.position, possibleNeighbors[i].name, labelGUIStyle);
-            }
-        }
-
-        // Selected nodes names drawing
-        if (showNodeLabels)
-        {
-            for (int i = 0; i < selectedNodes.Count; i++)
-            {
-                Handles.Label(selectedNodes[i].transform.position, selectedNodes[i].name, labelGUIStyle);
             }
         }
     }
@@ -263,9 +253,9 @@ public class NavNodeConfigurator : EditorWindow
         EditorGUILayout.EndVertical(); // - Vertical
     }
 
-    private void ExpandNeighborsOnInspector(bool expand) 
-    { 
-        for (int i = 0; i < everyNode.Count; i++) 
+    private void ExpandNeighborsOnInspector(bool expand)
+    {
+        for (int i = 0; i < everyNode.Count; i++)
         {
             everyNode[i].ShowNeighborsFoldout = expand;
         }
@@ -430,7 +420,7 @@ public class NavNodeConfigurator : EditorWindow
 
             Undo.RecordObject(selectedNode, buttonAction.Method.Name); // Record the object for undo
             buttonAction();
-            if(setDirty) EditorUtility.SetDirty(selectedNode);
+            if (setDirty) EditorUtility.SetDirty(selectedNode);
             Debug.Log($"Clicked {buttonAction.Method.Name} on {selectedNode.name}");
         }
     }

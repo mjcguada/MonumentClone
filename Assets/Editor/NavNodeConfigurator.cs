@@ -5,6 +5,7 @@ using UnityEditor;
 using Monument.World;
 using System.Linq;
 using Monument.EditorUtils;
+using System;
 
 public class NavNodeConfigurator : EditorWindow
 {
@@ -20,6 +21,8 @@ public class NavNodeConfigurator : EditorWindow
     // Parameters for configuring Scene View
     // TODO:
     private bool showNodeLabels = false;
+    private bool showNeighbors = true;
+    private bool showPossibleNeighbors = true;
 
     private int selectedMode = 0; // 0 = selection mode, 1 = scene mode
 
@@ -116,7 +119,7 @@ public class NavNodeConfigurator : EditorWindow
         Repaint(); // Force window to repaint
     }
 
-    // This is what we're showing on the Scene View
+    // This is what we're showing in the Scene View
     private void OnSceneGUI(SceneView sceneView)
     {
         if (focusedNode != null)
@@ -165,7 +168,7 @@ public class NavNodeConfigurator : EditorWindow
         }
     }
 
-    // This is what we're showing on the Window tool
+    // This is what we're showing in the Window tool
     private void OnGUI()
     {
         GUILayout.Space(5f);
@@ -173,9 +176,10 @@ public class NavNodeConfigurator : EditorWindow
         DisplayEditorModeSelectionToolbar();
 
         EditorGUILayout.BeginHorizontal();
-        DisplayNeighborsGeneralActions();
-        DisplayGeneralButtons();
+        DisplayNeighborsActions();
+        DisplayPossibleNeighborsActions();
         EditorGUILayout.EndHorizontal();
+        DisplayGeneralButtons();
 
         DisplayNodes();
     }
@@ -216,8 +220,8 @@ public class NavNodeConfigurator : EditorWindow
         GUILayout.Label("Node Visualization", new GUIStyle(EditorStyles.boldLabel) { fontSize = titleFontSize });
 
         // Description
-        //GUILayout.TextArea("Choose between visualizing nodes selected on the hierarchy or showing every node on scene", textAreaStyle);
-        GUILayout.Label("Choose between visualizing nodes selected on the hierarchy or showing every node on scene", textAreaStyle);
+        //GUILayout.TextArea("Choose between visualizing nodes selected in the hierarchy or showing every node in scene", textAreaStyle);
+        GUILayout.Label("Choose between visualizing nodes selected in the hierarchy or showing every node in the scene", textAreaStyle);
 
         GUILayout.BeginVertical();
         selectedMode = GUILayout.Toolbar(selectedMode, editorModes);
@@ -227,7 +231,7 @@ public class NavNodeConfigurator : EditorWindow
         EditorGUILayout.EndVertical();
     }
 
-    private void DisplayNeighborsGeneralActions()
+    private void DisplayNeighborsActions()
     {
         // Panel color
         GUI.backgroundColor = Color.cyan;
@@ -240,19 +244,74 @@ public class NavNodeConfigurator : EditorWindow
         // Title
         GUILayout.Label("Neighbors Visualization", new GUIStyle(EditorStyles.boldLabel) { fontSize = titleFontSize });
 
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Show Neighbors", EditorStyles.boldLabel);
+        showNeighbors = EditorGUILayout.Toggle(showNeighbors);
+        GUILayout.EndHorizontal();
+
         // Description
-        //GUILayout.TextArea("The following actions affect the neighbor visualization on the inspector", textAreaStyle);
+        //GUILayout.TextArea("The following actions affect the neighbor visualization in the inspector", textAreaStyle);
         //GUILayout.Label("Expand or collapse the neighbor inspector visualization");
 
         if (GUILayout.Button("Expand all"))
         {
-
+            ExpandNeighborsOnInspector(true);
         }
         if (GUILayout.Button("Collapse all"))
         {
-
+            ExpandNeighborsOnInspector(false);
         }
         EditorGUILayout.EndVertical(); // - Vertical
+    }
+
+    private void ExpandNeighborsOnInspector(bool expand) 
+    { 
+        for (int i = 0; i < everyNode.Count; i++) 
+        {
+            everyNode[i].ShowNeighborsFoldout = expand;
+        }
+    }
+
+    private void DisplayPossibleNeighborsActions()
+    {
+        // Panel color
+        GUI.backgroundColor = new Color(0.9f, 0.4f, 0); // Orange color
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox); // - Vertical
+
+        // Custom text area style with white background
+        GUIStyle textAreaStyle = new GUIStyle(EditorStyles.textArea);
+        textAreaStyle.normal.background = Texture2D.whiteTexture;
+
+        // Title
+        GUILayout.Label("Possible Neighbors", new GUIStyle(EditorStyles.boldLabel) { fontSize = titleFontSize });
+
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Show Possible Neighbors", EditorStyles.boldLabel);
+        showPossibleNeighbors = EditorGUILayout.Toggle(showPossibleNeighbors);
+        GUILayout.EndHorizontal();
+
+
+        // Description
+        //GUILayout.TextArea("The following actions affect the neighbor visualization in the inspector", textAreaStyle);
+        //GUILayout.Label("Expand or collapse the neighbor inspector visualization");
+
+        if (GUILayout.Button("Expand all"))
+        {
+            ExpandPossibleNeighborsOnInspector(true);
+        }
+        if (GUILayout.Button("Collapse all"))
+        {
+            ExpandPossibleNeighborsOnInspector(false);
+        }
+        EditorGUILayout.EndVertical(); // - Vertical
+    }
+
+    private void ExpandPossibleNeighborsOnInspector(bool expand)
+    {
+        for (int i = 0; i < everyNode.Count; i++)
+        {
+            everyNode[i].ShowPossibleNeighborsFoldout = expand;
+        }
     }
 
     // Display primary buttons with functions that impact every node in the scene
@@ -268,7 +327,8 @@ public class NavNodeConfigurator : EditorWindow
         textAreaStyle.normal.background = Texture2D.whiteTexture;
 
         // Title
-        GUILayout.Label("Scene Actions", new GUIStyle(EditorStyles.boldLabel) { fontSize = titleFontSize });
+        GUILayout.Label("General Actions", new GUIStyle(EditorStyles.boldLabel) { fontSize = titleFontSize });
+        GUILayout.Label("(Affect every node in scene)");
 
         // Description
         //GUILayout.Label("Actions that affect every Node in the scene");
@@ -299,7 +359,7 @@ public class NavNodeConfigurator : EditorWindow
 
         // Window Content
         GUILayout.TextArea($"Select GameObjects in the Hierarchy that have a NavNode component attached to visualize them here\n" +
-            $"There are {FindObjectsOfType<NavNode>().Length} Navigation Nodes on scene", textAreaStyle);
+            $"There are {FindObjectsOfType<NavNode>().Length} Navigation Nodes in the scene", textAreaStyle);
 
         GUILayout.Space(5f);
     }
@@ -362,10 +422,11 @@ public class NavNodeConfigurator : EditorWindow
         EditorGUILayout.EndHorizontal();
 
         // Neighbors info
-        DisplayNeighborsInfo(ref nodeToShow);
+        if (showNeighbors) DisplayNeighborsInfo(ref nodeToShow);
 
         // Possible neighborsInfo
-        DisplayPossibleNeighbors(ref nodeToShow);
+        if (showPossibleNeighbors) DisplayPossibleNeighbors(ref nodeToShow);
+
         EditorGUILayout.EndVertical();
     }
 
@@ -401,7 +462,13 @@ public class NavNodeConfigurator : EditorWindow
             for (int i = 0; i < selectedNode.Neighbors.Count; i++)
             {
                 EditorGUILayout.BeginHorizontal();
-                selectedNode.Neighbors[i] = (NavNode)EditorGUILayout.ObjectField(selectedNode.Neighbors[i], typeof(NavNode), allowSceneObjects: true, GUILayout.ExpandWidth(true));
+                EditorGUILayout.ObjectField(selectedNode.Neighbors[i], typeof(NavNode), allowSceneObjects: true, GUILayout.ExpandWidth(true));
+
+                // Remove neighbor button
+                if (GUILayout.Button("Remove node"))
+                {
+
+                }
                 EditorGUILayout.EndHorizontal();
             }
         }
@@ -448,7 +515,7 @@ public class NavNodeConfigurator : EditorWindow
 
 
 
-    
+
 
     private void FocusOnNode(NavNode nodeToFocus)
     {

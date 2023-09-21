@@ -684,10 +684,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
-  globalWalkpoint: 0
   neighbors:
-  - {fileID: 1326597744}
   - {fileID: 1967178942}
+  - {fileID: 1326597744}
 --- !u!65 &312440368
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -799,7 +798,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
-  globalWalkpoint: 0
   neighbors:
   - {fileID: 1045293492}
   - {fileID: 1547909638}
@@ -844,7 +842,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 385607360}
   m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -5.684342e-14, y: -4.00008, z: -4.0010357}
+  m_LocalPosition: {x: 0, y: -4.00008, z: -4.0010357}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -914,10 +912,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
-  globalWalkpoint: 0
   neighbors:
-  - {fileID: 795263231}
   - {fileID: 941777016}
+  - {fileID: 795263231}
 --- !u!65 &385607365
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -986,7 +983,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh29090
+  m_Name: pb_Mesh29086
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1242,10 +1239,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
-  globalWalkpoint: 0
   neighbors:
-  - {fileID: 941777016}
   - {fileID: 1547909638}
+  - {fileID: 941777016}
 --- !u!65 &567942808
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1265,7 +1261,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh29264
+  m_Name: pb_Mesh29260
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1521,7 +1517,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
-  globalWalkpoint: 0
   neighbors:
   - {fileID: 385607364}
   - {fileID: 1399829276}
@@ -1911,7 +1906,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
-  globalWalkpoint: 0
   neighbors:
   - {fileID: 1967178942}
 --- !u!65 &816042921
@@ -1933,7 +1927,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh29128
+  m_Name: pb_Mesh29124
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2189,10 +2183,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
-  globalWalkpoint: 0
   neighbors:
-  - {fileID: 385607364}
   - {fileID: 567942807}
+  - {fileID: 385607364}
 --- !u!65 &941777017
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2699,7 +2692,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
-  globalWalkpoint: 0
   neighbors:
   - {fileID: 356977328}
   - {fileID: 1326597744}
@@ -2722,7 +2714,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh29302
+  m_Name: pb_Mesh29298
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3253,7 +3245,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
-  globalWalkpoint: 0
   neighbors:
   - {fileID: 312440367}
   - {fileID: 1045293492}
@@ -3740,7 +3731,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
-  globalWalkpoint: 0
   neighbors:
   - {fileID: 795263231}
 --- !u!65 &1399829277
@@ -3927,7 +3917,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh29164
+  m_Name: pb_Mesh29160
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -4280,7 +4270,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
-  globalWalkpoint: 0
   neighbors:
   - {fileID: 356977328}
   - {fileID: 567942807}
@@ -4303,7 +4292,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh29188
+  m_Name: pb_Mesh29184
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -4957,7 +4946,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _offset: 1
-  globalWalkpoint: 0
   neighbors:
   - {fileID: 312440367}
   - {fileID: 816042920}

@@ -7,6 +7,7 @@ public class CrowBehaviour : Walker
 {
     // TODO: stop if the crow encounters Ida
     // TODO: find a new path if encounter another Crow
+        // - Maybe raycast or a state machine
 
     private void Awake()
     {
@@ -27,8 +28,6 @@ public class CrowBehaviour : Walker
 
     protected override void MoveTo(int currentIndex)
     {
-        base.MoveTo(currentIndex);
-
         // if the given index is smaller than the length of the list
         // we continue moving
         if (currentIndex < pathToFollow.Count)
@@ -39,7 +38,7 @@ public class CrowBehaviour : Walker
             LookAtNode(pathToFollow[currentIndex]);
 
             // Move to next node
-            StartCoroutine(MoveToPosition(currentIndex));
+            StartCoroutine(MoveToNodeCoroutine(currentIndex));
         }
     }    
 

@@ -111,8 +111,6 @@ namespace Monument.Player
 
         protected override void MoveTo(int currentIndex)
         {
-            base.MoveTo(currentIndex); // lastNode.Ocuppied = false, currentNode.Ocuppied = true
-
             // if the given index is smaller than the length of the list
             // we continue moving
             if (currentIndex < pathToFollow.Count)
@@ -155,7 +153,7 @@ namespace Monument.Player
                 LookAtNode(pathToFollow[currentIndex]);
 
                 // Move to next node
-                StartCoroutine(MoveToPosition(currentIndex));
+                StartCoroutine(MoveToNodeCoroutine(currentIndex));
             }
             //else
             //{

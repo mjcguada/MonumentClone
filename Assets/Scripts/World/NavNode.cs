@@ -25,9 +25,6 @@ namespace Monument.World
 #endif
         public bool GlobalWalkpoint { get; set; } = false;
 
-        // TODO: enable/disable this attribute whenever a walker pass it by
-        public bool IsOccupied { get; set; } = false; // Indicates if the node is being occupied by another Walker (Player or Crow) to avoid it
-
         public bool IsReachable { get; set; } = false; // Indicates if the node is reachable by the player
 
         public List<NavNode> Neighbors => neighbors;

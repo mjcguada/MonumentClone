@@ -77,7 +77,7 @@ namespace Monument.World
                 foreach (NavNode neighbor in currentNode.Neighbors)
                 {
                     // if the node has not been visited and is not occupied (by another walker)
-                    if (!visitedNodes.Contains(neighbor) && !neighbor.IsOccupied)
+                    if (!visitedNodes.Contains(neighbor))
                     {
                         queue.Enqueue(neighbor);
                         visitedNodes.Add(neighbor);
@@ -105,7 +105,7 @@ namespace Monument.World
 
                 foreach (NavNode neighbor in current.Neighbors)
                 {
-                    if (!parentMap.ContainsKey(neighbor) && !neighbor.IsOccupied)
+                    if (!parentMap.ContainsKey(neighbor))
                     {
                         queue.Enqueue(neighbor);
                         parentMap[neighbor] = current;

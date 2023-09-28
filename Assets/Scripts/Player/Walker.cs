@@ -15,8 +15,6 @@ public abstract class Walker : MonoBehaviour
 
     protected System.Action OnMovementInterrupted;
 
-    protected NavNode lastVisitedNode = null;
-
     protected NavNode FindNodeUnderPlayer()
     {
         // Raycast to find origin Node
@@ -51,7 +49,7 @@ public abstract class Walker : MonoBehaviour
     }
 
     // TODO: Crow and player will have different implementations
-    protected IEnumerator MoveToPosition(int currentIndex)
+    protected IEnumerator MoveToNodeCoroutine(int currentIndex)
     {
         float elapsedTime = 0;
         Vector3 startingPos = transform.position;
@@ -73,7 +71,7 @@ public abstract class Walker : MonoBehaviour
             yield break;
         }
 
-        // Before moving to the next Node, we have to check if it's still an active neighbor (something could have changed, could be occupied by another crow)
+        // Before moving to the next Node, we have to check if it's still an active neighbor
         if (!pathToFollow[currentIndex].Neighbors.Contains(pathToFollow[nextIndex]))
         {
             OnMovementInterrupted?.Invoke();
@@ -84,15 +82,5 @@ public abstract class Walker : MonoBehaviour
         MoveTo(nextIndex);
     }
 
-    protected virtual void MoveTo(int currentIndex)
-    {
-        if (lastVisitedNode != null && lastVisitedNode != pathToFollow[currentIndex])
-        {
-            lastVisitedNode.IsOccupied = false;
-        }
-
-        lastVisitedNode = pathToFollow[currentIndex];
-        lastVisitedNode.IsOccupied = true;
-    }
-
+    protected abstract void MoveTo(int currentIndex);
 }

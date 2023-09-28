@@ -7,16 +7,26 @@ namespace Monument.World
     [System.Serializable]
     public class NavNode : MonoBehaviour
     {
-        [SerializeField] private float _offset = 1f;
+        [System.Serializable]
+        public struct NodeConfiguration
+        {
+            public bool isActive;
+            public Vector3 offset;
+        }
+
+
         [SerializeField] private List<NavNode> neighbors = new List<NavNode>();
 
         private Vector3[] directions = new Vector3[4] { Vector3.forward, Vector3.back, Vector3.left, Vector3.right };
 
 #if UNITY_EDITOR
-        public bool ShowNeighborsFoldout { get; set; } = false;
-        public bool ShowPossibleNeighborsFoldout { get; set; } = false;
+        public bool ShowNeighborsFoldout { get; set; } = true;
+        public bool ShowPossibleNeighborsFoldout { get; set; } = true;
 #endif
         public bool GlobalWalkpoint { get; set; } = false;
+
+        // TODO: enable/disable this attribute whenever a walker pass it by
+        public bool IsOccupied { get; set; } = false; // Indicates if the node is being occupied by another Walker (Player or Crow) to avoid it
 
         public bool IsReachable { get; set; } = false; // Indicates if the node is reachable by the player
 
@@ -24,17 +34,17 @@ namespace Monument.World
 
         public RotativePlatform RotativePlatform { get; set; } = null;
 
-        public bool HasMultipleConfiguration { get; set; } = false; // Has multiple walkpoints positions depending on current rotation
+        public bool HasMultipleConfiguration = false; // Has multiple walkpoints positions depending on current rotation
 
-        public (bool, Vector3)[] Configurations { get; set; } = new (bool, Vector3)[4];
+        public NodeConfiguration[] Configurations = new NodeConfiguration[4]; // 4 configurations (active and offset)
 
         private int currentConfiguration = 0;
 
         public Vector3 WalkPoint
         {
             get => GlobalWalkpoint ?
-                transform.position + (Vector3.up * 0.5f * _offset) :
-                transform.position + (transform.up * 0.5f * _offset);
+                transform.position + (Vector3.up * 0.5f + Configurations[currentConfiguration].offset) :
+                transform.position + (transform.up * 0.5f + Configurations[currentConfiguration].offset);
         }
 
         // Private attributes
@@ -42,7 +52,7 @@ namespace Monument.World
 
         // Gizmos parameters
         private const float sphereSize = 0.16f;
-        private const float cubeJointsSize = 0.125f;        
+        private const float cubeJointsSize = 0.125f;
 
         public void InitializePerspectiveNodes()
         {
@@ -57,7 +67,7 @@ namespace Monument.World
         }
 
         public List<NavNode> GetPossibleNeighbors()
-        {            
+        {
             List<NavNode> adjacentNodes = NavNodeUtils.FindAdjacentNeighbors(this);
             List<NavNode> perspectiveNodes = NavNodeUtils.FindPerspectiveNodes(this);
 
@@ -92,9 +102,31 @@ namespace Monument.World
             }
         }
 
+        public void RemoveNeighborAt(int index)
+        {
+            if (index >= neighbors.Count) return;
+
+            neighbors.RemoveAt(index);
+        }
+
         public void ClearNeighbors()
         {
             neighbors.Clear();
+        }
+
+        public void ApplyConfiguration(int configuration)
+        {
+            if (!HasMultipleConfiguration)
+            {
+                currentConfiguration = 0;
+                return;
+            }
+
+            // If the configuration is active
+            if (Configurations[configuration].isActive)
+            {
+                currentConfiguration = configuration;
+            }
         }
 
         /// <summary>

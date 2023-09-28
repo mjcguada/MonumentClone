@@ -83,7 +83,7 @@ public class NavNodeConfigurator : EditorWindow
     // This function is called every time the project changes (destroying/creating/renaming an object)
     private void OnHierarchyChanged()
     {
-        everyNode = FindObjectsOfType<NavNode>().OrderBy(node => node.name, StringComparer.OrdinalIgnoreCase).ToList();
+        everyNode = FindObjectsOfType<NavNode>().ToList();
     }
 
     private void UpdateSelectedGameObjects()
@@ -408,7 +408,9 @@ public class NavNodeConfigurator : EditorWindow
 
             // Node buttons creation        
             CreateNodeButton("Focus", ref nodeToShow, () => FocusOnNode(nodeToShow), setDirty: false);
+            GUI.backgroundColor = Color.red;
             CreateNodeButton("Clear neighbors", ref nodeToShow, nodeToShow.ClearNeighbors);
+            GUI.backgroundColor = Color.white;
         }
         EditorGUILayout.EndHorizontal();
 

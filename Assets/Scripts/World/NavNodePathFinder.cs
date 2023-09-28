@@ -76,7 +76,8 @@ namespace Monument.World
 
                 foreach (NavNode neighbor in currentNode.Neighbors)
                 {
-                    if (!visitedNodes.Contains(neighbor))
+                    // if the node has not been visited and is not occupied (by another walker)
+                    if (!visitedNodes.Contains(neighbor) && !neighbor.IsOccupied)
                     {
                         queue.Enqueue(neighbor);
                         visitedNodes.Add(neighbor);
@@ -85,6 +86,40 @@ namespace Monument.World
             }
 
             return reachableNodes;
+        }
+
+        public static List<NavNode> FindLongestPathFrom(NavNode originNode)
+        {
+            Queue<NavNode> queue = new Queue<NavNode>();
+            queue.Enqueue(originNode);
+
+            Dictionary<NavNode, NavNode> parentMap = new Dictionary<NavNode, NavNode>();
+            parentMap[originNode] = null;
+
+            NavNode lastNode = null;
+
+            // Inspect every neighbor and their children recursively
+            while (queue.Count > 0)
+            {
+                NavNode current = queue.Dequeue();
+
+                foreach (NavNode neighbor in current.Neighbors)
+                {
+                    if (!parentMap.ContainsKey(neighbor) && !neighbor.IsOccupied)
+                    {
+                        queue.Enqueue(neighbor);
+                        parentMap[neighbor] = current;
+                        lastNode = neighbor; // Actualiza el último nodo visitado
+                    }
+                }
+            }
+
+            if (lastNode != null)
+            {
+                List<NavNode> path = BuildPathFromParentMap(parentMap, lastNode);
+                return path;
+            }
+            return null;
         }
     }
 }

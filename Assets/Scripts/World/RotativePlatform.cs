@@ -84,6 +84,13 @@ namespace Monument.World
             {
                 configurationLinkers[i].ApplyConfiguration(configurationLinkers[i].areLinked);
             }
+
+            // Apply configuration to nodes' Walkpoint
+            if (childrenNodes == null || childrenNodes.Length == 0) AssignPlatformToChildrenNodes();
+            for (int i = 0; i < childrenNodes.Length; i++)
+            {
+                childrenNodes[i].ApplyConfiguration(currentConfiguration);
+            }
         }
 
         public override void OnBeginDrag(PointerEventData inputData)

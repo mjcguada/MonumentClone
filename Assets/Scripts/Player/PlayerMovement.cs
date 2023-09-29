@@ -13,6 +13,9 @@ namespace Monument.Player
         // Called on click action to find a new path and wait for the older one to finish
         private Coroutine findPathCoroutine = null;
 
+        private List<NavNode> pathToFollow = new List<NavNode>();
+        private int currentIndex = 0;
+
         private MonumentInput inputActions;
 
         // The last rotative platform used by the player
@@ -21,13 +24,10 @@ namespace Monument.Player
         // Reachable nodes (possible paths)
         List<NavNode> reachableNodes = new List<NavNode>();
 
-        private void Awake()
+        protected override void Start()
         {
-            OnMovementInterrupted = OnPlayerStopped;
-        }
+            base.Start();
 
-        void Start()
-        {
             inputActions = new MonumentInput();
             inputActions.Player.Click.performed += ctx => OnClick();
             inputActions.Enable();
@@ -106,60 +106,76 @@ namespace Monument.Player
             animator.Walking(true);
 
             pathToFollow = path;
-            MoveTo(currentIndex: 1); // index 0 is the origin node
+            currentIndex = 0;
+            MoveToNextNode(); // index 0 is the origin node
         }
 
-        protected override void MoveTo(int currentIndex)
-        {
+        private void MoveToNextNode()
+        {            
+            currentIndex++;            
+
+            // if the player has reached the end of the path
+            if (currentIndex >= pathToFollow.Count)
+            {
+                OnPlayerStopped();
+                return;
+            }
+
+            // Before moving to the next Node, we have to check if it's still an active neighbor
+            if (currentNode != null && !currentNode.Neighbors.Contains(pathToFollow[currentIndex]))
+            {
+                OnPlayerStopped();
+                return;
+            }
+
             // if the given index is smaller than the length of the list
             // we continue moving
-            if (currentIndex < pathToFollow.Count)
+            isMoving = true;
+            
+            // Update current node value
+            currentNode = pathToFollow[currentIndex];
+
+            // Show reachable nodes on the Editor
+            FindReachableNodes(pathToFollow[currentIndex]);
+
+            // Enable again rotative platform that we leave
+            if (lastRotativePlatform != null)
             {
-                isMoving = true;
+                // Handle rotation
+                if (lastRotativePlatform.RotatorHandle != null) lastRotativePlatform.RotatorHandle.EnableRotation(true);
 
-                // Show reachable nodes on the Editor
-                FindReachableNodes(pathToFollow[currentIndex]);
+                // Platform rotation
+                lastRotativePlatform.AllowsRotation = true;
 
-                // Enable again rotative platform that we leave
-                if (lastRotativePlatform != null)
-                {
-                    // Handle rotation
-                    if (lastRotativePlatform.RotatorHandle != null) lastRotativePlatform.RotatorHandle.EnableRotation(true);
-
-                    // Platform rotation
-                    lastRotativePlatform.AllowsRotation = true;
-
-                    transform.SetParent(null);
-                }
-
-                // Assign current rotative platform and disable rotation
-                if (pathToFollow[currentIndex].RotativePlatform != null)
-                {
-                    lastRotativePlatform = pathToFollow[currentIndex].RotativePlatform;
-
-                    // Disable Handle rotation
-                    if (lastRotativePlatform.RotatorHandle != null) lastRotativePlatform.RotatorHandle.EnableRotation(false);
-
-                    // Disable Platform rotation (while the player is moving)
-                    lastRotativePlatform.AllowsRotation = false;
-
-                    // Make player child of rotative platform to rotate with it
-                    transform.SetParent(lastRotativePlatform.transform, true);
-                }
-
-                // Make the player child of the platform to be affected by its rotation
-
-                // Look at next node
-                LookAtNode(pathToFollow[currentIndex]);
-
-                // Move to next node
-                StartCoroutine(MoveToNodeCoroutine(currentIndex));
+                transform.SetParent(null);
             }
-            //else
-            //{
-            //    OnPlayerStopped();
-            //}
-        }
+
+            // Assign current rotative platform and disable rotation
+            if (pathToFollow[currentIndex].RotativePlatform != null)
+            {
+                lastRotativePlatform = pathToFollow[currentIndex].RotativePlatform;
+
+                // Disable Handle rotation
+                if (lastRotativePlatform.RotatorHandle != null) lastRotativePlatform.RotatorHandle.EnableRotation(false);
+
+                // Disable Platform rotation (while the player is moving)
+                lastRotativePlatform.AllowsRotation = false;
+
+                // Make player child of rotative platform to rotate with it
+                transform.SetParent(lastRotativePlatform.transform, true);
+            }
+
+            // Make the player child of the platform to be affected by its rotation
+
+            NavNode targetNode = pathToFollow[currentIndex];
+
+            // Look at next node
+            LookAtNode(targetNode);
+
+            // Move to next node
+            StartCoroutine(MoveToNodeCoroutine(targetNode, OnMovementFinished: MoveToNextNode));
+
+        }        
 
         private void OnPlayerStopped()
         {

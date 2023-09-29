@@ -50,23 +50,27 @@ namespace Monument.World
             {
                 for (int i = 0; i < node.Neighbors.Count; i++)
                 {
-                    // Clean residual null references
-                    if (node.Neighbors[i] == null) node.RemoveNeighborAt(i);
-
                     EditorGUILayout.BeginHorizontal();
-                    EditorGUILayout.ObjectField(node.Neighbors[i], typeof(NavNode), allowSceneObjects: true);
+                    node.Neighbors[i] = (NavNode)EditorGUILayout.ObjectField(node.Neighbors[i], typeof(NavNode), allowSceneObjects: true);
 
                     GUI.backgroundColor = Color.red;
                     // Remove neighbor button
                     if (GUILayout.Button("Remove node", GUILayout.Width(150)))
                     {
                         Undo.RecordObject(node, $"Remove neighbor {node.Neighbors[i]}"); // Record the object for undo
-                        EditorUtility.SetDirty(node);
                         node.RemoveNeighbor(node.Neighbors[i]);
                     }
                     GUI.backgroundColor = Color.white;
                     EditorGUILayout.EndHorizontal();
                 }
+
+                // Add new neighbor button
+                GUI.backgroundColor = Color.green;
+                if (GUILayout.Button("Add neighbor"))
+                {
+                    node.AddNeighbor(null);
+                }
+                GUI.backgroundColor = Color.white;
             }
             EditorGUI.indentLevel--;
             EditorGUILayout.EndVertical();

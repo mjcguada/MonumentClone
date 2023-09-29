@@ -7,13 +7,17 @@ public abstract class Walker : MonoBehaviour
 {
     // Pathfinding variables
     protected bool isMoving = false;
-    protected List<NavNode> pathToFollow = new List<NavNode>();
 
     // Translation time between nodes
     [Range(0.1f, 1f)]
     [SerializeField] protected float timeToArrive = 0.25f;
 
-    protected System.Action OnMovementInterrupted;
+    protected NavNode currentNode;
+
+    protected virtual void Start()
+    {
+        currentNode = FindNodeUnderPlayer();
+    }
 
     protected NavNode FindNodeUnderPlayer()
     {
@@ -48,12 +52,11 @@ public abstract class Walker : MonoBehaviour
         }
     }
 
-    // TODO: Crow and player will have different implementations
-    protected IEnumerator MoveToNodeCoroutine(int currentIndex)
+    protected IEnumerator MoveToNodeCoroutine(NavNode targetNode, System.Action OnMovementFinished)
     {
         float elapsedTime = 0;
         Vector3 startingPos = transform.position;
-        Vector3 targetPosition = pathToFollow[currentIndex].WalkPoint;
+        Vector3 targetPosition = targetNode.WalkPoint;
 
         while (elapsedTime < timeToArrive)
         {
@@ -62,25 +65,6 @@ public abstract class Walker : MonoBehaviour
             yield return null;
         }
 
-        int nextIndex = currentIndex + 1;
-
-        // if the crow has reached the end of the path
-        if (nextIndex >= pathToFollow.Count)
-        {
-            OnMovementInterrupted?.Invoke();
-            yield break;
-        }
-
-        // Before moving to the next Node, we have to check if it's still an active neighbor
-        if (!pathToFollow[currentIndex].Neighbors.Contains(pathToFollow[nextIndex]))
-        {
-            OnMovementInterrupted?.Invoke();
-            yield break;
-        }
-
-        // Move to next index of the path
-        MoveTo(nextIndex);
+        OnMovementFinished?.Invoke();
     }
-
-    protected abstract void MoveTo(int currentIndex);
 }

@@ -6,40 +6,72 @@ using UnityEngine;
 public class CrowBehaviour : Walker
 {
     // TODO: stop if the crow encounters Ida
-    // TODO: find a new path if encounter another Crow
-        // - Maybe raycast or a state machine
+    // TODO: state machine
+
+    private enum CrowStates { Walking, Stopped };
+
+    private bool automaticNavigation = true; // if false, we have to define the available navigation nodes for the crow
+
+    private CrowStates state = CrowStates.Walking;
+
+    private System.Action OnMovementInterrupted;
+
+    private NavNode lastVisitedNode = null;
 
     private void Awake()
     {
-        OnMovementInterrupted = FindNewPath;
+        // OnMovementInterrupted = FindNewPath;
+        // todo: remember to use the isMoving attribute
     }
 
-    void Start()
+    protected override void Start()
     {
-        FindNewPath();
+        base.Start();
+        MoveToNextNode();
     }
 
-    // Searches for the longest path available (usually the opposite node)
-    private void FindNewPath() 
+    private void MoveToNextNode()
     {
-        pathToFollow = NavNodePathFinder.FindLongestPathFrom(FindNodeUnderPlayer());
-        MoveTo(currentIndex: 1); // index 0 is the origin node
+        // Select next node (a neighbor of the current)
+        NavNode nextNode = SelectNextNode();
+
+        isMoving = true;
+
+        // Update last visited node
+        lastVisitedNode = currentNode;
+        currentNode = nextNode;
+
+        // Look at next node
+        LookAtNode(nextNode);
+
+        // Move to nect node
+        StartCoroutine(MoveToNodeCoroutine(nextNode, MoveToNextNode));
     }
 
-    protected override void MoveTo(int currentIndex)
+    private NavNode SelectNextNode()
     {
-        // if the given index is smaller than the length of the list
-        // we continue moving
-        if (currentIndex < pathToFollow.Count)
+        // Get a list of unvisited neighbors
+        List<NavNode> unvisitedNeighbors = new List<NavNode>();
+
+        foreach (NavNode neighbor in currentNode.Neighbors)
         {
-            isMoving = true;
-
-            // Look at next node
-            LookAtNode(pathToFollow[currentIndex]);
-
-            // Move to next node
-            StartCoroutine(MoveToNodeCoroutine(currentIndex));
+            if (neighbor != lastVisitedNode)
+            {
+                unvisitedNeighbors.Add(neighbor);
+            }
         }
-    }    
+
+        // If there are unvisited neighbors, choose one randomly
+        if (unvisitedNeighbors.Count > 0)
+        {
+            int randomIndex = Random.Range(0, unvisitedNeighbors.Count);
+            return unvisitedNeighbors[randomIndex];
+        }
+        else
+        {
+            // If all neighbors have been visited, return the last visited node
+            return lastVisitedNode;
+        }
+    }
 
 }

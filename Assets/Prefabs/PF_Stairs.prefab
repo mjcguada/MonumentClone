@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 8125512808404991511}
   - component: {fileID: 8125512808404991510}
   - component: {fileID: 8125512808404991509}
-  - component: {fileID: 8125512808404991508}
   m_Layer: 0
   m_Name: Mesh
   m_TagString: Untagged
@@ -1874,20 +1873,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8125512808404991506}
   m_Mesh: {fileID: 0}
---- !u!64 &8125512808404991508
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8125512808404991506}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
 --- !u!1 &8125512808716577504
 GameObject:
   m_ObjectHideFlags: 0
@@ -1900,7 +1885,7 @@ GameObject:
   - component: {fileID: 8125512808716577507}
   - component: {fileID: 8125512808716577506}
   - component: {fileID: 8125512808716577505}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: PF_Stairs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1957,6 +1942,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1

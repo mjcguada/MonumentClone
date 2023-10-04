@@ -36,10 +36,11 @@ namespace Monument.World
             originalScale = transform.localScale;
         }
 
-        // TODO: disable RotativePlatform connections when player is dragging the handle
         public override void OnBeginDrag(PointerEventData inputData)
         {
             if (!AllowsRotation) return;
+
+            platformToRotate.OnBeginDrag(inputData);
 
             base.OnBeginDrag(inputData);
             platformToRotate.PreviousAngle = this.previousAngle; // Important to start rotation with the same value

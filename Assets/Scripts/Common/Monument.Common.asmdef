@@ -1,9 +1,7 @@
 {
-    "name": "Monument.World",
+    "name": "Monument.Common",
     "rootNamespace": "",
-    "references": [
-        "GUID:678ada217d1f9a741b62127ede60bff5"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

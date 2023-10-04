@@ -1,9 +1,10 @@
 using Monument.World;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public abstract class Walker : MonoBehaviour
+public abstract class Walker : MonoBehaviour, IPresser
 {
     // Pathfinding variables
     protected bool isMoving = false;
@@ -16,15 +17,31 @@ public abstract class Walker : MonoBehaviour
 
     protected virtual void Start()
     {
-        currentNode = FindNodeUnderPlayer();
+        currentNode = FindNodeUnderCharacter();
     }
 
-    protected NavNode FindNodeUnderPlayer()
+    protected NavNode FindNodeUnderCharacter()
     {
-        // Raycast to find origin Node
-        Collider[] colliders = Physics.OverlapSphere(transform.position - transform.up * 0.5f, 0.2f);
+        // Raycast to find a Node under the Walker
+        Collider[] colliders = Physics.OverlapSphere(transform.position - transform.TransformDirection(Vector3.up) * 0.25f, 0.2f);
 
-        return colliders[0].gameObject.GetComponent<NavNode>();
+        // Filter colliders to keep only those with NavNode component
+        List<Collider> collidersWithNavNode = colliders.Where(collider => collider.gameObject.GetComponent<NavNode>() != null).ToList();
+
+        // Find closest collider
+        int index = 0;
+        float minDistance = Mathf.Infinity;
+        for (int i = 0; i < collidersWithNavNode.Count; i++) 
+        {
+            float colliderDistance = Vector3.Distance(transform.position, collidersWithNavNode[i].transform.position);
+            if (colliderDistance < minDistance) 
+            {
+                minDistance = colliderDistance;
+                index = i;
+            }
+        }        
+
+        return collidersWithNavNode[index].gameObject.GetComponent<NavNode>();
     }
 
     protected void LookAtNode(NavNode targetNode)

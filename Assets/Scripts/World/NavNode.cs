@@ -14,18 +14,19 @@ namespace Monument.World
             public Vector3 offset;
         }
 
-
         [SerializeField] private List<NavNode> neighbors = new List<NavNode>();
 
         private Vector3[] directions = new Vector3[4] { Vector3.forward, Vector3.back, Vector3.left, Vector3.right };
 
 #if UNITY_EDITOR
-        public bool ShowNeighborsFoldout { get; set; } = true;
-        public bool ShowPossibleNeighborsFoldout { get; set; } = true;
+        public bool ShowNeighborsFoldout = true;
+        public bool ShowPossibleNeighborsFoldout = true;
 #endif
-        public bool GlobalWalkpoint { get; set; } = false;
+        public bool GlobalWalkpoint = false;
 
         public bool IsReachable { get; set; } = false; // Indicates if the node is reachable by the player
+
+        public bool IsStairs = false; // Indicates the type of node
 
         public List<NavNode> Neighbors => neighbors;
 
@@ -53,13 +54,11 @@ namespace Monument.World
 
         public void InitializePerspectiveNodes()
         {
-            if (perspectiveJoints == null || perspectiveJoints.Length == 0)
+            perspectiveJoints = new Vector2[4];
+            for (int i = 0; i < directions.Length; i++)
             {
-                perspectiveJoints = new Vector2[4];
-                for (int i = 0; i < directions.Length; i++)
-                {
-                    perspectiveJoints[i] = Camera.main.WorldToScreenPoint(WalkPoint + directions[i] * 0.5f);
-                }
+                //perspectiveJoints[i] = Camera.main.WorldToScreenPoint(WalkPoint + directions[i] * 0.5f);
+                perspectiveJoints[i] = Camera.main.WorldToScreenPoint(transform.position + directions[i] * 0.5f);
             }
         }
 
@@ -77,10 +76,10 @@ namespace Monument.World
 
         public void AddNeighbor(NavNode node)
         {
-            // TODO: add to RotativePlatform configuration if is a special case
             if (node != this && !neighbors.Contains(node))
             {
                 neighbors.Add(node);
+                node?.AddNeighbor(this);
             }
         }
 
@@ -190,6 +189,22 @@ namespace Monument.World
 
                 Gizmos.DrawLine(WalkPoint, neighbors[i].WalkPoint);
             }
+
+            //Draw directions
+            //Gizmos.color = Color.red;
+            //if (IsStairs)
+            //{
+            //    Gizmos.DrawRay(transform.position, transform.TransformDirection(Vector3.up - Vector3.right));
+            //    Gizmos.DrawRay(transform.position, transform.TransformDirection(Vector3.down - Vector3.left));
+
+            //}
+            //else
+            //{
+            //    for (int i = 0; i < directions.Length; i++)
+            //    {
+            //        Gizmos.DrawRay(transform.position, directions[i]);
+            //    }
+            //}
         }
     }
 }

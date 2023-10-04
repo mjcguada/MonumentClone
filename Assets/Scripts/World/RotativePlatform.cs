@@ -10,7 +10,7 @@ using UnityEngine.EventSystems;
 namespace Monument.World
 {
     [RequireComponent(typeof(RotationSnapper))]
-    public class RotativePlatform : RotatorInput
+    public class RotativePlatform : RotatorInput, IReactor
     {
         [SerializeField]
         private PlatformConfiguration[] configurations = new PlatformConfiguration[4];
@@ -27,7 +27,8 @@ namespace Monument.World
         {
             base.Start();
 
-            snapper.OnSnapFinished = ApplyConfiguration;
+            snapper.OnSnapFinished += delegate { SetLinkersActive(true); };
+            snapper.OnSnapFinished += ApplyConfiguration;
 
             AssignPlatformToChildrenNodes();
 
@@ -45,6 +46,21 @@ namespace Monument.World
             }
         }
 
+        // Disables/Enables the last saved linkers configuration while the user is interacting with the platform
+        private void SetLinkersActive(bool active)
+        {
+            if (previousConfiguration >= 0)
+            {
+                Linker[] previousConfigurationLinkers = configurations[previousConfiguration].Linkers;
+
+                for (int i = 0; i < previousConfigurationLinkers.Length; i++)
+                {
+                    if (active) previousConfigurationLinkers[i].ApplyConfiguration(previousConfigurationLinkers[i].areLinked); // Apply
+                    else previousConfigurationLinkers[i].ApplyConfiguration(!previousConfigurationLinkers[i].areLinked); // Undo
+                }
+            }
+        }
+
         public void ApplyConfiguration()
         {
             // Establish desired configuration based on current rotation
@@ -52,15 +68,6 @@ namespace Monument.World
             float snappedAngleRotation = Mathf.Round(currentAngleRotation / 90.0f) * 90.0f;
 
             int currentConfiguration = (int)snappedAngleRotation / 90;
-
-            if (currentConfiguration == previousConfiguration) return;
-
-            if (configurations[currentConfiguration] == null)
-            {
-                // New configuration
-                previousConfiguration = currentConfiguration;
-                return;
-            }
 
             if (previousConfiguration >= 0)
             {
@@ -71,31 +78,34 @@ namespace Monument.World
                 {
                     previousConfigurationLinkers[i].ApplyConfiguration(!previousConfigurationLinkers[i].areLinked);
                 }
-            }
-
-            // New configuration
-            previousConfiguration = currentConfiguration;
+            }            
 
             // Apply linkers given the current rotation
             Linker[] configurationLinkers = configurations[currentConfiguration].Linkers;
-            if (configurationLinkers == null) return;
-
-            for (int i = 0; i < configurationLinkers.Length; i++)
+            if (configurationLinkers != null)
             {
-                configurationLinkers[i].ApplyConfiguration(configurationLinkers[i].areLinked);
+                for (int i = 0; i < configurationLinkers.Length; i++)
+                {
+                    configurationLinkers[i].ApplyConfiguration(configurationLinkers[i].areLinked);
+                }
             }
 
-            // Apply configuration to nodes' Walkpoint
+            // Update nodes' Walkpoint to current rotation
             if (childrenNodes == null || childrenNodes.Length == 0) AssignPlatformToChildrenNodes();
             for (int i = 0; i < childrenNodes.Length; i++)
             {
                 childrenNodes[i].ApplyConfiguration(currentConfiguration);
             }
+
+            // New configuration
+            previousConfiguration = currentConfiguration;
         }
 
         public override void OnBeginDrag(PointerEventData inputData)
         {
             if (!AllowsRotation) return;
+
+            SetLinkersActive(false);
 
             base.OnBeginDrag(inputData);
         }
@@ -113,6 +123,36 @@ namespace Monument.World
             if (!AllowsRotation) return;
 
             base.OnEndDrag(inputData);
+        }
+
+        public void React(Reaction reaction)
+        {
+            if (reactionCoroutine != null) StopCoroutine(reactionCoroutine);
+
+            switch (reaction.Type)
+            {
+                case Reaction.ReactionType.Rotation:
+                    reactionCoroutine = StartCoroutine(ReactionRotation(reaction));
+                    break;
+            }
+        }
+
+        private Coroutine reactionCoroutine = null;
+
+        // Progressive rotation the platform does when a Walker steps into a Pressure Plate
+        private IEnumerator ReactionRotation(Reaction reaction)
+        {
+            float elapsedTime = 0;
+
+            while (elapsedTime < reaction.TimeToComplete)
+            {
+                elapsedTime += Time.deltaTime;
+                float currentAngle = Mathf.Lerp(0, reaction.Units, elapsedTime / reaction.TimeToComplete); // We calculate the appropriate rotation angle in relation to the elapsed time
+                Rotate(currentAngle);
+                yield return null;
+            }
+
+            ApplyConfiguration(); //Apply resulting configuration
         }
     }
 }

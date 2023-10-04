@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Monument.World
 {
@@ -59,7 +58,7 @@ namespace Monument.World
             return path;
         }
 
-        public static List<NavNode> FindReachableNodesFrom(NavNode originNode) 
+        public static List<NavNode> FindReachableNodesFrom(NavNode originNode)
         {
             List<NavNode> reachableNodes = new List<NavNode>();
 
@@ -86,40 +85,6 @@ namespace Monument.World
             }
 
             return reachableNodes;
-        }
-
-        public static List<NavNode> FindLongestPathFrom(NavNode originNode)
-        {
-            Queue<NavNode> queue = new Queue<NavNode>();
-            queue.Enqueue(originNode);
-
-            Dictionary<NavNode, NavNode> parentMap = new Dictionary<NavNode, NavNode>();
-            parentMap[originNode] = null;
-
-            NavNode lastNode = null;
-
-            // Inspect every neighbor and their children recursively
-            while (queue.Count > 0)
-            {
-                NavNode current = queue.Dequeue();
-
-                foreach (NavNode neighbor in current.Neighbors)
-                {
-                    if (!parentMap.ContainsKey(neighbor))
-                    {
-                        queue.Enqueue(neighbor);
-                        parentMap[neighbor] = current;
-                        lastNode = neighbor; // Actualiza el último nodo visitado
-                    }
-                }
-            }
-
-            if (lastNode != null)
-            {
-                List<NavNode> path = BuildPathFromParentMap(parentMap, lastNode);
-                return path;
-            }
-            return null;
         }
     }
 }

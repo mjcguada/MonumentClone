@@ -9,6 +9,7 @@ namespace Monument.Player
     {
         [SerializeField] private PlayerAnimator animator;
         [SerializeField] private PlayerCursor cursor;
+        [SerializeField] private LayerMask navNodeLayerMask;
 
         // Called on click action to find a new path and wait for the older one to finish
         private Coroutine findPathCoroutine = null;
@@ -32,7 +33,7 @@ namespace Monument.Player
             inputActions.Player.Click.performed += ctx => OnClick();
             inputActions.Enable();
 
-            FindReachableNodes(FindNodeUnderPlayer());
+            FindReachableNodes(FindNodeUnderCharacter());
         }
 
         private void OnDisable()
@@ -50,7 +51,7 @@ namespace Monument.Player
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, navNodeLayerMask))
             {
                 // If the player has touch a navegable node
                 // We create a new path to follow
@@ -77,7 +78,7 @@ namespace Monument.Player
                 yield return null;
             }
 
-            NavNode originNode = FindNodeUnderPlayer();
+            NavNode originNode = FindNodeUnderCharacter();
 
             if (originNode == null)
             {
@@ -142,7 +143,7 @@ namespace Monument.Player
             if (lastRotativePlatform != null)
             {
                 // Handle rotation
-                if (lastRotativePlatform.RotatorHandle != null) lastRotativePlatform.RotatorHandle.EnableRotation(true);
+                lastRotativePlatform.RotatorHandle?.EnableRotation(true);
 
                 // Platform rotation
                 lastRotativePlatform.AllowsRotation = true;
@@ -156,7 +157,7 @@ namespace Monument.Player
                 lastRotativePlatform = pathToFollow[currentIndex].RotativePlatform;
 
                 // Disable Handle rotation
-                if (lastRotativePlatform.RotatorHandle != null) lastRotativePlatform.RotatorHandle.EnableRotation(false);
+                lastRotativePlatform.RotatorHandle?.EnableRotation(false);
 
                 // Disable Platform rotation (while the player is moving)
                 lastRotativePlatform.AllowsRotation = false;

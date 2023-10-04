@@ -27,7 +27,7 @@ namespace Monument.World
                 List<NavNode> neighbors = new List<NavNode>(nodesSet);
 
                 // Add nodes
-                for (int j = 0; j < neighbors.Count; j++) 
+                for (int j = 0; j < neighbors.Count; j++)
                 {
                     sceneNodes[i].AddNeighbor(neighbors[j]);
                 }
@@ -39,6 +39,9 @@ namespace Monument.World
         public static List<NavNode> FindPerspectiveNodes(NavNode nodeToExamine, NavNode[] sceneCollection = null)
         {
             List<NavNode> perspectiveNodes = new List<NavNode>();
+
+            if (nodeToExamine.IsStairs) return perspectiveNodes;
+
             // Find every NavNode object in the scene
             if (sceneCollection == null) sceneCollection = GameObject.FindObjectsOfType<NavNode>();
 
@@ -48,7 +51,7 @@ namespace Monument.World
             {
                 if (nodeToExamine == sceneCollection[i]) continue;
 
-                sceneCollection[i].InitializePerspectiveNodes();
+                //sceneCollection[i].InitializePerspectiveNodes();
 
                 if (sceneCollection[i].AreJointsConnected(nodeToExamine))
                 {
@@ -62,23 +65,62 @@ namespace Monument.World
         {
             List<NavNode> adjacentNodes = new List<NavNode>();
 
-            // Check 4 directions
-            for (int i = 0; i < directions.Length; i++)
+            if (nodeToExamine.IsStairs)
             {
-                if (Physics.Raycast(nodeToExamine.transform.position, directions[i], out RaycastHit hit))
+                RaycastHit hit;
+                // up and forward (we use up - right because the stairs mesh is rotated)
+                if (Physics.Raycast(nodeToExamine.transform.position, nodeToExamine.transform.TransformDirection(Vector3.up - Vector3.right).normalized, out hit))
                 {
-                    if (hit.distance > 1) continue;
+                    if (hit.distance <= 1) TryToAddNode(hit);
+                }
 
-                    NavNode target = hit.transform.gameObject.GetComponent<NavNode>();
-
-                    if (target != null && target != nodeToExamine)
+                // down and backwards (we use down - left because the stairs mesh is rotated)
+                if (Physics.Raycast(nodeToExamine.transform.position, nodeToExamine.transform.TransformDirection(Vector3.down - Vector3.left).normalized, out hit))
+                {
+                    if (hit.distance <= 1) TryToAddNode(hit);
+                }
+            }
+            else
+            {
+                // Check 4 directions
+                for (int i = 0; i < directions.Length; i++)
+                {
+                    if (Physics.Raycast(nodeToExamine.transform.position, directions[i], out RaycastHit hit))
                     {
-                        adjacentNodes.Add(target);
+                        if (hit.distance <= 1) TryToAddNode(hit);
                     }
                 }
-            } // for
+            }
             return adjacentNodes;
+
+            void TryToAddNode(RaycastHit hit)
+            {
+                NavNode target = hit.transform.gameObject.GetComponent<NavNode>();
+
+                if (TargetIsSuitable(target))
+                {
+                    adjacentNodes.Add(target);
+                }
+
+                if (target == null)
+                {
+                    // Try to find the component in the father
+                    target = hit.transform.gameObject.GetComponentInParent<NavNode>(); // stairs
+                    if (TargetIsSuitable(target)) adjacentNodes.Add(target);
+                }
+            }
+
+            bool TargetIsSuitable(NavNode target)
+            {
+                if (target == null) return false;
+                if (target == nodeToExamine) return false;
+                if (adjacentNodes.Contains(target)) return false;
+
+                return true;
+            }
         }
+
+
 
         // Remove every neighbor in scene
         public static void ClearNeighborsForEveryNode()

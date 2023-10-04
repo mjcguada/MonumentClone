@@ -4,7 +4,7 @@ using UnityEditor;
 
 namespace Monument.World
 {
-    [CustomEditor(typeof(NavNode)), CanEditMultipleObjects]
+    [CustomEditor(typeof(NavNode))]
     public class NavNodeEditor : Editor
     {
         private NavNode node;
@@ -20,6 +20,8 @@ namespace Monument.World
 
             node.GlobalWalkpoint = EditorGUILayout.Toggle("Global Walkpoint", node.GlobalWalkpoint);
 
+            node.IsStairs = EditorGUILayout.Toggle("Is Stairs", node.IsStairs);
+
             DisplayNeighborsFoldout();
 
             DisplayPossibleNeighborsFoldout();
@@ -31,6 +33,8 @@ namespace Monument.World
             {
                 Undo.RecordObject(node, "Modify Node Configurations"); // Record the object for undo
             }
+
+            serializedObject.ApplyModifiedProperties();
         }
 
         private void DisplayNeighborsFoldout()
@@ -171,7 +175,10 @@ namespace Monument.World
             }
             else
             {
-                EditorUtility.SetDirty(target); // Mark the object as dirty
+                if (EditorGUI.EndChangeCheck()) // Check if there were changes
+                {
+                    EditorUtility.SetDirty(target); // Mark the object as dirty to repaint gizmos
+                }
 
                 node.ApplyConfiguration(0);
                 // Default first Vector3 attribute

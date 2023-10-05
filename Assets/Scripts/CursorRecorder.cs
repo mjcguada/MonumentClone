@@ -10,7 +10,7 @@ public class CursorRecorder : MonoBehaviour
     {
         if (focus)
         {
-            Cursor.SetCursor(cursorTexture, new Vector2(0.5f, 0.5f), CursorMode.ForceSoftware);
+            Cursor.SetCursor(cursorTexture, Vector2.one * 0.4f, CursorMode.ForceSoftware);
         }
         else
         {

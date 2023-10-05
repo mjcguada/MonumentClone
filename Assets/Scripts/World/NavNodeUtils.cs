@@ -1,8 +1,6 @@
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
-using Monument.World;
-using log4net.Util;
 
 namespace Monument.World
 {

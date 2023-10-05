@@ -1,6 +1,7 @@
+using Monument.World;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(RectTransform))]
@@ -8,6 +9,7 @@ public class PlayerCursor : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Image myImage = null;
+    [SerializeField] private LayerMask navNodeLayerMask;
 
     [Header("Scale animation settings")]
     [SerializeField] private float startingSize = 0.25f;
@@ -17,19 +19,49 @@ public class PlayerCursor : MonoBehaviour
     [Header("Fade out animation settings")]
     [SerializeField] private float fadeOutTime = 0.2f;
 
+    private MonumentInput inputActions;
+
     private void Start()
     {
         myImage.color = Color.clear;
     }
 
-    public void ShowCursor(Vector2 screenPosition)
+    private void OnEnable()
     {
-        transform.position = screenPosition;
+        if (inputActions == null)
+        {
+            inputActions = new MonumentInput();
+            inputActions.Player.Click.performed += ShowCursor;
+        }
 
-        StopAllCoroutines();
+        inputActions.Enable();
+    }
 
-        // Play Bubble Animation
-        StartCoroutine(AnimationCoroutine());
+    private void OnDisable()
+    {
+        inputActions?.Disable();
+    }
+
+    private void ShowCursor(InputAction.CallbackContext context)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, navNodeLayerMask))
+        {
+            // Play the animation if what the user clicks is a NavNode
+            NavNode target = hit.transform.gameObject.GetComponent<NavNode>();
+            if (target == null) return;
+
+            // Move cursor texture to NavNode position projected on screen
+            Vector2 screenPosition = Camera.main.WorldToScreenPoint(target.WalkPoint);
+            transform.position = screenPosition;
+
+            // Stop previous animation
+            StopAllCoroutines();
+
+            // Play bubble animation
+            StartCoroutine(AnimationCoroutine());
+        }
     }
 
     private IEnumerator AnimationCoroutine()
@@ -57,12 +89,11 @@ public class PlayerCursor : MonoBehaviour
         }
 
         // Play Fade In Animation
-        StartCoroutine(FadeCoroutine(Color.white, Color.clear, fadeOutTime));
+        StartCoroutine(FadeOutCoroutine(Color.white, Color.clear, fadeOutTime));
     }
 
-    private IEnumerator FadeCoroutine(Color startingColor, Color targetColor, float fadeDuration)
+    private IEnumerator FadeOutCoroutine(Color startingColor, Color targetColor, float fadeDuration)
     {
-        // Image is invisible
         myImage.color = startingColor;
         float elapsedTime = 0;
 

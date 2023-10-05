@@ -49,15 +49,21 @@ namespace Monument.World
         // Disables/Enables the last saved linkers configuration while the user is interacting with the platform
         private void SetLinkersActive(bool active)
         {
-            if (previousConfiguration >= 0)
-            {
-                Linker[] previousConfigurationLinkers = configurations[previousConfiguration].Linkers;
+            ApplyLinkersConfiguration(previousConfiguration, !active);
+        }
 
-                for (int i = 0; i < previousConfigurationLinkers.Length; i++)
-                {
-                    if (active) previousConfigurationLinkers[i].ApplyConfiguration(previousConfigurationLinkers[i].areLinked); // Apply
-                    else previousConfigurationLinkers[i].ApplyConfiguration(!previousConfigurationLinkers[i].areLinked); // Undo
-                }
+        private void ApplyLinkersConfiguration(int linkersIndex, bool undo)
+        {
+            if (linkersIndex < 0 || linkersIndex >= configurations.Length) return;
+
+            Linker[] configurationLinkers = configurations[linkersIndex].Linkers;
+
+            if (configurationLinkers == null) return;
+
+            for (int i = 0; i < configurationLinkers.Length; i++)
+            {
+                if (undo) configurationLinkers[i].ApplyConfiguration(!configurationLinkers[i].areLinked);
+                else configurationLinkers[i].ApplyConfiguration(configurationLinkers[i].areLinked);
             }
         }
 
@@ -69,26 +75,11 @@ namespace Monument.World
 
             int currentConfiguration = (int)snappedAngleRotation / 90;
 
-            if (previousConfiguration >= 0)
-            {
-                // Undo previous configuration
-                Linker[] previousConfigurationLinkers = configurations[previousConfiguration].Linkers;
+            // Undo previous configuration
+            ApplyLinkersConfiguration(previousConfiguration, undo: true);
 
-                for (int i = 0; i < previousConfigurationLinkers.Length; i++)
-                {
-                    previousConfigurationLinkers[i].ApplyConfiguration(!previousConfigurationLinkers[i].areLinked);
-                }
-            }            
-
-            // Apply linkers given the current rotation
-            Linker[] configurationLinkers = configurations[currentConfiguration].Linkers;
-            if (configurationLinkers != null)
-            {
-                for (int i = 0; i < configurationLinkers.Length; i++)
-                {
-                    configurationLinkers[i].ApplyConfiguration(configurationLinkers[i].areLinked);
-                }
-            }
+            // Apply linkers given the current rotation            
+            ApplyLinkersConfiguration(currentConfiguration, undo: false);
 
             // Update nodes' Walkpoint to current rotation
             if (childrenNodes == null || childrenNodes.Length == 0) AssignPlatformToChildrenNodes();
@@ -98,7 +89,7 @@ namespace Monument.World
             }
 
             // New configuration
-            previousConfiguration = currentConfiguration;
+            previousConfiguration = currentConfiguration;            
         }
 
         public override void OnBeginDrag(PointerEventData inputData)

@@ -21,6 +21,7 @@ namespace Monument.World
 #if UNITY_EDITOR
         public bool ShowNeighborsFoldout = true;
         public bool ShowPossibleNeighborsFoldout = true;
+        public bool DrawRaycastRays = false;
 #endif
         public bool GlobalWalkpoint = false;
 
@@ -190,21 +191,24 @@ namespace Monument.World
                 Gizmos.DrawLine(WalkPoint, neighbors[i].WalkPoint);
             }
 
-            //Draw directions
-            //Gizmos.color = Color.red;
-            //if (IsStairs)
-            //{
-            //    Gizmos.DrawRay(transform.position, transform.TransformDirection(Vector3.up - Vector3.right));
-            //    Gizmos.DrawRay(transform.position, transform.TransformDirection(Vector3.down - Vector3.left));
+            // Draw raycast rays
+            if (DrawRaycastRays)
+            {
+                Gizmos.color = Color.red;
+                if (IsStairs)
+                {
+                    Gizmos.DrawRay(transform.position, transform.TransformDirection(Vector3.up - Vector3.right));
+                    Gizmos.DrawRay(transform.position, transform.TransformDirection(Vector3.down - Vector3.left));
 
-            //}
-            //else
-            //{
-            //    for (int i = 0; i < directions.Length; i++)
-            //    {
-            //        Gizmos.DrawRay(transform.position, directions[i]);
-            //    }
-            //}
+                }
+                else
+                {
+                    for (int i = 0; i < directions.Length; i++)
+                    {
+                        Gizmos.DrawRay(transform.position, directions[i]);
+                    }
+                }
+            }
         }
     }
 }

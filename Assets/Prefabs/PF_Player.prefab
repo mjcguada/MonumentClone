@@ -612,7 +612,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeToArrive: 0.25
   animator: {fileID: 5615500167772362194}
-  cursor: {fileID: 0}
   navNodeLayerMask:
     serializedVersion: 2
     m_Bits: 2048

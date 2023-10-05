@@ -21,6 +21,8 @@ namespace Monument.World
             node.GlobalWalkpoint = EditorGUILayout.Toggle("Global Walkpoint", node.GlobalWalkpoint);
 
             node.IsStairs = EditorGUILayout.Toggle("Is Stairs", node.IsStairs);
+            
+            node.DrawRaycastRays = EditorGUILayout.Toggle("Draw Raycast Rays", node.DrawRaycastRays);
 
             DisplayNeighborsFoldout();
 

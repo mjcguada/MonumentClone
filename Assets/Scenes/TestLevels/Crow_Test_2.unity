@@ -279,9 +279,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 1640472631}
-  - {fileID: 1077066351}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -402,9 +404,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 397100422}
-  - {fileID: 2038511290}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -603,8 +607,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 1399829276}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -647,8 +654,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 1960968081}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -784,9 +794,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 1711521573}
-  - {fileID: 1375057628}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -873,7 +885,7 @@ GameObject:
   - component: {fileID: 268667882}
   - component: {fileID: 268667880}
   - component: {fileID: 268667881}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: Cube (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -892,9 +904,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 385607364}
-  - {fileID: 1672884131}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -1015,10 +1029,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 1077066351}
-  - {fileID: 844864091}
-  - {fileID: 1547909638}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -1204,10 +1219,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 268667880}
-  - {fileID: 941777016}
-  - {fileID: 795263231}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -1263,9 +1279,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 1960968081}
-  - {fileID: 1797949604}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -1386,9 +1404,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 1735363896}
-  - {fileID: 76725359}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -1575,8 +1595,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 1970074085}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -1669,9 +1692,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 1797949604}
-  - {fileID: 1711521573}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -1936,9 +1961,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 1547909638}
-  - {fileID: 941777016}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -1994,9 +2021,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 1861340993}
-  - {fileID: 1640472631}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -2170,8 +2199,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 1732099892}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -2342,9 +2374,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 385607364}
-  - {fileID: 1399829276}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -2400,9 +2434,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 333318458}
-  - {fileID: 1735363896}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -2523,9 +2559,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 972334449}
-  - {fileID: 1732099892}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -2711,9 +2749,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 567942807}
-  - {fileID: 385607364}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -2889,9 +2929,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 1192112728}
-  - {fileID: 899960091}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -3090,9 +3132,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 28252958}
-  - {fileID: 333318458}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -3135,9 +3179,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 1672884131}
-  - {fileID: 972334449}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -3258,10 +3304,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 1970074085}
-  - {fileID: 1861340993}
-  - {fileID: 255038268}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -3447,9 +3494,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 795263231}
-  - {fileID: 130724999}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -3679,9 +3728,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 333318458}
-  - {fileID: 567942807}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -3775,9 +3826,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 591077812}
-  - {fileID: 28252958}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -3898,9 +3951,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 268667880}
-  - {fileID: 1192112728}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -4059,9 +4114,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 493215336}
-  - {fileID: 255038268}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -4182,9 +4239,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 899960091}
-  - {fileID: 689632223}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -4305,9 +4364,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 844864091}
-  - {fileID: 397100422}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -4428,9 +4489,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 387295221}
-  - {fileID: 493215336}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -4629,9 +4692,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 1375057628}
-  - {fileID: 591077812}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -4838,9 +4903,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 233798340}
-  - {fileID: 387295221}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -5039,9 +5106,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 453717088}
-  - {fileID: 1375057628}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1
@@ -5084,8 +5153,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b90d7624c142c0641afce5ae457cb08b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighbors:
-  - {fileID: 76725359}
+  neighbors: []
+  ShowNeighborsFoldout: 1
+  ShowPossibleNeighborsFoldout: 1
+  GlobalWalkpoint: 0
+  IsStairs: 0
   HasMultipleConfiguration: 0
   Configurations:
   - isActive: 1

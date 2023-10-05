@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Monument.World;
+using UnityEngine.InputSystem;
 
 namespace Monument.Player
 {
     public class PlayerMovement : Walker
     {
         [SerializeField] private PlayerAnimator animator;
-        [SerializeField] private PlayerCursor cursor;
         [SerializeField] private LayerMask navNodeLayerMask;
 
         // Called on click action to find a new path and wait for the older one to finish
@@ -23,35 +23,29 @@ namespace Monument.Player
         private RotativePlatform lastRotativePlatform;
 
         // Reachable nodes (possible paths)
-        List<NavNode> reachableNodes = new List<NavNode>();
+        List<NavNode> reachableNodes = new List<NavNode>();        
 
-        protected override void Start()
+        private void OnEnable()
         {
-            base.Start();
+            if (inputActions == null) 
+            {
+                inputActions = new MonumentInput();
+                inputActions.Player.Click.performed += ctx => OnClick();
+            }
 
-            inputActions = new MonumentInput();
-            inputActions.Player.Click.performed += ctx => OnClick();
             inputActions.Enable();
-
-            FindReachableNodes(FindNodeUnderCharacter());
         }
 
         private void OnDisable()
         {
-            if (inputActions != null) inputActions.Disable();
-        }
-
-        private void OnEnable()
-        {
-            if (inputActions != null) inputActions.Enable();
+            inputActions?.Disable();
         }
 
         private void OnClick()
         {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
 
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, navNodeLayerMask))
+            if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, navNodeLayerMask))
             {
                 // If the player has touch a navegable node
                 // We create a new path to follow
@@ -68,30 +62,27 @@ namespace Monument.Player
         {
             // Clear existing path
             pathToFollow.Clear();
-
-            // Show cursor
-            cursor?.ShowCursor(Camera.main.WorldToScreenPoint(target.WalkPoint));
-
+            
             // Wait until the player reaches the Node they were moving to
             while (isMoving)
             {
                 yield return null;
             }
 
-            NavNode originNode = FindNodeUnderCharacter();
+            currentNode = FindNodeUnderCharacter();
 
-            if (originNode == null)
+            if (currentNode == null)
             {
                 Debug.LogError("Couldn't find origin node");
                 yield break;
             }
-            else if (originNode == target)
+            else if (currentNode == target)
             {
                 Debug.Log("Target and origin nodes are the same one");
                 yield break;
-            }
+            }            
 
-            List<NavNode> path = NavNodePathFinder.FindPathFrom(originNode, target);
+            List<NavNode> path = NavNodePathFinder.FindPathFrom(currentNode, target);
             if (path != null)
             {
                 FollowPath(path);

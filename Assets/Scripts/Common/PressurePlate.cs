@@ -29,8 +29,7 @@ public class PressurePlate : MonoBehaviour
             if (!CanBePressedRepeatedly) 
             {
                 Destroy(this); // Destroy script component
-                return;
             }
-        }        
+        }
     }
 }

@@ -2446,6 +2446,7 @@ MonoBehaviour:
   neighbors: []
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 0
   IsStairs: 0
   HasMultipleConfiguration: 1
@@ -2812,6 +2813,7 @@ MonoBehaviour:
   - {fileID: 1927602076}
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 0
   IsStairs: 0
   HasMultipleConfiguration: 0
@@ -3027,6 +3029,7 @@ MonoBehaviour:
   - {fileID: 2017326861}
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 0
   IsStairs: 0
   HasMultipleConfiguration: 0
@@ -3152,6 +3155,7 @@ MonoBehaviour:
   neighbors: []
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 0
   IsStairs: 0
   HasMultipleConfiguration: 0
@@ -3526,6 +3530,7 @@ MonoBehaviour:
   neighbors: []
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 1
   IsStairs: 0
   HasMultipleConfiguration: 0
@@ -5964,6 +5969,7 @@ MonoBehaviour:
   - {fileID: 1543468683}
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 0
   IsStairs: 0
   HasMultipleConfiguration: 0
@@ -8184,6 +8190,7 @@ MonoBehaviour:
   neighbors: []
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 0
   IsStairs: 0
   HasMultipleConfiguration: 1
@@ -8434,6 +8441,7 @@ MonoBehaviour:
   neighbors: []
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 1
   IsStairs: 0
   HasMultipleConfiguration: 0
@@ -11370,6 +11378,7 @@ MonoBehaviour:
   - {fileID: 1915876664}
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 0
   IsStairs: 0
   HasMultipleConfiguration: 0
@@ -11840,6 +11849,7 @@ MonoBehaviour:
   - {fileID: 2017326861}
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 0
   IsStairs: 0
   HasMultipleConfiguration: 0
@@ -11982,6 +11992,7 @@ MonoBehaviour:
   - {fileID: 1805400420}
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 0
   IsStairs: 0
   HasMultipleConfiguration: 0
@@ -12108,6 +12119,7 @@ MonoBehaviour:
   - {fileID: 1824683763}
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 0
   IsStairs: 0
   HasMultipleConfiguration: 0
@@ -12447,6 +12459,7 @@ MonoBehaviour:
   - {fileID: 1070609286}
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 0
   IsStairs: 0
   HasMultipleConfiguration: 0
@@ -12556,6 +12569,7 @@ MonoBehaviour:
   neighbors: []
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 0
   IsStairs: 0
   HasMultipleConfiguration: 1
@@ -12643,6 +12657,7 @@ MonoBehaviour:
   - {fileID: 158382929}
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 0
   IsStairs: 0
   HasMultipleConfiguration: 0
@@ -12769,6 +12784,7 @@ MonoBehaviour:
   - {fileID: 927275940}
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 0
   IsStairs: 0
   HasMultipleConfiguration: 0
@@ -13224,6 +13240,7 @@ MonoBehaviour:
   neighbors: []
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 0
   IsStairs: 0
   HasMultipleConfiguration: 1
@@ -13597,6 +13614,7 @@ MonoBehaviour:
   - {fileID: 1996303650}
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 0
   IsStairs: 0
   HasMultipleConfiguration: 0
@@ -15887,6 +15905,7 @@ MonoBehaviour:
   - {fileID: 1418225384}
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 0
   IsStairs: 0
   HasMultipleConfiguration: 0
@@ -16222,6 +16241,7 @@ MonoBehaviour:
   - {fileID: 1244009116}
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 0
   IsStairs: 0
   HasMultipleConfiguration: 1
@@ -16390,6 +16410,7 @@ MonoBehaviour:
   - {fileID: 1915876664}
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 0
   IsStairs: 0
   HasMultipleConfiguration: 0
@@ -16491,6 +16512,8 @@ GameObject:
   - component: {fileID: 1585841105}
   - component: {fileID: 1585841104}
   - component: {fileID: 1585841103}
+  - component: {fileID: 1585841106}
+  - component: {fileID: 1585841107}
   m_Layer: 0
   m_Name: FinalDoor
   m_TagString: Untagged
@@ -16566,6 +16589,32 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 26
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1585841106
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1585841102}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4.5, y: 1, z: 1}
+  m_Center: {x: 2, y: 0, z: 0}
+--- !u!114 &1585841107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1585841102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 513f0dd7ae15d19468c97a509319f159, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelEndingEvent: {fileID: 11400000, guid: 5db345a6c52787848b52973da3022c4f, type: 2}
 --- !u!1 &1594309215
 GameObject:
   m_ObjectHideFlags: 0
@@ -18783,6 +18832,7 @@ MonoBehaviour:
   neighbors: []
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 1
   IsStairs: 0
   HasMultipleConfiguration: 0
@@ -18924,6 +18974,7 @@ MonoBehaviour:
   - {fileID: 1070609286}
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 0
   IsStairs: 0
   HasMultipleConfiguration: 0
@@ -19051,6 +19102,7 @@ MonoBehaviour:
   - {fileID: 1134664149}
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 0
   IsStairs: 0
   HasMultipleConfiguration: 0
@@ -19163,6 +19215,7 @@ MonoBehaviour:
   - {fileID: 1996303650}
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 0
   IsStairs: 0
   HasMultipleConfiguration: 0
@@ -19305,6 +19358,7 @@ MonoBehaviour:
   - {fileID: 1824683763}
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 0
   IsStairs: 0
   HasMultipleConfiguration: 0
@@ -19581,6 +19635,7 @@ MonoBehaviour:
   - {fileID: 927275940}
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 0
   IsStairs: 0
   HasMultipleConfiguration: 0
@@ -19723,6 +19778,7 @@ MonoBehaviour:
   - {fileID: 251726593}
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 0
   IsStairs: 0
   HasMultipleConfiguration: 0
@@ -19917,6 +19973,7 @@ MonoBehaviour:
   - {fileID: 1418225384}
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 0
   IsStairs: 0
   HasMultipleConfiguration: 0
@@ -20003,6 +20060,7 @@ MonoBehaviour:
   - {fileID: 291813307}
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 0
   IsStairs: 0
   HasMultipleConfiguration: 0
@@ -20227,6 +20285,7 @@ MonoBehaviour:
   neighbors: []
   ShowNeighborsFoldout: 1
   ShowPossibleNeighborsFoldout: 1
+  DrawRaycastRays: 0
   GlobalWalkpoint: 1
   IsStairs: 0
   HasMultipleConfiguration: 0

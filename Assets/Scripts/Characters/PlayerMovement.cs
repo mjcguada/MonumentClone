@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 namespace Monument.Player
 {
-    public class PlayerMovement : Walker
+    public class PlayerMovement : Walker, IInteractor
     {
         [SerializeField] private PlayerAnimator animator;
         [SerializeField] private LayerMask navNodeLayerMask;

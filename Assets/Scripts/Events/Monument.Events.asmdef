@@ -1,0 +1,16 @@
+{
+    "name": "Monument.Events",
+    "rootNamespace": "",
+    "references": [
+        "GUID:678ada217d1f9a741b62127ede60bff5"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

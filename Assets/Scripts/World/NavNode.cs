@@ -154,6 +154,7 @@ namespace Monument.World
             return false;
         }
 
+#if UNITY_EDITOR
         private void OnDrawGizmos()
         {
             // Draw center
@@ -210,5 +211,6 @@ namespace Monument.World
                 }
             }
         }
+#endif
     }
 }

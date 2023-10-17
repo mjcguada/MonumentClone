@@ -23,10 +23,8 @@ namespace Monument.World
         private int previousConfiguration = -1;
         private NavNode[] childrenNodes = null;
 
-        protected override void Start()
+        private void Start()
         {
-            base.Start();
-
             snapper.OnSnapFinished += delegate { SetLinkersActive(true); };
             snapper.OnSnapFinished += ApplyConfiguration;
 

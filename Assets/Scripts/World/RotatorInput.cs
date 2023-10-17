@@ -23,15 +23,12 @@ namespace Monument.World
         protected void Awake()
         {
             snapper = GetComponent<RotationSnapper>();
-        }
-
-        protected virtual void Start()
-        {
-            pivotPosition = Camera.main.WorldToScreenPoint(transform.position);
-        }
+        }        
 
         public virtual void OnBeginDrag(PointerEventData inputData)
         {
+            pivotPosition = Camera.main.WorldToScreenPoint(transform.position);
+
             snapper.StopSnap();
 
             Vector2 delta = inputData.position - pivotPosition;

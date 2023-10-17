@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+
+#if UNITY_EDITOR
 using UnityEditor;
 
 namespace Monument.World
@@ -198,3 +200,4 @@ namespace Monument.World
         }
     }
 }
+#endif

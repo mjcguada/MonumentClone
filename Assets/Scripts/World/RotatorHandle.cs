@@ -21,7 +21,7 @@ namespace Monument.World
         private const float scaleAnimationTime = 0.3f;
         private Coroutine scaleCoroutine = null;
 
-        protected override void Start()
+        private void Start()
         {
 #if UNITY_EDITOR
             if (platformToRotate == null)
@@ -31,8 +31,6 @@ namespace Monument.World
                 return;
             }
 #endif
-
-            base.Start();
             originalScale = transform.localScale;
         }
 

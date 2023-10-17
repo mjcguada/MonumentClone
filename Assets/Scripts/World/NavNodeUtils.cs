@@ -1,6 +1,6 @@
-using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEditor;
 
 namespace Monument.World
 {
@@ -118,8 +118,7 @@ namespace Monument.World
             }
         }
 
-
-
+#if UNITY_EDITOR
         // Remove every neighbor in scene
         public static void ClearNeighborsForEveryNode()
         {
@@ -147,5 +146,6 @@ namespace Monument.World
             Undo.CollapseUndoOperations(undoGroup);
             Debug.Log("Neighbors cleaned successfully");
         }
+#endif
     }
 }

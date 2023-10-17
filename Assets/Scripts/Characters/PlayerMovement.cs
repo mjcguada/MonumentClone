@@ -127,9 +127,12 @@ namespace Monument.Player
             // Update current node value
             currentNode = pathToFollow[currentIndex];
 
+#if UNITY_EDITOR
             // Show reachable nodes on the Editor
             FindReachableNodes(pathToFollow[currentIndex]);
+#endif
 
+            // TODO: IMPROVE THIS (case where we go from one platform to the same one)
             // Enable again rotative platform that we leave
             if (lastRotativePlatform != null)
             {
@@ -182,9 +185,9 @@ namespace Monument.Player
             }
         }
 
+#if UNITY_EDITOR
         private void FindReachableNodes(NavNode originNode)
         {
-#if UNITY_EDITOR
             // Clear previous list of nodes
             for (int i = 0; i < reachableNodes.Count; i++)
             {

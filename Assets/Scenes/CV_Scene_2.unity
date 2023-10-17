@@ -352,7 +352,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh104228
+  m_Name: pb_Mesh35830
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -6435,7 +6435,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh104202
+  m_Name: pb_Mesh35804
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -7385,7 +7385,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: 'In March 2023 I started a Unity project on my spare time with the intention
-    of emulating the behavior of the original 2014 game <color=#01C1E2>Monument Valley</color>.
+    of emulating the behavior of the original 2014 game <color=#01C1E2>Monument Valley.</color>
 
     I
     was able to replicate the gameplay and core mechanics: player movement and feel,
@@ -10163,7 +10163,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh104324
+  m_Name: pb_Mesh35946
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -10460,7 +10460,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh104542
+  m_Name: pb_Mesh36172
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -10966,6 +10966,7 @@ GameObject:
   - component: {fileID: 897175962}
   - component: {fileID: 897175961}
   - component: {fileID: 897175960}
+  - component: {fileID: 897175964}
   m_Layer: 0
   m_Name: Level Background
   m_TagString: Untagged
@@ -11052,13 +11053,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -45, y: -45, z: 0}
+--- !u!114 &897175964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 897175959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bbc44177b2f5324d9ed08a7645743c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rendererReference: {fileID: 897175961}
+  targetColor: {r: 1, g: 0.77556914, b: 0.26954174, a: 1}
+  timeToFade: 1
 --- !u!43 &898311202
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh104414
+  m_Name: pb_Mesh36036
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -14249,7 +14265,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh104788
+  m_Name: pb_Mesh36448
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -15710,7 +15726,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh104706
+  m_Name: pb_Mesh36366
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -16004,7 +16020,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 983261969, guid: 0d0040d799b27354c9c91529ce21e981, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 983261970, guid: 0d0040d799b27354c9c91529ce21e981, type: 3}
       propertyPath: targetColor.b
@@ -16103,7 +16119,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 983261969, guid: 0d0040d799b27354c9c91529ce21e981, type: 3}
+    - {fileID: 983261970, guid: 0d0040d799b27354c9c91529ce21e981, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 0d0040d799b27354c9c91529ce21e981, type: 3}
 --- !u!1 &1641883247
 GameObject:
@@ -16826,7 +16844,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh104280
+  m_Name: pb_Mesh35882
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -16984,6 +17002,66 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1775795673
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1775795675}
+  - component: {fileID: 1775795674}
+  m_Layer: 0
+  m_Name: LevelEnding EventListener
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1775795674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1775795673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2043eb366238df41baffdfb12f3c8ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 5db345a6c52787848b52973da3022c4f, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 897175964}
+        m_TargetAssemblyTypeName: MaterialColorFader, Monument.Common
+        m_MethodName: Fade
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!4 &1775795675
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1775795673}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1796044117
 GameObject:
   m_ObjectHideFlags: 0
@@ -19787,7 +19865,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh104736
+  m_Name: pb_Mesh36396
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

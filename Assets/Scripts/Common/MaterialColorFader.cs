@@ -1,26 +1,29 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Camera))]
-public class CameraColorFader : MonoBehaviour
+[RequireComponent(typeof(Renderer))]
+public class MaterialColorFader : MonoBehaviour
 {
-    [SerializeField] private Camera cameraComponent;
+    [SerializeField] private Renderer rendererReference;
     [SerializeField] private Color targetColor = Color.yellow;
 
     [SerializeField] private float timeToFade = 1f;
 
     private Coroutine fadeCoroutine = null;
+    private Material materialReference;
 
-#if UNITY_EDITOR
     private void Awake()
     {
-        if (cameraComponent == null) 
+#if UNITY_EDITOR
+        if (rendererReference == null)
         {
-            Debug.LogError("The Camera Component reference is null", gameObject);
+            Debug.LogError("The Material reference is null", gameObject);
             Destroy(this); return;
         }
-    }
 #endif
+        materialReference = rendererReference.material;
+    }
 
     public void Fade()
     {
@@ -31,15 +34,13 @@ public class CameraColorFader : MonoBehaviour
     private IEnumerator FadeColorCoroutine()
     {
         float elapsedTime = 0;
-        Color startingColor = cameraComponent.backgroundColor;
+        Color startingColor = materialReference.color;
 
         while (elapsedTime < timeToFade)
         {
             elapsedTime += Time.deltaTime;
-            cameraComponent.backgroundColor = Color.Lerp(startingColor, targetColor, elapsedTime / timeToFade);
+            materialReference.color = Color.Lerp(startingColor, targetColor, elapsedTime / timeToFade);
             yield return null;
         }
-
     }
-
 }

@@ -5525,8 +5525,8 @@ PrefabInstance:
     - target: {fileID: 2306730860721483033, guid: 4efb246059386ef48b6cf99a8f56b881,
         type: 3}
       propertyPath: m_text
-      value: "My name is <color=#00FFFF>Mario Jim\xE9nez</color> \nI am sending you
-        this project to express my strong interest in the possibility of working
+      value: "My name is <color=#00FFFF>Mario Jim\xE9nez.</color> \nI am sending
+        you this project to express my strong interest in the possibility of working
         with your team as a game programmer.\n\nI am especially impressed by your
         commitment to cultivating an inclusive and nurturing work atmosphere, advocating
         for equality, and giving precedence to mental well-being, all while crafting

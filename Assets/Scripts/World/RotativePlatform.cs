@@ -26,7 +26,7 @@ namespace Monument.World
         private void Start()
         {
             snapper.OnSnapFinished += delegate { SetLinkersActive(true); };
-            snapper.OnSnapFinished += ApplyConfiguration;
+            snapper.OnSnapFinished += delegate { ApplyConfiguration(); };
 
             AssignPlatformToChildrenNodes();
 
@@ -65,10 +65,12 @@ namespace Monument.World
             }
         }
 
-        public void ApplyConfiguration()
+        public void ApplyConfiguration(float forcedRotation = -1)
         {
             // Establish desired configuration based on current rotation
             float currentAngleRotation = transform.rotation.eulerAngles[(int)SpinAxis];
+            if (forcedRotation != -1) currentAngleRotation = forcedRotation;
+
             float snappedAngleRotation = Mathf.Round(currentAngleRotation / 90.0f) * 90.0f;
 
             int currentConfiguration = (int)snappedAngleRotation / 90;
@@ -139,9 +141,9 @@ namespace Monument.World
                 float currentAngle = Mathf.Lerp(0, reaction.Units, elapsedTime / reaction.TimeToComplete); // We calculate the appropriate rotation angle in relation to the elapsed time
                 Rotate(currentAngle);
                 yield return null;
-            }
+            }            
 
-            ApplyConfiguration(); //Apply resulting configuration
-        }
+            ApplyConfiguration(reaction.Units); //Apply resulting configuration
+        }        
     }
 }

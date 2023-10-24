@@ -35,8 +35,8 @@ public class CameraColorFader : MonoBehaviour
 
         while (elapsedTime < timeToFade)
         {
-            elapsedTime += Time.deltaTime;
             cameraComponent.backgroundColor = Color.Lerp(startingColor, targetColor, elapsedTime / timeToFade);
+            elapsedTime += Time.deltaTime;
             yield return null;
         }
 

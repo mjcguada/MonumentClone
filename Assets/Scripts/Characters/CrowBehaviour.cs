@@ -8,6 +8,8 @@ public class CrowBehaviour : Walker
     // TODO: stop if the crow encounters Ida
     // TODO: state machine
 
+    [SerializeField] private bool canWalkStairs = false;
+
     private enum CrowStates { Walking, Stopped };
 
     private bool automaticNavigation = true; // if false, we have to define the available navigation nodes for the crow
@@ -37,6 +39,34 @@ public class CrowBehaviour : Walker
 
         isMoving = true;
 
+        // Rotative platforms management
+        // Enable again rotative platform that we leave
+        if (lastRotativePlatform != null)
+        {
+            // Handle rotation
+            lastRotativePlatform.RotatorHandle?.EnableRotation(true);
+
+            // Platform rotation
+            lastRotativePlatform.EnableRotation(true);
+
+            transform.SetParent(null);
+        }
+
+        lastRotativePlatform = nextNode.RotativePlatform;
+
+        // Disable rotation of the current rotative platform
+        if (lastRotativePlatform != null)
+        {
+            // Disable Handle rotation
+            lastRotativePlatform.RotatorHandle?.EnableRotation(false);
+
+            // Disable Platform rotation (while the crow is moving)
+            lastRotativePlatform.EnableRotation(false);
+
+            // Make crow child of rotative platform to rotate with it
+            transform.SetParent(lastRotativePlatform.transform, true);
+        }
+
         // Update last visited node
         lastVisitedNode = currentNode;
         currentNode = nextNode;
@@ -45,7 +75,7 @@ public class CrowBehaviour : Walker
         LookAtNode(nextNode);
 
         // Move to nect node
-        StartCoroutine(MoveToNodeCoroutine(nextNode, MoveToNextNode));
+        StartCoroutine(MoveToNodeCoroutine(lastVisitedNode, nextNode, MoveToNextNode));
     }
 
     private NavNode SelectNextNode()
@@ -57,7 +87,15 @@ public class CrowBehaviour : Walker
         {
             if (neighbor != lastVisitedNode)
             {
-                unvisitedNeighbors.Add(neighbor);
+                if (neighbor.IsStairs)
+                {
+                    // If the crow can walk by stairs
+                    if (canWalkStairs) unvisitedNeighbors.Add(neighbor);
+                }
+                else
+                {
+                    unvisitedNeighbors.Add(neighbor);
+                }
             }
         }
 

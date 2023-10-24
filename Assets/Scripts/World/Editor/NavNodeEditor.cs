@@ -24,7 +24,10 @@ namespace Monument.World
 
             node.IsStairs = EditorGUILayout.Toggle("Is Stairs", node.IsStairs);
             
+            EditorGUILayout.Space(2.5f);
+            EditorGUILayout.LabelField("Gizmos", EditorStyles.boldLabel);
             node.DrawRaycastRays = EditorGUILayout.Toggle("Draw Raycast Rays", node.DrawRaycastRays);
+            EditorGUILayout.Space(2.5f);
 
             DisplayNeighborsFoldout();
 

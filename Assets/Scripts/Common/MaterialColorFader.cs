@@ -38,8 +38,8 @@ public class MaterialColorFader : MonoBehaviour
 
         while (elapsedTime < timeToFade)
         {
-            elapsedTime += Time.deltaTime;
             materialReference.color = Color.Lerp(startingColor, targetColor, elapsedTime / timeToFade);
+            elapsedTime += Time.deltaTime;
             yield return null;
         }
     }

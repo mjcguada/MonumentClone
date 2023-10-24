@@ -111,6 +111,14 @@ namespace Monument.World
             neighbors.Clear();
         }
 
+        public void ClearNullNeighbors()
+        {
+            for (int i = neighbors.Count - 1; i >= 0; i--) 
+            {
+                if (neighbors[i] == null) neighbors.RemoveAt(i);
+            }
+        }
+
         public void ApplyConfiguration(int configuration)
         {
             if (!HasMultipleConfiguration)

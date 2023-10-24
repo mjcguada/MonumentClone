@@ -31,6 +31,6 @@ public class GraphicFader : MonoBehaviour
     public void FadeOut()
     {
         graphicElement.CrossFadeAlpha(1, 0, false); // Establish alpha to 1 instantly
-        graphicElement.CrossFadeAlpha(1f, timeToFadeIn, false); // Fade along time
+        graphicElement.CrossFadeAlpha(0f, timeToFadeOut, false); // Fade along time
     }
 }

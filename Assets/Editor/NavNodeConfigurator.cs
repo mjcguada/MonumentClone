@@ -331,13 +331,13 @@ public class NavNodeConfigurator : EditorWindow
         {
             NavNodeUtils.SetUpNeighborsAutomatically();
         }
-        if (GUILayout.Button("Rename every node"))
-        {
-
-        }
         if (GUILayout.Button("Clear every neighbor"))
         {
             NavNodeUtils.ClearNeighborsForEveryNode();
+        }
+        if (GUILayout.Button("Clear NULL neighbors"))
+        {
+            NavNodeUtils.ClearNULLNeighborsForEveryNode();
         }
         EditorGUILayout.EndVertical();
     }

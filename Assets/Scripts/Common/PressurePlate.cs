@@ -11,7 +11,9 @@ public class PressurePlate : MonoBehaviour
 
     public bool CanBePressedRepeatedly = false;
 
-    public UnityEvent<Reaction> OnPlatePressed;
+    public UnityEvent<Reaction> OnPlatePressedReaction;
+    
+    public UnityEvent OnPlatePressedEvent;
 
     private void Start()
     {
@@ -24,7 +26,8 @@ public class PressurePlate : MonoBehaviour
         IPresser presserComponent = other.GetComponent<IPresser>();
         if (presserComponent != null) 
         {
-            OnPlatePressed?.Invoke(reaction);
+            OnPlatePressedReaction?.Invoke(reaction);
+            OnPlatePressedEvent?.Invoke();
 
             if (!CanBePressedRepeatedly) 
             {

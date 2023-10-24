@@ -39,8 +39,8 @@ public class CanvasGroupFader : MonoBehaviour
         float elapsedTime = 0;
         while (elapsedTime < timeToFade)
         {
-            elapsedTime += Time.deltaTime;
             canvasGroup.alpha = Mathf.Lerp(startingAlpha, targetAlpha, elapsedTime / timeToFade);
+            elapsedTime += Time.deltaTime;
             yield return null;
         }
     }

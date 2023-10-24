@@ -5,7 +5,7 @@ public class RotationSnapper : MonoBehaviour
 {
     private Coroutine snapCoroutine = null;
 
-    public System.Action OnSnapFinished { get; set; }    
+    public System.Action OnSnapFinished { get; set; }
 
     public void StartSnap(Quaternion targetRotation, float timeToComplete)
     {

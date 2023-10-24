@@ -27,7 +27,7 @@ namespace Monument.World
             if (platformToRotate == null)
             {
                 Debug.LogError($"{gameObject.name} handle error. Platform to rotate reference is missing");
-                gameObject.SetActive(false);
+                Destroy(this);
                 return;
             }
 #endif
@@ -65,9 +65,9 @@ namespace Monument.World
             platformToRotate.OnEndDrag(inputData);
         }
 
-        public void EnableRotation(bool enabled)
+        public override void EnableRotation(bool enabled)
         {
-            AllowsRotation = enabled;
+            base.EnableRotation(enabled);
 
             if (scaleCoroutine != null) StopCoroutine(scaleCoroutine);
             
@@ -82,8 +82,8 @@ namespace Monument.World
 
             while (elapsedTime < timeToComplete)
             {
-                elapsedTime += Time.deltaTime;
                 transform.localScale = Vector3.Lerp(startingScale, targetScale, elapsedTime / timeToComplete);
+                elapsedTime += Time.deltaTime;
                 yield return null;
             }
         }

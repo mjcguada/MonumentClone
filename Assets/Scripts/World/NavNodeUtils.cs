@@ -146,6 +146,33 @@ namespace Monument.World
             Undo.CollapseUndoOperations(undoGroup);
             Debug.Log("Neighbors cleaned successfully");
         }
+
+        public static void ClearNULLNeighborsForEveryNode()
+        {
+            Debug.Log("Finding neighbors on scene...");
+            NavNode[] sceneWalkables = GameObject.FindObjectsOfType<NavNode>();
+
+            if (sceneWalkables.Length == 0)
+            {
+                Debug.Log("There's no NavNodes on scene to clear");
+                return;
+            }
+
+            // Get the current Undo group
+            int undoGroup = Undo.GetCurrentGroup();
+
+            for (int i = 0; i < sceneWalkables.Length; i++)
+            {
+                // Record changes for this node
+                Undo.RecordObject(sceneWalkables[i], "Clear Neighbors");
+                sceneWalkables[i].ClearNullNeighbors();
+                EditorUtility.SetDirty(sceneWalkables[i]);
+            }
+
+            // Collapse Undo operations into a single step
+            Undo.CollapseUndoOperations(undoGroup);
+            Debug.Log("Null neighbors cleaned successfully");
+        }
 #endif
     }
 }

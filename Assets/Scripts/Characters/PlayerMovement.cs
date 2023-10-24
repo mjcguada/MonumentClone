@@ -19,9 +19,6 @@ namespace Monument.Player
 
         private MonumentInput inputActions;
 
-        // The last rotative platform used by the player
-        private RotativePlatform lastRotativePlatform;
-
         // Reachable nodes (possible paths)
         List<NavNode> reachableNodes = new List<NavNode>();        
 
@@ -103,10 +100,10 @@ namespace Monument.Player
         }
 
         private void MoveToNextNode()
-        {            
+        {
             currentIndex++;            
 
-            // if the player has reached the end of the path
+            // We stope if the player has reached the end of the path
             if (currentIndex >= pathToFollow.Count)
             {
                 OnPlayerStopped();
@@ -119,13 +116,6 @@ namespace Monument.Player
                 OnPlayerStopped();
                 return;
             }
-
-            // if the given index is smaller than the length of the list
-            // we continue moving
-            isMoving = true;
-            
-            // Update current node value
-            currentNode = pathToFollow[currentIndex];
 
 #if UNITY_EDITOR
             // Show reachable nodes on the Editor
@@ -145,16 +135,16 @@ namespace Monument.Player
                 transform.SetParent(null);
             }
 
-            // Assign current rotative platform and disable rotation
-            if (pathToFollow[currentIndex].RotativePlatform != null)
-            {
-                lastRotativePlatform = pathToFollow[currentIndex].RotativePlatform;
+            lastRotativePlatform = pathToFollow[currentIndex].RotativePlatform;
 
+            // Disable rotation of current rotative platform
+            if (lastRotativePlatform != null)
+            {
                 // Disable Handle rotation
                 lastRotativePlatform.RotatorHandle?.EnableRotation(false);
 
                 // Disable Platform rotation (while the player is moving)
-                lastRotativePlatform.AllowsRotation = false;
+                lastRotativePlatform.EnableRotation(false);
 
                 // Make player child of rotative platform to rotate with it
                 transform.SetParent(lastRotativePlatform.transform, true);
@@ -168,8 +158,7 @@ namespace Monument.Player
             LookAtNode(targetNode);
 
             // Move to next node
-            StartCoroutine(MoveToNodeCoroutine(targetNode, OnMovementFinished: MoveToNextNode));
-
+            StartCoroutine(MoveToNodeCoroutine(currentNode, targetNode, OnMovementFinished: MoveToNextNode));
         }        
 
         private void OnPlayerStopped()

@@ -8,5 +8,5 @@ public class Rotable : MonoBehaviour
 
     public RotateAxis SpinAxis = RotateAxis.X;
 
-    public bool AllowsRotation { get; set; } = true;
+    public bool AllowsRotation = true;
 }

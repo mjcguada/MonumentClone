@@ -15,9 +15,13 @@ public abstract class Walker : MonoBehaviour, IPresser
 
     protected NavNode currentNode;
 
+    // The last rotative platform walked by the character
+    protected RotativePlatform lastRotativePlatform;
+
     protected virtual void Start()
     {
         currentNode = FindNodeUnderCharacter();
+        lastRotativePlatform = currentNode.RotativePlatform;
     }
 
     protected NavNode FindNodeUnderCharacter()
@@ -31,15 +35,15 @@ public abstract class Walker : MonoBehaviour, IPresser
         // Find closest collider
         int index = 0;
         float minDistance = Mathf.Infinity;
-        for (int i = 0; i < collidersWithNavNode.Count; i++) 
+        for (int i = 0; i < collidersWithNavNode.Count; i++)
         {
             float colliderDistance = Vector3.Distance(transform.position, collidersWithNavNode[i].transform.position);
-            if (colliderDistance < minDistance) 
+            if (colliderDistance < minDistance)
             {
                 minDistance = colliderDistance;
                 index = i;
             }
-        }        
+        }
 
         return collidersWithNavNode[index].gameObject.GetComponent<NavNode>();
     }
@@ -69,19 +73,39 @@ public abstract class Walker : MonoBehaviour, IPresser
         }
     }
 
-    protected IEnumerator MoveToNodeCoroutine(NavNode targetNode, System.Action OnMovementFinished)
+    protected IEnumerator MoveToNodeCoroutine(NavNode startingNode, NavNode targetNode, System.Action OnMovementFinished)
     {
         float elapsedTime = 0;
-        Vector3 startingPos = transform.position;
+        Vector3 startingPos = startingNode.WalkPoint;
         Vector3 targetPosition = targetNode.WalkPoint;
 
-        while (elapsedTime < timeToArrive)
+        isMoving = true;
+
+        while (isMoving && elapsedTime < timeToArrive)
         {
-            elapsedTime += Time.deltaTime;
+            // Move
             transform.position = Vector3.Lerp(startingPos, targetPosition, elapsedTime / timeToArrive);
             yield return null;
+            elapsedTime += Time.deltaTime;
+
+            // If the character is on a moving platform: Update positions to recalculate movement from there
+            if (lastRotativePlatform != null && lastRotativePlatform.IsBeingDragged)
+            {
+                startingPos = startingNode.WalkPoint;
+                targetPosition = targetNode.WalkPoint;
+            }
         }
 
+        isMoving = false;
+
+        currentNode = targetNode;
+
         OnMovementFinished?.Invoke();
+    }
+
+    public void StopMovement()
+    {
+        StopAllCoroutines();
+        isMoving = false;
     }
 }

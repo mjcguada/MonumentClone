@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CV_Scene_4.unity
     guid: b2cb0a40717d2b340ad8a94bf00631c8
+  - enabled: 1
+    path: Assets/Scenes/CV_Scene_6.unity
+    guid: aa9ac676889be24429f8d02faac7ccf8
   m_configObjects: {}

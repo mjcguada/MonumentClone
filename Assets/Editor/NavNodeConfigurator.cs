@@ -206,7 +206,6 @@ public class NavNodeConfigurator : EditorWindow
                 nodesToShow = selectedNodes;
                 break;
             case 1:
-                // TODO: Order by name
                 nodesToShow = everyNode;
                 break;
             default:

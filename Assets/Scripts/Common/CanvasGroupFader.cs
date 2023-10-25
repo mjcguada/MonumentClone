@@ -24,17 +24,18 @@ public class CanvasGroupFader : MonoBehaviour
 
     public void FadeIn()
     {
+        canvasGroup.interactable = false;
         if (coroutine != null) StopCoroutine(coroutine);
-        coroutine = StartCoroutine(FadeCoroutine(0, 1, timeToFadeIn));
+        coroutine = StartCoroutine(FadeCoroutine(0, 1, timeToFadeIn, () => canvasGroup.interactable = true));
     }
 
     public void FadeOut()
     {
         if (coroutine != null) StopCoroutine(coroutine);
-        coroutine = StartCoroutine(FadeCoroutine(1, 0, timeToFadeOut));
+        coroutine = StartCoroutine(FadeCoroutine(1, 0, timeToFadeOut, () => canvasGroup.interactable = false));
     }
 
-    private IEnumerator FadeCoroutine(float startingAlpha, float targetAlpha, float timeToFade)
+    private IEnumerator FadeCoroutine(float startingAlpha, float targetAlpha, float timeToFade, System.Action OnFadeFinished)
     {
         float elapsedTime = 0;
         while (elapsedTime < timeToFade)
@@ -43,5 +44,7 @@ public class CanvasGroupFader : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
+
+        OnFadeFinished?.Invoke();
     }
 }

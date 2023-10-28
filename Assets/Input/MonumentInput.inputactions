@@ -34,9 +34,9 @@
                 },
                 {
                     "name": "Click",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "a8b23d39-1209-4fd4-aa75-1d91e3306408",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "Press",
                     "initialStateCheck": true
@@ -264,15 +264,70 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "",
-                    "id": "c7d7e5e7-974c-4d68-8fe7-35797d22ef13",
-                    "path": "<Mouse>/leftButton",
+                    "name": "Touch 0",
+                    "id": "54815976-fe48-45c8-8e3a-3affd55e768b",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "023d23d6-561b-489e-a2f3-a9eb33295397",
+                    "path": "<Touchscreen>/touch0/press",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Click",
                     "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "87913cb7-3d1f-4e6c-87dc-b67a7e6d6af1",
+                    "path": "<Touchscreen>/touch0/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Touch",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Click 0",
+                    "id": "f4a365bf-0cd9-4e16-ad1c-57ddfbaa5900",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
+                    "isComposite": true,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "ffbe5fd2-083d-429b-9d96-fc7a846ee158",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "3880da03-5d34-49d5-b46a-d05e72fcf3a9",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         },

@@ -27,7 +27,7 @@ namespace Monument.Player
             if (inputActions == null) 
             {
                 inputActions = new MonumentInput();
-                inputActions.Player.Click.performed += ctx => OnClick();
+                inputActions.Player.Click.performed += OnClick;
             }
 
             inputActions.Enable();
@@ -38,9 +38,11 @@ namespace Monument.Player
             inputActions?.Disable();
         }
 
-        private void OnClick()
+        private void OnClick(InputAction.CallbackContext context)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+            Vector2 inputVector = context.ReadValue<Vector2>();
+
+            Ray ray = Camera.main.ScreenPointToRay(inputVector);
 
             if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, navNodeLayerMask))
             {

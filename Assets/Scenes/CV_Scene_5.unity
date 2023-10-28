@@ -2960,7 +2960,6 @@ MonoBehaviour:
   SpinAxis: 1
   AllowsRotation: 1
   CanBeDisabled: 0
-  IsBeingDragged: 0
   configurations:
   - Linkers:
     - NodeA: {fileID: 1532512572}
@@ -3807,7 +3806,6 @@ MonoBehaviour:
   SpinAxis: 0
   AllowsRotation: 1
   CanBeDisabled: 1
-  IsBeingDragged: 0
   configurations:
   - Linkers: []
   - Linkers: []
@@ -4303,7 +4301,6 @@ MonoBehaviour:
   SpinAxis: 1
   AllowsRotation: 1
   CanBeDisabled: 0
-  IsBeingDragged: 0
   platformToRotate: {fileID: 192827275}
 --- !u!65 &414310872
 BoxCollider:
@@ -4924,10 +4921,10 @@ RectTransform:
   m_Father: {fileID: 1447571487}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 300, y: 0}
-  m_SizeDelta: {x: 570, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 300, y: -357.005}
+  m_SizeDelta: {x: 570, y: 147.21}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &577913636
 MonoBehaviour:
@@ -5160,10 +5157,10 @@ RectTransform:
   m_Father: {fileID: 1447571487}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 300, y: 0}
-  m_SizeDelta: {x: 570, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 300, y: -246.395}
+  m_SizeDelta: {x: 570, y: 54.01}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &610771305
 MonoBehaviour:
@@ -17189,7 +17186,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1447571486}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
   m_Name: 

@@ -44,7 +44,9 @@ public class PlayerCursor : MonoBehaviour
 
     private void ShowCursor(InputAction.CallbackContext context)
     {
-        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+        Vector2 inputVector = context.ReadValue<Vector2>();
+
+        Ray ray = Camera.main.ScreenPointToRay(inputVector);
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, navNodeLayerMask))
         {

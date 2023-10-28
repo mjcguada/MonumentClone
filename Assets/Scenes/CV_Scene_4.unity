@@ -3336,7 +3336,6 @@ MonoBehaviour:
   SpinAxis: 1
   AllowsRotation: 1
   CanBeDisabled: 0
-  IsBeingDragged: 0
   configurations:
   - Linkers:
     - NodeA: {fileID: 1532512572}
@@ -4349,7 +4348,6 @@ MonoBehaviour:
   SpinAxis: 0
   AllowsRotation: 1
   CanBeDisabled: 1
-  IsBeingDragged: 0
   configurations:
   - Linkers: []
   - Linkers: []
@@ -4845,7 +4843,6 @@ MonoBehaviour:
   SpinAxis: 1
   AllowsRotation: 1
   CanBeDisabled: 0
-  IsBeingDragged: 0
   platformToRotate: {fileID: 192827275}
 --- !u!65 &414310872
 BoxCollider:

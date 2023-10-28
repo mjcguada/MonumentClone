@@ -14,9 +14,6 @@ public class ImageCarousel : MonoBehaviour, IEndDragHandler
     [SerializeField] private TextMeshProUGUI slideTextReference;
     [SerializeField] private TextMeshProUGUI countTextReference;
 
-    [Range(0.1f, 0.8f)]
-    [SerializeField] private float animationSpeed = 0.5f;
-
     private List<SlideImage> imagesToShow = new List<SlideImage>();
 
     private float[] positions; // Positions of the elements along the scroll bar

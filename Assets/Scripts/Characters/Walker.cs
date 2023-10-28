@@ -75,25 +75,15 @@ public abstract class Walker : MonoBehaviour, IPresser
 
     protected IEnumerator MoveToNodeCoroutine(NavNode startingNode, NavNode targetNode, System.Action OnMovementFinished)
     {
-        float elapsedTime = 0;
-        Vector3 startingPos = startingNode.WalkPoint;
-        Vector3 targetPosition = targetNode.WalkPoint;
-
         isMoving = true;
 
+        float elapsedTime = 0;
         while (isMoving && elapsedTime < timeToArrive)
         {
-            // Move
-            transform.position = Vector3.Lerp(startingPos, targetPosition, elapsedTime / timeToArrive);
+            // Movement
+            transform.position = Vector3.Lerp(startingNode.WalkPoint, targetNode.WalkPoint, elapsedTime / timeToArrive);
             yield return null;
-            elapsedTime += Time.deltaTime;
-
-            // If the character is on a moving platform: Update positions to recalculate movement from there
-            if (lastRotativePlatform != null && lastRotativePlatform.IsBeingDragged)
-            {
-                startingPos = startingNode.WalkPoint;
-                targetPosition = targetNode.WalkPoint;
-            }
+            elapsedTime += Time.deltaTime;            
         }
 
         isMoving = false;

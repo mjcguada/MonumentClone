@@ -3911,7 +3911,6 @@ MonoBehaviour:
   contentTransform: {fileID: 311175985}
   slideTextReference: {fileID: 2032768949}
   countTextReference: {fileID: 108026843}
-  animationSpeed: 0.8
 --- !u!1 &595121018457769391
 GameObject:
   m_ObjectHideFlags: 0
@@ -4116,13 +4115,13 @@ PrefabInstance:
     - target: {fileID: 8596329595086819442, guid: 27e8b6ef890660b4aa5d4ec92ab8a4ec,
         type: 3}
       propertyPath: previousScene.sceneName
-      value: Scenes/CV_Scene_4
+      value: Scenes/CV_Scene_5
       objectReference: {fileID: 0}
     - target: {fileID: 8596329595086819442, guid: 27e8b6ef890660b4aa5d4ec92ab8a4ec,
         type: 3}
       propertyPath: previousScene.sceneAsset
       value: 
-      objectReference: {fileID: 102900000, guid: b2cb0a40717d2b340ad8a94bf00631c8,
+      objectReference: {fileID: 102900000, guid: 343e1b1b6f769cd45a44c052e5f18ea0,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 27e8b6ef890660b4aa5d4ec92ab8a4ec, type: 3}

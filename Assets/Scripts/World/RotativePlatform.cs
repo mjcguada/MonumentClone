@@ -75,6 +75,11 @@ namespace Monument.World
 
             int currentConfiguration = (int)snappedAngleRotation / 90;
 
+            // Reaction special cases
+            if (currentConfiguration >= configurations.Length) currentConfiguration = currentConfiguration % configurations.Length;
+
+            //Debug.Log($"CurrentConfiguration {currentConfiguration}");
+
             // Undo previous configuration
             ApplyLinkersConfiguration(previousConfiguration, undo: true);
 
@@ -89,7 +94,7 @@ namespace Monument.World
             }
 
             // New configuration
-            previousConfiguration = currentConfiguration;            
+            previousConfiguration = currentConfiguration;
         }
 
         public override void OnBeginDrag(PointerEventData inputData)
@@ -118,32 +123,42 @@ namespace Monument.World
 
         public void React(Reaction reaction)
         {
-            if (reactionCoroutine != null) StopCoroutine(reactionCoroutine);
+            if (isReacting) return;
+
+            isReacting = true;
 
             switch (reaction.Type)
             {
                 case Reaction.ReactionType.Rotation:
-                    reactionCoroutine = StartCoroutine(ReactionRotation(reaction));
+                    StartCoroutine(ReactionRotation(reaction));
                     break;
             }
         }
 
-        private Coroutine reactionCoroutine = null;
+        private float reactionAngle = 0;
+        private bool isReacting = false;
 
         // Progressive rotation the platform does when a Walker steps into a Pressure Plate
         private IEnumerator ReactionRotation(Reaction reaction)
         {
             float elapsedTime = 0;
 
+            float startingAngle = reactionAngle;
+            float targetAngle = reactionAngle + reaction.Units;
+
             while (elapsedTime < reaction.TimeToComplete)
             {
                 elapsedTime += Time.deltaTime;
-                float currentAngle = Mathf.Lerp(0, reaction.Units, elapsedTime / reaction.TimeToComplete); // We calculate the appropriate rotation angle in relation to the elapsed time
+                float currentAngle = Mathf.Lerp(startingAngle, targetAngle, elapsedTime / reaction.TimeToComplete); // We calculate the appropriate rotation angle in relation to the elapsed time
                 Rotate(currentAngle);
                 yield return null;
-            }            
+            }
 
-            ApplyConfiguration(reaction.Units); //Apply resulting configuration
-        }        
+            // Fake final angle (X axis and Gimbal lock issues :( )
+            reactionAngle = targetAngle;
+            ApplyConfiguration(reactionAngle); //Apply resulting configuration
+
+            isReacting = false;
+        }
     }
 }

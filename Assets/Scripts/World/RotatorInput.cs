@@ -17,8 +17,6 @@ namespace Monument.World
         [Header("Rotator Input")]
         public bool CanBeDisabled = true;
 
-        public bool IsBeingDragged = false;
-
         protected Vector2 pivotPosition = default;
 
         protected float previousAngle = 0;
@@ -28,13 +26,10 @@ namespace Monument.World
         protected void Awake()
         {
             snapper = GetComponent<RotationSnapper>();
-            snapper.OnSnapFinished += () => IsBeingDragged = false;
         }        
 
         public virtual void OnBeginDrag(PointerEventData inputData)
         {
-            IsBeingDragged = true;
-
             pivotPosition = Camera.main.WorldToScreenPoint(transform.position);
 
             snapper.StopSnap();

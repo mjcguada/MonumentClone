@@ -123,36 +123,8 @@ namespace Monument.Player
             // Show reachable nodes on the Editor
             FindReachableNodes(pathToFollow[currentIndex]);
 #endif
-
-            // TODO: IMPROVE THIS (case where we go from one platform to the same one)
-            // Enable again rotative platform that we leave
-            if (lastRotativePlatform != null)
-            {
-                // Handle rotation
-                lastRotativePlatform.RotatorHandle?.EnableRotation(true);
-
-                // Platform rotation
-                lastRotativePlatform.AllowsRotation = true;
-
-                transform.SetParent(null);
-            }
-
-            lastRotativePlatform = pathToFollow[currentIndex].RotativePlatform;
-
-            // Disable rotation of current rotative platform
-            if (lastRotativePlatform != null)
-            {
-                // Disable Handle rotation
-                lastRotativePlatform.RotatorHandle?.EnableRotation(false);
-
-                // Disable Platform rotation (while the player is moving)
-                lastRotativePlatform.EnableRotation(false);
-
-                // Make player child of rotative platform to rotate with it
-                transform.SetParent(lastRotativePlatform.transform, true);
-            }
-
-            // Make the player child of the platform to be affected by its rotation
+            // Disable previous platform and assign the current one
+            ManageRotativePlatforms(pathToFollow[currentIndex].RotativePlatform);
 
             NavNode targetNode = pathToFollow[currentIndex];
 

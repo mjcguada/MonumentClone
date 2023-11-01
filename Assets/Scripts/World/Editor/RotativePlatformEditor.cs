@@ -1,7 +1,5 @@
 #if UNITY_EDITOR
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using static Rotable;
@@ -29,11 +27,6 @@ namespace Monument.World
             platform.SpinAxis = (RotateAxis)EditorGUILayout.EnumPopup("Spin Axis", platform.SpinAxis);
 
             platform.CanBeDisabled = EditorGUILayout.Toggle("Can be Disabled", platform.CanBeDisabled);
-
-            GUILayout.Space(10);
-
-            EditorGUILayout.LabelField("Optional", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("RotatorHandle"));
 
             GUILayout.Space(10);
 

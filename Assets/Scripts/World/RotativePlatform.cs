@@ -15,7 +15,6 @@ namespace Monument.World
         [SerializeField]
         private PlatformConfiguration[] configurations = new PlatformConfiguration[4];
 
-        [SerializeField]
         public RotatorHandle RotatorHandle;
 
         public float PreviousAngle { set => previousAngle = value; }
@@ -78,7 +77,7 @@ namespace Monument.World
             // Reaction special cases
             if (currentConfiguration >= configurations.Length) currentConfiguration = currentConfiguration % configurations.Length;
 
-            //Debug.Log($"CurrentConfiguration {currentConfiguration}");
+            Debug.Log($"CurrentConfiguration {currentConfiguration}");
 
             // Undo previous configuration
             ApplyLinkersConfiguration(previousConfiguration, undo: true);

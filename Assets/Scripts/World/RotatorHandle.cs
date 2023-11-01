@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -32,6 +31,7 @@ namespace Monument.World
             }
 #endif
             originalScale = transform.localScale;
+            platformToRotate.RotatorHandle = this;
         }
 
         public override void OnBeginDrag(PointerEventData inputData)
@@ -67,7 +67,9 @@ namespace Monument.World
 
         public override void EnableRotation(bool enabled)
         {
-            base.EnableRotation(enabled);
+            if (!CanBeDisabled) return;
+
+            AllowsRotation = enabled;
 
             if (scaleCoroutine != null) StopCoroutine(scaleCoroutine);
             

@@ -14,6 +14,8 @@ namespace Monument.World
             Debug.Log("Finding neighbors in scene...");
             NavNode[] sceneNodes = GameObject.FindObjectsOfType<NavNode>();
 
+            int neighborCount = 0;
+
             for (int i = 0; i < sceneNodes.Length; i++)
             {
                 List<NavNode> perspectiveNodes = FindPerspectiveNodes(sceneNodes[i], sceneNodes);
@@ -23,6 +25,7 @@ namespace Monument.World
                 nodesSet.UnionWith(perspectiveNodes); //Join two lists without repeating elements
 
                 List<NavNode> neighbors = new List<NavNode>(nodesSet);
+                neighborCount += neighbors.Count;
 
                 // Add nodes
                 for (int j = 0; j < neighbors.Count; j++)
@@ -31,7 +34,7 @@ namespace Monument.World
                 }
             }
 
-            Debug.Log("Neighbors setup successfully");
+            Debug.Log($"{neighborCount} Neighbors setup successfully");
         }
 
         public static List<NavNode> FindPerspectiveNodes(NavNode nodeToExamine, NavNode[] sceneCollection = null)
@@ -48,8 +51,6 @@ namespace Monument.World
             for (int i = 0; i < sceneCollection.Length; i++)
             {
                 if (nodeToExamine == sceneCollection[i]) continue;
-
-                //sceneCollection[i].InitializePerspectiveNodes();
 
                 if (sceneCollection[i].AreJointsConnected(nodeToExamine))
                 {

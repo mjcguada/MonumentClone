@@ -371,8 +371,6 @@ public class NavNodeConfigurator : EditorWindow
 
         scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
-        // TODO: Explore selected RotativePlatforms Nodes
-
         // Display a row for each selected Node
         for (int i = 0; i < nodesToShow.Count; i++)
         {
@@ -389,7 +387,6 @@ public class NavNodeConfigurator : EditorWindow
     {
         if (nodeToShow == null) { return; }
 
-        // TODO: show adjacent nodes that are not neighbors to add them (create a button for every adjacent node)
         if (focusedNode == nodeToShow)
         {
             GUI.backgroundColor = Color.green;

@@ -22,6 +22,8 @@ public abstract class Walker : MonoBehaviour, IPresser
     {
         currentNode = FindNodeUnderCharacter();
         lastRotativePlatform = currentNode.RotativePlatform;
+
+        if (lastRotativePlatform != null) gameObject.transform.SetParent(lastRotativePlatform.transform);
     }
 
     protected NavNode FindNodeUnderCharacter()
@@ -46,6 +48,37 @@ public abstract class Walker : MonoBehaviour, IPresser
         }
 
         return collidersWithNavNode[index].gameObject.GetComponent<NavNode>();
+    }
+
+    // Disable previous platform and assign the current one
+    protected void ManageRotativePlatforms(RotativePlatform currentPlatform) 
+    {
+        // Enable again rotative platform that we leave
+        if (lastRotativePlatform != null)
+        {
+            // Handle rotation
+            lastRotativePlatform.RotatorHandle?.EnableRotation(true);
+
+            // Platform rotation
+            lastRotativePlatform.EnableRotation(true);
+
+            transform.SetParent(null);
+        }
+
+        lastRotativePlatform = currentPlatform;
+
+        // Disable rotation of the current rotative platform
+        if (lastRotativePlatform != null)
+        {
+            // Disable Handle rotation
+            lastRotativePlatform.RotatorHandle?.EnableRotation(false);
+
+            // Disable Platform rotation (while the crow is moving)
+            lastRotativePlatform.EnableRotation(false);
+
+            // Make the character child of the rotative platform to rotate with it
+            transform.SetParent(lastRotativePlatform.transform, true);
+        }
     }
 
     protected void LookAtNode(NavNode targetNode)
@@ -83,7 +116,7 @@ public abstract class Walker : MonoBehaviour, IPresser
             // Movement
             transform.position = Vector3.Lerp(startingNode.WalkPoint, targetNode.WalkPoint, elapsedTime / timeToArrive);
             yield return null;
-            elapsedTime += Time.deltaTime;            
+            elapsedTime += Time.deltaTime;
         }
 
         isMoving = false;

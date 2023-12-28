@@ -7,7 +7,7 @@ namespace Monument.World
         public NavNode NodeA;
         public NavNode NodeB;
 
-        public bool areLinked = true;
+        public bool AreLinked = true;
 
         public void ApplyConfiguration(bool linkEnabled)
         {

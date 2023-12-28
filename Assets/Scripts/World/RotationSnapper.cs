@@ -9,7 +9,7 @@ public class RotationSnapper : MonoBehaviour
 
     public void StartSnap(Quaternion targetRotation, float timeToComplete)
     {
-        if (snapCoroutine != null) StopCoroutine(snapCoroutine);
+        StopSnap();
 
         snapCoroutine = StartCoroutine(RotateCoroutine(targetRotation, timeToComplete));
     }

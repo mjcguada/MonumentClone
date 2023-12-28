@@ -18,6 +18,15 @@ public class GraphicFader : MonoBehaviour
 
     private void Start()
     {
+#if UNITY_EDITOR
+        if (graphicElement == null) 
+        {
+            Debug.LogError("Graphic element reference is null");
+            Destroy(this);
+            return;
+        }
+#endif
+
         if (fadeInOnStart) FadeIn();
         else if (fadeOutOnStart) FadeOut();
     }

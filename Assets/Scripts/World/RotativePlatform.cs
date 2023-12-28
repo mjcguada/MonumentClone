@@ -59,8 +59,8 @@ namespace Monument.World
 
             for (int i = 0; i < configurationLinkers.Length; i++)
             {
-                if (undo) configurationLinkers[i].ApplyConfiguration(!configurationLinkers[i].areLinked);
-                else configurationLinkers[i].ApplyConfiguration(configurationLinkers[i].areLinked);
+                if (undo) configurationLinkers[i].ApplyConfiguration(!configurationLinkers[i].AreLinked);
+                else configurationLinkers[i].ApplyConfiguration(configurationLinkers[i].AreLinked);
             }
         }
 
@@ -77,7 +77,7 @@ namespace Monument.World
             // Reaction special cases
             if (currentConfiguration >= configurations.Length) currentConfiguration = currentConfiguration % configurations.Length;
 
-            Debug.Log($"CurrentConfiguration {currentConfiguration}");
+            //Debug.Log($"CurrentConfiguration {currentConfiguration}");
 
             // Undo previous configuration
             ApplyLinkersConfiguration(previousConfiguration, undo: true);
